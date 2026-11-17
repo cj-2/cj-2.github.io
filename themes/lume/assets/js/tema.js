@@ -66,5 +66,35 @@ document.querySelectorAll(".style-toggle").forEach((btn) => {
   });
 });
 
+// ---------- Largura ----------
+// padrão (sem atributo) -> wide (larga) -> full (total) -> padrão
+const LARGURAS = ["default", "wide", "full"];
+const NOME_LARGURA = { default: "padrão", wide: "larga", full: "total" };
+
+function larguraAtual() {
+  return root.dataset.width || "default";
+}
+
+function atualizarBotaoLargura() {
+  const atual = larguraAtual();
+  const proxima = LARGURAS[(LARGURAS.indexOf(atual) + 1) % LARGURAS.length];
+  const texto = `Largura: ${NOME_LARGURA[atual]} (clique para ${NOME_LARGURA[proxima]})`;
+  document.querySelectorAll(".width-toggle").forEach((btn) => {
+    btn.setAttribute("aria-label", texto);
+    btn.title = texto;
+  });
+}
+
+document.querySelectorAll(".width-toggle").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const proxima = LARGURAS[(LARGURAS.indexOf(larguraAtual()) + 1) % LARGURAS.length];
+    if (proxima === "default") delete root.dataset.width;
+    else root.dataset.width = proxima;
+    salvar("largura", proxima === "default" ? null : proxima);
+    atualizarBotaoLargura();
+  });
+});
+
 atualizarBotaoCor();
 atualizarBotaoEstilo();
+atualizarBotaoLargura();

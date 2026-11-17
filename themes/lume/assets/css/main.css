@@ -23,6 +23,10 @@
   color-scheme: light;
 }
 
+/* ---- Largura da área de texto: padrão, largo e total (data-width no <html>) ---- */
+:root[data-width="wide"] { --measure: 64rem; }
+:root[data-width="full"] { --measure: 100%; }
+
 /* ---- Cores (escuro): segue o sistema, a menos que o usuário escolha "claro" ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -150,7 +154,8 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
   gap: 0.4rem;
 }
 .theme-toggle,
-.style-toggle {
+.style-toggle,
+.width-toggle {
   display: grid;
   place-items: center;
   width: 2rem;
@@ -163,7 +168,16 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
   cursor: pointer;
 }
 .theme-toggle:hover,
-.style-toggle:hover { color: var(--text); background: var(--surface); }
+.style-toggle:hover,
+.width-toggle:hover { color: var(--text); background: var(--surface); }
+
+/* Botão de largura: o ícone mostra a largura ATUAL (padrão, larga ou total) */
+.width-toggle svg { display: none; }
+:root:not([data-width]) .width-toggle .icon-narrow,
+:root[data-width="wide"] .width-toggle .icon-wide,
+:root[data-width="full"] .width-toggle .icon-full { display: block; }
+/* Em telas pequenas a largura já é a da tela: o botão não faria diferença */
+@media (max-width: 720px) { .width-toggle { display: none; } }
 
 /* Botão de cor: o ícone mostra a cor ATUAL (sistema, claro ou escuro) */
 .theme-toggle svg { display: none; }

@@ -103,7 +103,8 @@
 [data-style="terminal"] .menu a::before { content: "./"; color: var(--muted); }
 [data-style="terminal"] .menu a[aria-current="page"] { color: var(--accent); }
 [data-style="terminal"] .theme-toggle,
-[data-style="terminal"] .style-toggle { border-radius: 4px; }
+[data-style="terminal"] .style-toggle,
+[data-style="terminal"] .width-toggle { border-radius: 4px; }
 
 /* ---- Janela do terminal ---- */
 [data-style="terminal"] .term-window {

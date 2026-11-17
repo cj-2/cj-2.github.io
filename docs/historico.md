@@ -5,6 +5,26 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-17 — Botão de largura do texto
+
+**O quê:** novo botão no menu (ao lado de estilo e cor) que alterna a largura da área de
+texto entre **padrão** (42rem), **larga** (64rem) e **total** (100% da janela). A escolha
+fica salva no `localStorage` (chave `largura`).
+
+**Por quê:** facilitar a leitura em telas grandes sem mexer no padrão, que já era bonito.
+
+**Como:** o tema já controlava a largura por uma única variável CSS, `--measure`, usada em
+`.container`. Então o botão só troca o atributo `data-width` no `<html>`
+(`wide` / `full`; sem atributo = padrão), e o CSS redefine a variável:
+`:root[data-width="wide"] { --measure: 64rem; }`. O script do `<head>` aplica o valor salvo
+antes da primeira pintura, para a página não "pular" de tamanho. Em telas até 720px o botão
+some, porque a largura já é a da tela.
+
+**Aprendizado:** quando um valor de layout vive numa *variável CSS*, mudar o comportamento
+do site inteiro vira trocar um atributo. É o mesmo padrão usado para estilo e cor.
+
+---
+
 ## 2026-11-17 — Terminal como estilo padrão
 
 **O quê:** quem abre o blog pela primeira vez agora vê o estilo terminal; o botão do menu

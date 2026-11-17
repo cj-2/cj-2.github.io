@@ -16,6 +16,8 @@
     try {
       var cor = localStorage.getItem("tema");
       if (cor === "light" || cor === "dark") root.dataset.theme = cor;
+      var largura = localStorage.getItem("largura");
+      if (largura === "wide" || largura === "full") root.dataset.width = largura;
       // O padrão é o terminal: só vira "normal" se o visitante escolheu isso.
       if (localStorage.getItem("estilo") !== "normal") root.dataset.style = "terminal";
     } catch (e) {
