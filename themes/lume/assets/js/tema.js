@@ -67,9 +67,9 @@ document.querySelectorAll(".style-toggle").forEach((btn) => {
 });
 
 // ---------- Largura ----------
-// padrão (sem atributo) -> wide (larga) -> full (total) -> padrão
-const LARGURAS = ["default", "wide", "full"];
-const NOME_LARGURA = { default: "padrão", wide: "larga", full: "total" };
+// narrow (estreita) -> padrão (sem atributo, a do meio) -> full (total) -> narrow
+const LARGURAS = ["narrow", "default", "full"];
+const NOME_LARGURA = { narrow: "estreita", default: "padrão", full: "total" };
 
 function larguraAtual() {
   return root.dataset.width || "default";

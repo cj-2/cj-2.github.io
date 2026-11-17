@@ -5,6 +5,24 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-17 — Largura do meio como padrão
+
+**O quê:** o tamanho padrão da área de texto passou a ser o do meio (64rem). A antiga
+largura padrão (42rem) virou a opção **estreita**; a **total** continua igual. O botão agora
+cicla estreita → padrão → total.
+
+**Por quê:** 64rem lê melhor em telas grandes, e quem prefere linhas curtas ainda tem a
+estreita.
+
+**Como:** `--measure` no `:root` agora vale 64rem, e o atributo `data-width` ganhou os
+valores `narrow` (42rem) e `full` (100%). Sem atributo = padrão. O `localStorage` só guarda
+`narrow` ou `full`; quem tinha `wide` salvo volta ao padrão, que agora tem o mesmo tamanho.
+
+**Aprendizado:** o *padrão* é só "o que vale quando nada foi escolhido". Trocar qual opção
+é o padrão é mexer na variável base, não nas opções.
+
+---
+
 ## 2026-11-17 — Botão de largura do texto
 
 **O quê:** novo botão no menu (ao lado de estilo e cor) que alterna a largura da área de
