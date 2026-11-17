@@ -1,0 +1,26 @@
+{{ define "main" }}
+  <section class="intro">
+    <h1>{{ with site.Params.homeTitle }}{{ . }}{{ else }}{{ site.Title }}{{ end }}</h1>
+    {{ with site.Params.homeIntro }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
+    {{ .Content }}
+  </section>
+
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  {{ $recentes := first (site.Params.homePosts | default 10) $posts }}
+
+  <section class="recent">
+    <h2 class="section-title">Posts recentes</h2>
+    {{ range $recentes }}
+      <article class="post-card">
+        <h3><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>
+        {{ partial "post-meta.html" . }}
+        <p>{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 180 }}{{ end }}</p>
+      </article>
+    {{ else }}
+      <p>Nenhum post ainda.</p>
+    {{ end }}
+    {{ if gt (len $posts) (len $recentes) }}
+      <p><a class="more" href="{{ "posts/" | relURL }}">Ver todos os posts →</a></p>
+    {{ end }}
+  </section>
+{{ end }}

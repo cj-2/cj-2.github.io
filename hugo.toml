@@ -1,0 +1,32 @@
+# O baseURL é substituído automaticamente pelo GitHub Actions no deploy.
+baseURL = 'https://example.org/'
+locale = 'pt-br'
+title = 'Meu Blog'
+theme = 'lume'
+enableRobotsTXT = true
+
+[params]
+  description = 'Meu blog pessoal feito com Hugo'
+  author = 'Seu Nome'
+  homeTitle = 'Olá! 👋'
+  homeIntro = 'Bem-vindo ao meu blog. Aqui escrevo sobre o que ando aprendendo.'
+  homePosts = 10   # quantos posts aparecem na página inicial
+  toc = true       # sumário nos posts (pode desligar por post com `toc: false`)
+
+[menu]
+  [[menu.main]]
+    identifier = 'posts'
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 10
+  [[menu.main]]
+    identifier = 'tags'
+    name = 'Tags'
+    pageRef = '/tags'
+    weight = 20
+
+[markup.highlight]
+  noClasses = false   # usa as classes CSS do tema (claro/escuro)
+
+[markup.goldmark.renderer]
+  unsafe = false

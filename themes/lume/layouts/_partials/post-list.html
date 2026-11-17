@@ -1,0 +1,16 @@
+{{/* Lista de posts agrupada por ano. Recebe uma coleção de páginas como contexto. */}}
+{{ range .GroupByDate "2006" }}
+  <section class="year-group">
+    <h2 class="year">{{ .Key }}</h2>
+    <ul class="post-list">
+      {{ range .Pages }}
+        <li>
+          <a class="post-link" href="{{ .RelPermalink }}">
+            <span class="post-link-title">{{ .LinkTitle }}</span>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format "02 Jan" }}</time>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </section>
+{{ end }}

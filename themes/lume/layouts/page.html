@@ -1,0 +1,29 @@
+{{ define "main" }}
+  <article class="post">
+    <header class="post-header">
+      <h1>{{ .Title }}</h1>
+      {{ if eq .Section "posts" }}{{ partial "post-meta.html" . }}{{ end }}
+    </header>
+
+    {{ if and (.Params.toc | default site.Params.toc) (gt (len .TableOfContents) 32) }}
+      <details class="toc" open>
+        <summary>Sumário</summary>
+        {{ .TableOfContents }}
+      </details>
+    {{ end }}
+
+    <div class="prose">
+      {{ .Content }}
+    </div>
+
+    <footer class="post-footer">
+      {{ partial "tags.html" . }}
+      {{ if eq .Section "posts" }}
+        <nav class="post-nav" aria-label="Navegação entre posts">
+          {{ with .NextInSection }}<a class="prev" href="{{ .RelPermalink }}"><span>← Mais recente</span>{{ .LinkTitle }}</a>{{ end }}
+          {{ with .PrevInSection }}<a class="next" href="{{ .RelPermalink }}"><span>Mais antigo →</span>{{ .LinkTitle }}</a>{{ end }}
+        </nav>
+      {{ end }}
+    </footer>
+  </article>
+{{ end }}

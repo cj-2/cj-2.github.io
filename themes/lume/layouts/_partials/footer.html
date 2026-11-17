@@ -1,0 +1,9 @@
+<footer class="site-footer">
+  <div class="container">
+    <p>
+      © {{ now.Year }} {{ with site.Params.author }}{{ . }}{{ else }}{{ site.Title }}{{ end }}
+      · Feito com <a href="https://gohugo.io/">Hugo</a>
+      {{ with site.Home.OutputFormats.Get "rss" }}· <a href="{{ .RelPermalink }}">RSS</a>{{ end }}
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,30 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+{{ with site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{ with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{ end }}
+
+{{/* Aplica o tema salvo (ou o do sistema) antes de pintar a página, evitando "piscar" */}}
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("tema");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+
+{{ $css := resources.Get "css/main.css" }}
+{{ $chroma := resources.Get "css/chroma.css" }}
+{{ $styles := slice $css $chroma | resources.Concat "css/estilo.css" }}
+{{ if hugo.IsProduction }}
+  {{ $styles = $styles | minify | fingerprint }}
+{{ end }}
+<link rel="stylesheet" href="{{ $styles.RelPermalink }}"{{ with $styles.Data.Integrity }} integrity="{{ . }}"{{ end }}>
+
+{{ $js := resources.Get "js/tema.js" | js.Build (dict "minify" hugo.IsProduction) }}
+<script src="{{ $js.RelPermalink }}" defer></script>

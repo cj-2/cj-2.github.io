@@ -1,0 +1,7 @@
+{{/* Data, tempo de leitura e tags de uma página. Recebe a página como contexto. */}}
+<p class="post-meta">
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+  <span aria-hidden="true">·</span>
+  <span>{{ .ReadingTime }} min de leitura</span>
+  {{ if .Draft }}<span class="badge">rascunho</span>{{ end }}
+</p>
