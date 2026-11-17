@@ -1,17 +1,18 @@
 # O baseURL é substituído automaticamente pelo GitHub Actions no deploy.
 baseURL = 'https://example.org/'
 locale = 'pt-br'
-title = 'Meu Blog'
+title = 'cj-2: Blog'
 theme = 'lume'
 enableRobotsTXT = true
 
 [params]
-  description = 'Meu blog pessoal feito com Hugo'
-  author = 'Seu Nome'
-  homeTitle = 'Olá! 👋'
-  homeIntro = 'Bem-vindo ao meu blog. Aqui escrevo sobre o que ando aprendendo.'
+  description = 'Blog pessoal, de estudos e da minha vida, não vamos nos resumir!'
+  author = 'cj-2: Carlos Júnior'
+  homeTitle = 'cj-2: Blog on Fire🔥'
+  homeIntro = '👺: Meus textos, estudos e reflexões sobre a vida. Não vou me resumir a trabalho aqui, não sou sou um inseto! \n Conhecimento é poder.'
   homePosts = 10   # quantos posts aparecem na página inicial
   toc = true       # sumário nos posts (pode desligar por post com `toc: false`)
+  terminalPrompt = 'cj-2@blog'
 
 [menu]
   [[menu.main]]
