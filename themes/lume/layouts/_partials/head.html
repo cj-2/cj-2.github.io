@@ -16,8 +16,11 @@
     try {
       var cor = localStorage.getItem("tema");
       if (cor === "light" || cor === "dark") root.dataset.theme = cor;
-      if (localStorage.getItem("estilo") === "terminal") root.dataset.style = "terminal";
-    } catch (e) {}
+      // O padrão é o terminal: só vira "normal" se o visitante escolheu isso.
+      if (localStorage.getItem("estilo") !== "normal") root.dataset.style = "terminal";
+    } catch (e) {
+      root.dataset.style = "terminal";
+    }
   })();
 </script>
 

@@ -1,6 +1,7 @@
 // Controles do menu: estilo (normal/terminal) e cor (sistema/claro/escuro).
 // O estado fica em atributos do <html>:
-//   data-style="terminal"  -> estilo terminal (sem o atributo = normal)
+//   data-style="terminal"  -> estilo terminal (padrão; o script do <head> o aplica,
+//                             a menos que o visitante tenha escolhido "normal")
 //   data-theme="light"|"dark" -> cor forçada (sem o atributo = segue o sistema)
 // e é salvo no localStorage para valer nas próximas páginas.
 
@@ -59,7 +60,8 @@ document.querySelectorAll(".style-toggle").forEach((btn) => {
   btn.addEventListener("click", () => {
     if (estiloAtual() === "terminal") delete root.dataset.style;
     else root.dataset.style = "terminal";
-    salvar("estilo", estiloAtual() === "terminal" ? "terminal" : null);
+    // Terminal é o padrão, então só a escolha "normal" precisa ser lembrada.
+    salvar("estilo", estiloAtual() === "normal" ? "normal" : null);
     atualizarBotaoEstilo();
   });
 });

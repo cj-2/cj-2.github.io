@@ -139,7 +139,7 @@ Todo o estado visual fica em dois atributos da tag `<html>`:
 
 | Atributo | Valores | Sem o atributo |
 |----------|---------|----------------|
-| `data-style` | `terminal` | estilo normal |
+| `data-style` | `terminal` | estilo normal (mas o script do `<head>` aplica `terminal` por padrão) |
 | `data-theme` | `light`, `dark` | segue a cor do sistema |
 
 O CSS reage a esses atributos, e o JavaScript só liga e desliga os atributos. Separar
@@ -172,6 +172,11 @@ estilo **antes** da página ser desenhada. Sem isso, quem escolheu "escuro" ou "
 veria a página piscar no visual errado a cada carregamento.
 
 ### Estilo terminal
+
+**É o estilo padrão.** O script do `<head>` põe `data-style="terminal"` em quem nunca
+escolheu nada. Só quem clicou no botão para voltar ao normal fica com o normal: nesse
+caso o `localStorage` guarda `estilo = normal`. (Sem JavaScript o site aparece no estilo
+normal, porque é o que o CSS faz quando o atributo não existe.)
 
 Fica todo em `assets/css/terminal.css`, com regras que começam por
 `[data-style="terminal"]`. Ele tem as próprias variáveis de cor (claro e escuro) e troca

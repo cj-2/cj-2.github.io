@@ -5,6 +5,21 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-17 — Terminal como estilo padrão
+
+**O quê:** quem abre o blog pela primeira vez agora vê o estilo terminal; o botão do menu
+leva ao normal.
+
+**Como:** antes só guardávamos `estilo = terminal` no `localStorage` (ausente = normal).
+Com o padrão invertido, ausente passou a significar terminal e o que se guarda é
+`estilo = normal`. Mudou o script do `<head>` (`head.html`) e o clique em `tema.js`.
+
+**Aprendizado:** ao inverter um padrão, a "ausência de valor" muda de significado. Quem
+já tinha salvo `terminal` continua no terminal; quem estava no normal sem ter salvo nada
+passa a ver o terminal uma vez (e a escolha dele vale dali em diante).
+
+---
+
 ## 2026-11-17 — Estilo "terminal" e cor "sistema"
 
 **O quê:** o tema ganhou um segundo estilo visual, **terminal** (fonte monoespaçada,
