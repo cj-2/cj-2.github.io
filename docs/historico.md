@@ -5,6 +5,32 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-17 — Estilo "terminal" e cor "sistema"
+
+**O quê:** o tema ganhou um segundo estilo visual, **terminal** (fonte monoespaçada,
+janela com barra de título, linhas de prompt como `$ cat post.md`, títulos com `#`,
+cursor piscando). O botão de cor passou a ter três estados: **sistema → claro → escuro**.
+Os dois controles ficam no menu e funcionam juntos (6 combinações).
+
+**Como funciona:**
+- Dois atributos no `<html>`: `data-style="terminal"` (sem ele = normal) e
+  `data-theme="light|dark"` (sem ele = segue o sistema). Ficam salvos no `localStorage`
+  (`estilo` e `tema`) e são aplicados por um script no `<head>` antes de pintar a página.
+- `assets/css/terminal.css` tem tudo do estilo terminal e é concatenado **depois** do
+  `main.css`, porque com especificidade igual a última regra ganha.
+- `_partials/prompt.html` gera as linhas de prompt; elas existem no HTML sempre, mas o
+  CSS só as mostra no terminal.
+
+**Ajustes feitos nos testes:** a lista de posts no terminal mostrava a data antes das
+permissões (corrigido com `order` no flexbox para imitar o `ls -l`), e a 404 mostrava o
+caminho `~/404.html` no prompt (trocado por `~`).
+
+**Aprendizado:** no Go template, `cond` avalia os dois lados antes de escolher, então
+`cond (ne .File nil) .File.ContentBaseName "x"` quebra numa página sem arquivo. Use
+`with` quando um dos lados pode não existir.
+
+---
+
 ## 2026-11-17 — AGENTS.md e documentação de aprendizado
 
 **O quê:** criados `AGENTS.md` (regras para agentes de IA), `CLAUDE.md` e esta pasta

@@ -1,17 +1,68 @@
-// Botão de alternar tema claro/escuro. Salva a escolha no navegador.
+// Controles do menu: estilo (normal/terminal) e cor (sistema/claro/escuro).
+// O estado fica em atributos do <html>:
+//   data-style="terminal"  -> estilo terminal (sem o atributo = normal)
+//   data-theme="light"|"dark" -> cor forçada (sem o atributo = segue o sistema)
+// e é salvo no localStorage para valer nas próximas páginas.
+
 const root = document.documentElement;
 
-function temaAtual() {
-  if (root.dataset.theme) return root.dataset.theme;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+function salvar(chave, valor) {
+  try {
+    if (valor) localStorage.setItem(chave, valor);
+    else localStorage.removeItem(chave);
+  } catch (e) {}
+}
+
+// ---------- Cor ----------
+const CORES = ["system", "light", "dark"];
+const NOME_COR = { system: "segue o sistema", light: "claro", dark: "escuro" };
+
+function corAtual() {
+  return root.dataset.theme || "system";
+}
+
+function atualizarBotaoCor() {
+  const atual = corAtual();
+  const proxima = CORES[(CORES.indexOf(atual) + 1) % CORES.length];
+  const texto = `Cor: ${NOME_COR[atual]} (clique para ${NOME_COR[proxima]})`;
+  document.querySelectorAll(".theme-toggle").forEach((btn) => {
+    btn.setAttribute("aria-label", texto);
+    btn.title = texto;
+  });
 }
 
 document.querySelectorAll(".theme-toggle").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const novo = temaAtual() === "dark" ? "light" : "dark";
-    root.dataset.theme = novo;
-    try {
-      localStorage.setItem("tema", novo);
-    } catch (e) {}
+    const proxima = CORES[(CORES.indexOf(corAtual()) + 1) % CORES.length];
+    if (proxima === "system") delete root.dataset.theme;
+    else root.dataset.theme = proxima;
+    salvar("tema", proxima === "system" ? null : proxima);
+    atualizarBotaoCor();
   });
 });
+
+// ---------- Estilo ----------
+function estiloAtual() {
+  return root.dataset.style === "terminal" ? "terminal" : "normal";
+}
+
+function atualizarBotaoEstilo() {
+  const destino = estiloAtual() === "terminal" ? "normal" : "terminal";
+  const texto = `Mudar para o estilo ${destino}`;
+  document.querySelectorAll(".style-toggle").forEach((btn) => {
+    btn.setAttribute("aria-label", texto);
+    btn.title = texto;
+  });
+}
+
+document.querySelectorAll(".style-toggle").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    if (estiloAtual() === "terminal") delete root.dataset.style;
+    else root.dataset.style = "terminal";
+    salvar("estilo", estiloAtual() === "terminal" ? "terminal" : null);
+    atualizarBotaoEstilo();
+  });
+});
+
+atualizarBotaoCor();
+atualizarBotaoEstilo();

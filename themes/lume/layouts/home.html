@@ -1,4 +1,5 @@
 {{ define "main" }}
+  {{ partial "prompt.html" (dict "page" . "cmd" "cat bem-vindo.txt") }}
   <section class="intro">
     <h1>{{ with site.Params.homeTitle }}{{ . }}{{ else }}{{ site.Title }}{{ end }}</h1>
     {{ with site.Params.homeIntro }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
@@ -9,6 +10,7 @@
   {{ $recentes := first (site.Params.homePosts | default 10) $posts }}
 
   <section class="recent">
+    {{ partial "prompt.html" (dict "page" . "cmd" "ls -t posts/ | head") }}
     <h2 class="section-title">Posts recentes</h2>
     {{ range $recentes }}
       <article class="post-card">

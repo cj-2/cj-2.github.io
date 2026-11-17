@@ -1,4 +1,5 @@
 {{ define "main" }}
+  {{ partial "prompt.html" (dict "page" . "cmd" (printf "grep -l \"#%s\" ../../posts/*" .Title)) }}
   <header class="page-header">
     <p class="eyebrow">Tag</p>
     <h1>#{{ .Title }}</h1>

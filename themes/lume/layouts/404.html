@@ -1,5 +1,7 @@
 {{ define "main" }}
   <section class="not-found">
+    {{ partial "prompt.html" (dict "page" site.Home "cmd" "cd ./essa-pagina") }}
+    <p class="term-only term-error">bash: cd: ./essa-pagina: Arquivo ou diretório inexistente</p>
     <h1>404</h1>
     <p>Esta página não existe (ou mudou de lugar).</p>
     <p><a href="{{ site.Home.RelPermalink }}">← Voltar para o início</a></p>

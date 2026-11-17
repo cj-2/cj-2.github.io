@@ -56,6 +56,8 @@ disponibiliza nos templates como `site.Params.nome`.
   homeIntro = '...'     # texto abaixo do título (aceita Markdown)
   homePosts = 10        # quantos posts na página inicial
   toc = true            # sumário nos posts
+  # terminalPrompt = 'voce@blog'  # (opcional) texto do prompt no estilo terminal;
+                                  # o padrão é 'visitante@blog'
 ```
 
 Exemplo de uso no template (`home.html`):

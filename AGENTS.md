@@ -23,9 +23,10 @@ content/posts/            posts em Markdown
 themes/lume/              tema próprio
   layouts/                templates HTML (Go templates)
   layouts/_partials/      pedaços reutilizáveis (head, header, footer, listas...)
-  assets/css/main.css     estilos (variáveis de cor no topo, claro e escuro)
+  assets/css/main.css     estilo normal (variáveis de cor no topo, claro e escuro)
+  assets/css/terminal.css estilo terminal (concatenado DEPOIS do main.css)
   assets/css/chroma.css   cores de destaque de código (gerado, ver docs/05-tema-lume.md)
-  assets/js/tema.js       botão de modo claro/escuro
+  assets/js/tema.js       botões de estilo (normal/terminal) e cor (sistema/claro/escuro)
 .github/workflows/hugo.yaml  build + deploy no GitHub Pages
 docs/                     documentação de aprendizado (NÃO é publicada no site)
 ```
@@ -45,8 +46,15 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
 ## Convenções
 
 - Templates: mantenha a lógica nos partials; `baseof.html` só define o esqueleto.
-- CSS: use as variáveis de `:root` em vez de cores fixas. Toda cor nova precisa de versão
-  clara **e** escura (`@media (prefers-color-scheme: dark)` e `:root[data-theme="dark"]`).
+- CSS: use as variáveis de `:root` em vez de cores fixas. O tema tem 2 estilos × 3 cores:
+  - estilo: `data-style="terminal"` no `<html>` (sem o atributo = normal);
+  - cor: `data-theme="light|dark"` (sem o atributo = segue o sistema).
+
+  Toda variável de cor nova precisa existir nos **quatro** blocos: normal claro e escuro
+  (`main.css`), terminal claro e escuro (`terminal.css`). Os blocos escuros têm sempre
+  duas versões: `@media (prefers-color-scheme: dark)` e `[data-theme="dark"]`.
+- Qualquer mudança visual deve ser testada nas 6 combinações (os dois estilos com
+  sistema, claro e escuro).
 - Não adicione dependências (npm, frameworks CSS, temas externos) sem pedir.
 - Posts: front matter em YAML com `title`, `date`, `draft`, `tags`, `description`.
 

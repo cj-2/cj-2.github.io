@@ -1,0 +1,6 @@
+{{/* Linha de prompt exibida só no estilo terminal (ex.: "visitante@blog:~/posts$ ls").
+     Uso: {{ partial "prompt.html" (dict "page" . "cmd" "ls") }} */}}
+{{ $path := .page.RelPermalink | strings.TrimSuffix "/" }}
+<p class="term-prompt" aria-hidden="true">
+  <span class="term-user">{{ site.Params.terminalPrompt | default "visitante@blog" }}</span>:<span class="term-path">~{{ $path }}</span>$ <span class="term-cmd">{{ .cmd }}</span>
+</p>

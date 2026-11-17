@@ -1,5 +1,6 @@
 /* ==========================================================================
    Tema "lume": minimalista, focado em leitura
+   Este arquivo é o estilo "normal". O estilo terminal fica em terminal.css.
    ========================================================================== */
 
 /* ---- Cores (claro) ---- */
@@ -144,25 +145,41 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
 .menu a:hover,
 .menu a[aria-current="page"] { color: var(--text); }
 
-.theme-toggle {
+.menu-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+.theme-toggle,
+.style-toggle {
   display: grid;
   place-items: center;
   width: 2rem;
   height: 2rem;
+  padding: 0;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
 }
-.theme-toggle:hover { color: var(--text); background: var(--surface); }
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
-:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
-  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
-}
+.theme-toggle:hover,
+.style-toggle:hover { color: var(--text); background: var(--surface); }
+
+/* Botão de cor: o ícone mostra a cor ATUAL (sistema, claro ou escuro) */
+.theme-toggle svg { display: none; }
+:root:not([data-theme]) .theme-toggle .icon-system,
+:root[data-theme="light"] .theme-toggle .icon-sun,
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+/* Botão de estilo: o ícone mostra o estilo para o qual o clique LEVA */
+.style-toggle .only-terminal { display: none; }
+:root[data-style="terminal"] .style-toggle .only-normal { display: none; }
+:root[data-style="terminal"] .style-toggle .only-terminal { display: block; }
+
+/* Elementos que só existem no estilo terminal */
+.term-bar,
+.term-prompt,
+.term-only { display: none; }
 
 /* ---- Home ---- */
 .intro { margin-bottom: 3rem; }

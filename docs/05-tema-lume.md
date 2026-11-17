@@ -3,6 +3,10 @@
 O lume foi feito do zero para este blog. Objetivo: visual minimalista, foco em leitura,
 modo claro/escuro e zero dependências externas.
 
+Ele tem **dois estilos** (normal e terminal) e **três opções de cor** (sistema, claro e
+escuro). Os dois botões do menu controlam isso de forma independente, o que dá 6
+combinações.
+
 ```
 themes/lume/
 ├── hugo.toml                 valores padrão dos params
@@ -16,15 +20,17 @@ themes/lume/
 │   ├── 404.html              página não encontrada
 │   └── _partials/
 │       ├── head.html         <head>: meta tags, CSS, JS
-│       ├── header.html       cabeçalho com menu e botão de tema
+│       ├── header.html       cabeçalho com menu e botões de estilo e cor
 │       ├── footer.html       rodapé
+│       ├── prompt.html       linha de prompt do estilo terminal
 │       ├── post-meta.html    data + tempo de leitura
 │       ├── post-list.html    lista de posts agrupada por ano
 │       └── tags.html         lista de tags de um post
 └── assets/
-    ├── css/main.css          estilos
+    ├── css/main.css          estilo normal (e a base de tudo)
+    ├── css/terminal.css      estilo terminal
     ├── css/chroma.css        cores do destaque de código
-    └── js/tema.js            botão claro/escuro
+    └── js/tema.js            botões de estilo e de cor
 ```
 
 ## Go templates em 5 minutos
@@ -109,8 +115,9 @@ Você pode passar outro contexto: em `section.html`,
 
 ```go-html-template
 {{ $css := resources.Get "css/main.css" }}
+{{ $terminal := resources.Get "css/terminal.css" }}
 {{ $chroma := resources.Get "css/chroma.css" }}
-{{ $styles := slice $css $chroma | resources.Concat "css/estilo.css" }}
+{{ $styles := slice $css $terminal $chroma | resources.Concat "css/estilo.css" }}
 {{ if hugo.IsProduction }}
   {{ $styles = $styles | minify | fingerprint }}
 {{ end }}
@@ -118,16 +125,27 @@ Você pode passar outro contexto: em `section.html`,
 ```
 
 1. `resources.Get` lê arquivos de `assets/`.
-2. `resources.Concat` junta os dois CSS em um (uma requisição só).
+2. `resources.Concat` junta os três CSS em um (uma requisição só). A ordem da lista é a
+   ordem no arquivo final, e isso importa: veja "Estilo terminal" abaixo.
 3. Em produção, `minify` remove espaços e `fingerprint` adiciona um hash no nome
    (`estilo.a1b2c3.css`). Quando o CSS muda, o nome muda e o navegador baixa a versão
    nova em vez de usar a do cache.
 
 O JS passa por `js.Build` (esbuild embutido no Hugo), que também minifica em produção.
 
-## Modo claro/escuro
+## Estilo e cor: dois atributos no `<html>`
 
-Três peças trabalham juntas:
+Todo o estado visual fica em dois atributos da tag `<html>`:
+
+| Atributo | Valores | Sem o atributo |
+|----------|---------|----------------|
+| `data-style` | `terminal` | estilo normal |
+| `data-theme` | `light`, `dark` | segue a cor do sistema |
+
+O CSS reage a esses atributos, e o JavaScript só liga e desliga os atributos. Separar
+assim deixa cada parte simples.
+
+### Cor: sistema, claro ou escuro
 
 **1. Variáveis CSS** (`main.css`). Todas as cores são variáveis:
 
@@ -140,15 +158,52 @@ Três peças trabalham juntas:
 :root[data-theme="dark"] { --bg: #161513; ... }         /* escuro forçado pelo botão */
 ```
 
-O resto do CSS usa `var(--bg)`, `var(--text)` etc., então trocar o tema é só trocar as
-variáveis.
+O resto do CSS usa `var(--bg)`, `var(--text)` etc., então trocar a cor é só trocar as
+variáveis. Repare que **"sistema" não precisa de regra própria**: é simplesmente não ter
+`data-theme`, e aí quem decide é o `@media (prefers-color-scheme: dark)`.
 
-**2. Botão** (`tema.js`). Ao clicar, coloca `data-theme="dark"` ou `"light"` no `<html>`
-e salva a escolha no `localStorage`.
+**2. Botão** (`tema.js`). Cada clique avança no ciclo sistema → claro → escuro →
+sistema. Em "sistema" o atributo é removido (`delete root.dataset.theme`) e a chave
+`tema` sai do `localStorage`. O ícone do botão mostra a cor atual (monitor, sol ou lua),
+e o texto de ajuda (`title`) diz qual é a próxima.
 
-**3. Script no `<head>`**. Um script pequeno *inline* lê o `localStorage` e aplica o tema
-**antes** da página ser desenhada. Sem isso, quem escolheu "escuro" veria a página piscar
-em branco a cada carregamento.
+**3. Script no `<head>`**. Um script pequeno *inline* lê o `localStorage` e aplica cor e
+estilo **antes** da página ser desenhada. Sem isso, quem escolheu "escuro" ou "terminal"
+veria a página piscar no visual errado a cada carregamento.
+
+### Estilo terminal
+
+Fica todo em `assets/css/terminal.css`, com regras que começam por
+`[data-style="terminal"]`. Ele tem as próprias variáveis de cor (claro e escuro) e troca
+as fontes: `--font-sans` e `--font-serif` passam a valer `var(--font-mono)`, então o site
+inteiro vira monoespaçado sem mexer em cada regra.
+
+**Por que `terminal.css` vem depois do `main.css`:** quando duas regras têm a mesma
+*especificidade*, ganha a que aparece por último. `:root[data-style="terminal"]` (cores
+claras do terminal) tem a mesma especificidade que `:root[data-theme="dark"]` (cores
+escuras do estilo normal). Se o terminal viesse antes, o estilo normal "vazaria" por cima
+dele. As cores escuras do terminal usam dois atributos
+(`:root[data-style="terminal"][data-theme="dark"]`), têm especificidade maior e ganham
+sempre.
+
+**Elementos que só aparecem no terminal:**
+- A **janela**: `baseof.html` envolve o conteúdo em `.term-window`, com uma `.term-bar`
+  (as três bolinhas e o caminho da página). No estilo normal a barra fica com
+  `display: none` e a janela não tem moldura, então é como se não existisse.
+- As **linhas de prompt**: `_partials/prompt.html` gera `visitante@blog:~/posts$ ls -l`.
+  Cada template chama o partial com um comando que combina com a página:
+  ```go-html-template
+  {{ partial "prompt.html" (dict "page" . "cmd" "ls -l") }}
+  ```
+  `dict` cria um "dicionário" para passar **mais de um valor** a um partial. Dentro dele,
+  os valores ficam em `.page` e `.cmd`.
+- O texto do prompt pode ser trocado no `hugo.toml` com `terminalPrompt = 'voce@blog'`
+  dentro de `[params]`.
+
+**Enfeites feitos só com CSS** (pseudo-elementos `::before` e `::after`, sem mexer no HTML):
+`# ` antes dos títulos, `./` antes dos links do menu, o cursor piscando depois do nome do
+site e as permissões `-rw-r--r--` na lista de posts. O cursor para de piscar para quem
+ativou "reduzir movimento" no sistema (`prefers-reduced-motion`).
 
 ## Destaque de código (`chroma.css`)
 

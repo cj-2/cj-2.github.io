@@ -8,19 +8,24 @@
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{ end }}
 
-{{/* Aplica o tema salvo (ou o do sistema) antes de pintar a página, evitando "piscar" */}}
+{{/* Aplica estilo (normal/terminal) e cor (claro/escuro; sem valor = sistema) salvos
+     ANTES de pintar a página, para não "piscar" no estilo errado */}}
 <script>
   (function () {
+    var root = document.documentElement;
     try {
-      var t = localStorage.getItem("tema");
-      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      var cor = localStorage.getItem("tema");
+      if (cor === "light" || cor === "dark") root.dataset.theme = cor;
+      if (localStorage.getItem("estilo") === "terminal") root.dataset.style = "terminal";
     } catch (e) {}
   })();
 </script>
 
 {{ $css := resources.Get "css/main.css" }}
+{{ $terminal := resources.Get "css/terminal.css" }}
 {{ $chroma := resources.Get "css/chroma.css" }}
-{{ $styles := slice $css $chroma | resources.Concat "css/estilo.css" }}
+{{/* A ordem importa: terminal.css precisa vir depois do main.css */}}
+{{ $styles := slice $css $terminal $chroma | resources.Concat "css/estilo.css" }}
 {{ if hugo.IsProduction }}
   {{ $styles = $styles | minify | fingerprint }}
 {{ end }}

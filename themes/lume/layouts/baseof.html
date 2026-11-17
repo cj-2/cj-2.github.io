@@ -7,7 +7,17 @@
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
   {{ partial "header.html" . }}
   <main id="conteudo" class="container">
-    {{ block "main" . }}{{ end }}
+    {{/* No estilo normal a "janela" é invisível; no terminal ganha moldura e barra de título */}}
+    <div class="term-window">
+      <div class="term-bar" aria-hidden="true">
+        <span class="term-dots"><i></i><i></i><i></i></span>
+        {{ $caminho := cond (eq .Kind "404") "" (.RelPermalink | strings.TrimSuffix "/") }}
+        <span class="term-title">{{ site.Params.terminalPrompt | default "visitante@blog" }}: ~{{ $caminho }}</span>
+      </div>
+      <div class="term-body">
+        {{ block "main" . }}{{ end }}
+      </div>
+    </div>
   </main>
   {{ partial "footer.html" . }}
 </body>
