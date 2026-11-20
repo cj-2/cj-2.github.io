@@ -27,6 +27,27 @@ Mas gerar por gerar não faz muita diferença para o que sei, e de certa forma s
 
 A abstração é importante, se toda vez que fosse necessário criar um sistema tivéssemos que implementar até a linguagem de máquina, era melhor continuar usando o papel e a caneta para controlar as vendas do seu cliente de bairro.
 
-### Me ensina Pai!
+### Geração e aprendizado contínuo
 
-Não consigo ver vantagem hoje em gerar qualquer tipo de programa sem pedir que também seja gerado uma pasta "docs" e uma regra direta para o agente de ia "escreva essa documentação para que eu consiga aprender junto com a evolução do projeto, não me deixe para traz meu bom...", e caso seja curioso, até mesmo esse blog gerado em Hugo, tem explicações tomadas tanto nas configurações, quanto da geração dos temas. Ex:
+Não consigo ver vantagem em gerar qualquer tipo de programa sem pedir que também seja gerado um documentação explicativa do seu funcionamento.
+
+ Sempre adiciono uma regra direta para o agente de IA "escreva uma documentação para que eu consiga aprender junto com a evolução do projeto, ~~não me deixe para traz meu bom...~~". Não se perde nada com isso, certo?
+
+Caso seja curioso, esse blog gerado em Hugo também tem sua própria documentação com as decisões tomadas tanto quanto referente a geração dos temas e configurações. Ex:
+
+```
+docs:
+    01-visao-geral.md
+    02-estrutura-de-pastas.md
+    03-configuracao.md
+    04-conteudo.md
+    05-tema-lume.md
+    06-deploy.md
+    07-comandos.md
+    historico.md
+    README.md
+```
+
+Link: https://github.com/cj-2/cj-2.github.io/tree/main/docs
+
+Mas já digo, ~~novamente tentando não ser um hipócrita,~~ que  eu não volto de forma instantânea a cada projeto que crio e leio tudo. Faço isso com o tempo! 
