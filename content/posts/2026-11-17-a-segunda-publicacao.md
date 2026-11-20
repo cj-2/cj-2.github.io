@@ -1,10 +1,12 @@
 ---
-title: "A segunda publicação"
+title: A segunda publicação
 date: 2026-11-17
-draft: false
-tags: ["ia", "blog"]
-description: "O segundo post do blog."
-slug: "o-segundo-post"
+draft: true
+tags:
+    - ia
+    - blog
+description: O segundo post do blog.
+slug: segunda-publicacao
 ---
 
 Olá, mundo! Este não é o primeiro post do blog, esse que foi feito com [Hugo](https://gohugo.io/) e hospedado no GitHub Pages por ser de graça, o que me deixa feliz.
