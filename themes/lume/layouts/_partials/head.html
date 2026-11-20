@@ -8,7 +8,7 @@
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{ end }}
 
-{{/* Aplica estilo (normal/terminal) e cor (claro/escuro; sem valor = sistema) salvos
+{{/* Aplica estilo (normal/terminal/retrô) e cor (claro/escuro; sem valor = sistema) salvos
      ANTES de pintar a página, para não "piscar" no estilo errado */}}
 <script>
   (function () {
@@ -18,8 +18,10 @@
       if (cor === "light" || cor === "dark") root.dataset.theme = cor;
       var largura = localStorage.getItem("largura");
       if (largura === "narrow" || largura === "full") root.dataset.width = largura;
-      // O padrão é o terminal: só vira "normal" se o visitante escolheu isso.
-      if (localStorage.getItem("estilo") !== "normal") root.dataset.style = "terminal";
+      // O padrão é o terminal. "normal" (sem atributo) e "retro" só se o visitante escolheu.
+      var estilo = localStorage.getItem("estilo");
+      if (estilo === "retro") root.dataset.style = "retro";
+      else if (estilo !== "normal") root.dataset.style = "terminal";
     } catch (e) {
       root.dataset.style = "terminal";
     }
@@ -28,9 +30,10 @@
 
 {{ $css := resources.Get "css/main.css" }}
 {{ $terminal := resources.Get "css/terminal.css" }}
+{{ $retro := resources.Get "css/retro.css" }}
 {{ $chroma := resources.Get "css/chroma.css" }}
-{{/* A ordem importa: terminal.css precisa vir depois do main.css */}}
-{{ $styles := slice $css $terminal $chroma | resources.Concat "css/estilo.css" }}
+{{/* A ordem importa: terminal.css e retro.css precisam vir depois do main.css */}}
+{{ $styles := slice $css $terminal $retro $chroma | resources.Concat "css/estilo.css" }}
 {{ if hugo.IsProduction }}
   {{ $styles = $styles | minify | fingerprint }}
 {{ end }}

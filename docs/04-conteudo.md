@@ -78,7 +78,7 @@ Isso foi ~~removido~~.           → riscado (já existia)
 ```
 
 `==` e `++` só funcionam no Hugo: em outros lugares (GitHub, por exemplo) os sinais
-aparecem literais. As cores do destaque vêm da variável `--mark-bg`, que existe nos quatro
+aparecem literais. As cores do destaque vêm da variável `--mark-bg`, que existe nos seis
 blocos de cor do tema.
 
 ## Spoiler (texto censurado)

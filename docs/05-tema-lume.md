@@ -3,8 +3,8 @@
 O lume foi feito do zero para este blog. Objetivo: visual minimalista, foco em leitura,
 modo claro/escuro e zero dependências externas.
 
-Ele tem **dois estilos** (normal e terminal) e **três opções de cor** (sistema, claro e
-escuro). Os dois botões do menu controlam isso de forma independente, o que dá 6
+Ele tem **três estilos** (normal, terminal e retrô) e **três opções de cor** (sistema, claro e
+escuro). Os botões do menu controlam isso de forma independente, o que dá 9
 combinações.
 
 ```
@@ -31,6 +31,7 @@ themes/lume/
 └── assets/
     ├── css/main.css          estilo normal (e a base de tudo)
     ├── css/terminal.css      estilo terminal
+    ├── css/retro.css         estilo retrô (site antigo)
     ├── css/chroma.css        cores do destaque de código
     └── js/tema.js            botões de estilo e de cor
 ```
@@ -118,8 +119,9 @@ Você pode passar outro contexto: em `section.html`,
 ```go-html-template
 {{ $css := resources.Get "css/main.css" }}
 {{ $terminal := resources.Get "css/terminal.css" }}
+{{ $retro := resources.Get "css/retro.css" }}
 {{ $chroma := resources.Get "css/chroma.css" }}
-{{ $styles := slice $css $terminal $chroma | resources.Concat "css/estilo.css" }}
+{{ $styles := slice $css $terminal $retro $chroma | resources.Concat "css/estilo.css" }}
 {{ if hugo.IsProduction }}
   {{ $styles = $styles | minify | fingerprint }}
 {{ end }}
@@ -141,7 +143,7 @@ Todo o estado visual fica em dois atributos da tag `<html>`:
 
 | Atributo | Valores | Sem o atributo |
 |----------|---------|----------------|
-| `data-style` | `terminal` | estilo normal (mas o script do `<head>` aplica `terminal` por padrão) |
+| `data-style` | `terminal`, `retro` | estilo normal (mas o script do `<head>` aplica `terminal` por padrão) |
 | `data-theme` | `light`, `dark` | segue a cor do sistema |
 
 O CSS reage a esses atributos, e o JavaScript só liga e desliga os atributos. Separar
@@ -235,6 +237,35 @@ e `<figure>` ali é HTML inválido. No terminal a legenda ganha um `# ` na frent
 
 Referência: <https://gohugo.io/render-hooks/images/> e
 <https://gohugo.io/methods/resource/resize/>
+
+### Estilo retrô (site antigo)
+
+Fica em `assets/css/retro.css`, com regras que começam por `[data-style="retro"]`. Imita
+uma página da internet dos anos 90 usando **só CSS** (sem imagens nem fontes externas):
+
+- fundo quadriculado (claro, `repeating-conic-gradient`) ou estrelado (escuro,
+  `radial-gradient`), com a página numa "janela" branca de borda em relevo;
+- fontes de época (Times New Roman no texto, Verdana nos títulos, Lucida Console no código: o Courier New, mais fiel à época, é fino
+  demais para ler código);
+- links azuis sublinhados que viram roxos depois de visitados (`a:visited`);
+- botões em relevo estilo Windows 95: a borda `outset` parece saltada e a `inset`, apertada
+  (aqui feita com `border-color` em quatro lados: claro em cima/esquerda, escuro embaixo/
+  direita; o inverso aperta o botão);
+- a `term-window` do terminal é reaproveitada como janela do Windows 95, com barra de título
+  azul e os botões `_ □ ×` desenhados com `::after`;
+- linha horizontal em arco-íris, rodapé "Melhor visualizado em qualquer navegador" e o
+  "NOVO!" piscando no post mais recente da home (a animação para para quem ativou "reduzir
+  movimento").
+
+As cores ficam em variáveis (`--retro-link`, `--retro-btn`, `--retro-hi`, `--retro-lo`...)
+definidas nos três blocos de sempre: claro, escuro do sistema (`@media`) e `data-theme="dark"`.
+A variável `--retro-on-accent` existe porque o texto do selo "rascunho" precisa ser branco
+sobre vermelho (claro) mas preto sobre laranja (escuro): contraste medido, não chutado.
+
+**Ciclo do botão de estilo:** normal → terminal → retrô → normal. O ícone mostra para qual
+estilo o clique leva (`.go-terminal`, `.go-retro`, `.go-normal` no `header.html`). No
+`localStorage`, `estilo` guarda `normal` ou `retro`; o terminal (padrão) é a *ausência* do
+valor.
 
 ## Destaque de código (`chroma.css`)
 

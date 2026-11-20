@@ -5,6 +5,28 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-20 — Terceiro estilo: retrô (site da internet antiga)
+
+**O quê:** novo estilo visual **retrô**, com cara de página dos anos 90: fundo
+quadriculado/estrelado, janela estilo Windows 95, botões em relevo, links azuis e roxos,
+linha arco-íris e "NOVO!" piscando. O botão de estilo agora percorre **normal → terminal →
+retrô**; ficam 3 estilos × 3 cores = 9 combinações.
+
+**Como:** `assets/css/retro.css` (concatenado depois do `terminal.css`), `data-style="retro"`,
+o script do `<head>` e o `tema.js` passaram a aceitar o valor `retro`, e o `header.html`
+ganhou um ícone de globo. Nada de HTML novo nas páginas: o retrô reaproveita a
+`term-window` como janela do Windows 95.
+
+**Aprendizado:**
+- Cada estilo novo precisa dos blocos de cor claro e escuro (agora **seis**), e a ordem de
+  concatenação do CSS importa quando a especificidade empata.
+- Contraste não se adivinha: o selo "rascunho" ficou com 2,1:1 (branco sobre laranja) no
+  escuro até medir; trocar o texto para preto subiu para 9,9:1.
+- Um `sed`/script com várias linhas falhou porque o `head.html` usa quebra de linha CRLF
+  (Windows) e os outros arquivos, LF. Ao editar por script, trate as duas.
+
+---
+
 ## 2026-11-20 — Spoiler `>!texto!<` (censurado, como no Reddit)
 
 **O quê:** `>!texto!<` vira uma tarja que some ao clicar (ou Enter/Espaço com o foco).

@@ -1,0 +1,325 @@
+/* ==========================================================================
+   Estilo "retrô": cara de site da internet antiga (anos 90 / começo dos 2000).
+   Ativado por data-style="retro" no <html>. É concatenado DEPOIS do terminal.css
+   (ver _partials/head.html) para vencer o main.css quando a especificidade empata.
+   Tudo aqui é CSS: sem imagens, sem fontes externas.
+   ========================================================================== */
+
+/* ---- Cores do retrô (claro): céu azul quadriculado, página branca, links azuis ---- */
+:root[data-style="retro"] {
+  --bg: #99ccff;
+  --surface: #ffffff;
+  --text: #000000;
+  --muted: #444444;
+  --border: #808080;
+  --accent: #cc0000;
+  --accent-soft: #ffffcc;
+  --code-bg: #f0f0f0;
+  --mark-bg: #ffff00;
+
+  --retro-bar-1: #000080;
+  --retro-bar-2: #1084d0;
+  --retro-heading: #000080;
+  --retro-shadow: #99aacc;
+  --retro-link: #0000ee;
+  --retro-visited: #551a8b;
+  --retro-btn: #c0c0c0;
+  --retro-btn-text: #000000;
+  --retro-on-accent: #ffffff;
+  --retro-hi: #ffffff;
+  --retro-lo: #808080;
+  --retro-pattern: repeating-conic-gradient(#aad4ff 0% 25%, #99ccff 0% 50%);
+  --retro-pattern-size: 24px 24px;
+
+  --font-sans: "Times New Roman", Times, serif;
+  --font-serif: Verdana, Tahoma, Geneva, sans-serif;
+  --font-mono: "Lucida Console", Monaco, "Courier New", monospace; /* Courier é fino demais para código */
+  --radius: 0;
+  color-scheme: light;
+}
+
+/* ---- Cores do retrô (escuro): noite estrelada, texto claro, links ciano ---- */
+@media (prefers-color-scheme: dark) {
+  :root[data-style="retro"]:not([data-theme="light"]) {
+    --bg: #000022;
+    --surface: #0a0a2a;
+    --text: #e6e6ff;
+    --muted: #a0a0d0;
+    --border: #6666cc;
+    --accent: #ff9933;
+    --accent-soft: #1a1a4a;
+    --code-bg: #000018;
+    --mark-bg: #666600;
+
+    --retro-bar-1: #000040;
+    --retro-bar-2: #3030a0;
+    --retro-heading: #ffff66;
+    --retro-shadow: #330066;
+    --retro-link: #66ccff;
+    --retro-visited: #ff99ff;
+    --retro-btn: #3a3a6a;
+    --retro-btn-text: #ffffff;
+    --retro-on-accent: #000000;
+    --retro-hi: #8888cc;
+    --retro-lo: #000010;
+    --retro-pattern: radial-gradient(#ffffff 1px, transparent 1.5px), radial-gradient(#8888ff 1px, transparent 1.5px);
+    --retro-pattern-size: 90px 90px, 55px 55px;
+    color-scheme: dark;
+  }
+}
+:root[data-style="retro"][data-theme="dark"] {
+  --bg: #000022;
+  --surface: #0a0a2a;
+  --text: #e6e6ff;
+  --muted: #a0a0d0;
+  --border: #6666cc;
+  --accent: #ff9933;
+  --accent-soft: #1a1a4a;
+  --code-bg: #000018;
+  --mark-bg: #666600;
+
+  --retro-bar-1: #000040;
+  --retro-bar-2: #3030a0;
+  --retro-heading: #ffff66;
+  --retro-shadow: #330066;
+  --retro-link: #66ccff;
+  --retro-visited: #ff99ff;
+  --retro-btn: #3a3a6a;
+  --retro-btn-text: #ffffff;
+  --retro-on-accent: #000000;
+  --retro-hi: #8888cc;
+  --retro-lo: #000010;
+  --retro-pattern: radial-gradient(#ffffff 1px, transparent 1.5px), radial-gradient(#8888ff 1px, transparent 1.5px);
+  --retro-pattern-size: 90px 90px, 55px 55px;
+  color-scheme: dark;
+}
+
+/* ---- Base ---- */
+[data-style="retro"] body {
+  background-color: var(--bg);
+  background-image: var(--retro-pattern);
+  background-size: var(--retro-pattern-size);
+  background-position: 0 0, 20px 30px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+[data-style="retro"] ::selection { background: #000080; color: #ffffff; }
+
+[data-style="retro"] h1,
+[data-style="retro"] h2,
+[data-style="retro"] h3,
+[data-style="retro"] h4 { color: var(--retro-heading); letter-spacing: 0; }
+
+[data-style="retro"] a { color: var(--retro-link); text-decoration: underline; }
+[data-style="retro"] a:hover { color: var(--accent); text-decoration: underline; }
+[data-style="retro"] .prose a:visited,
+[data-style="retro"] .post-card h3 a:visited,
+[data-style="retro"] .post-link:visited .post-link-title { color: var(--retro-visited); }
+
+/* ---- Cabeçalho: faixa azul com título em "WordArt" e botões em relevo ---- */
+[data-style="retro"] .site-header {
+  background: linear-gradient(90deg, var(--retro-bar-1), var(--retro-bar-2));
+  border-bottom: 4px ridge var(--retro-hi);
+  margin-bottom: 1.5rem;
+}
+[data-style="retro"] .site-title,
+[data-style="retro"] .site-title:visited {
+  color: #ffffff;
+  font-size: 1.6rem;
+  text-shadow: 2px 2px 0 #000000;
+}
+[data-style="retro"] .site-title::before,
+[data-style="retro"] .site-title::after { content: "★"; color: #ffff00; font-size: 0.8em; margin: 0 0.35em; }
+
+/* Botão em relevo (estilo Windows 95): "outset" = saliente, "inset" = apertado */
+[data-style="retro"] .menu a,
+[data-style="retro"] .theme-toggle,
+[data-style="retro"] .style-toggle,
+[data-style="retro"] .width-toggle,
+[data-style="retro"] .tag-cloud a,
+[data-style="retro"] .tags a,
+[data-style="retro"] .post-nav a {
+  background: var(--retro-btn);
+  color: var(--retro-btn-text);
+  border: 2px solid;
+  border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi);
+  border-radius: 0;
+  text-decoration: none;
+}
+[data-style="retro"] .menu a:visited { color: var(--retro-btn-text); }
+[data-style="retro"] .menu a {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.7rem;
+}
+[data-style="retro"] .menu a:hover,
+[data-style="retro"] .theme-toggle:hover,
+[data-style="retro"] .style-toggle:hover,
+[data-style="retro"] .width-toggle:hover,
+[data-style="retro"] .tag-cloud a:hover,
+[data-style="retro"] .tags a:hover,
+[data-style="retro"] .post-nav a:hover { color: var(--accent); background: var(--retro-btn); border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi); }
+[data-style="retro"] .menu a[aria-current="page"],
+[data-style="retro"] .menu a:active,
+[data-style="retro"] .theme-toggle:active,
+[data-style="retro"] .style-toggle:active,
+[data-style="retro"] .width-toggle:active {
+  border-color: var(--retro-lo) var(--retro-hi) var(--retro-hi) var(--retro-lo);
+}
+[data-style="retro"] .menu { gap: 0.5rem; }
+
+/* ---- Janela do Windows 95: a "term-window" ganha barra de título e botões ---- */
+[data-style="retro"] .term-window {
+  background: var(--surface);
+  border: 3px solid;
+  border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi);
+  box-shadow: 4px 4px 0 rgb(0 0 0 / 0.45);
+}
+[data-style="retro"] .term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.3rem 0.2rem 0.5rem;
+  background: linear-gradient(90deg, var(--retro-bar-1), var(--retro-bar-2));
+  color: #ffffff;
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+[data-style="retro"] .term-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-style="retro"] .term-dots { order: 2; display: flex; gap: 2px; }
+[data-style="retro"] .term-dots i {
+  display: grid;
+  place-items: center;
+  width: 1.05rem;
+  height: 0.95rem;
+  background: var(--retro-btn);
+  color: var(--retro-btn-text);
+  border: 2px solid;
+  border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi);
+  font: 700 0.7rem/1 var(--font-serif);
+  font-style: normal;
+}
+[data-style="retro"] .term-dots i:nth-child(1)::after { content: "_"; }
+[data-style="retro"] .term-dots i:nth-child(2)::after { content: "□"; }
+[data-style="retro"] .term-dots i:nth-child(3)::after { content: "×"; }
+[data-style="retro"] .term-body { padding: 1.25rem 1.5rem 1.5rem; }
+@media (max-width: 560px) {
+  [data-style="retro"] main.container { padding: 0 0.5rem; }
+  [data-style="retro"] .term-body { padding: 1rem 0.9rem 1.25rem; }
+}
+
+/* ---- Home e listas ---- */
+[data-style="retro"] .intro { text-align: center; margin-bottom: 1.5rem; }
+[data-style="retro"] .intro h1,
+[data-style="retro"] .post-header h1,
+[data-style="retro"] .page-header h1 {
+  font-size: clamp(1.7rem, 5vw, 2.3rem);
+  text-shadow: 2px 2px 0 var(--retro-shadow);
+}
+[data-style="retro"] .lead { color: var(--text); font-size: 1.1rem; }
+[data-style="retro"] .section-title { color: var(--retro-heading); font-family: var(--font-serif); }
+[data-style="retro"] .post-card { border-top: 3px groove var(--border); padding: 1rem 0; }
+[data-style="retro"] .post-card h3 { font-size: 1.2rem; }
+[data-style="retro"] .post-card h3 a { color: var(--retro-link); }
+/* O post mais recente da home ganha o clássico "NOVO!" piscando */
+[data-style="retro"] .recent .post-card:first-of-type h3::after {
+  content: " NOVO!";
+  color: #ff0000;
+  font: 700 0.6em var(--font-serif);
+  animation: retro-pisca 1s steps(1) infinite;
+}
+@keyframes retro-pisca { 50% { visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-style="retro"] .recent .post-card:first-of-type h3::after { animation: none; }
+}
+[data-style="retro"] .badge {
+  background: var(--accent);
+  color: var(--retro-on-accent);
+  border-radius: 0;
+  text-transform: uppercase;
+}
+[data-style="retro"] .year { color: var(--retro-heading); font-family: var(--font-serif); }
+[data-style="retro"] .post-link { border-bottom: 1px dotted var(--border); }
+[data-style="retro"] .post-link-title { color: var(--retro-link); text-decoration: underline; }
+[data-style="retro"] .post-link:hover .post-link-title { color: var(--accent); }
+[data-style="retro"] .tag-cloud a,
+[data-style="retro"] .tags a {
+  padding: 0.1rem 0.6rem;
+  font-family: var(--font-serif); /* Verdana: Times fica miúda e fina em botão pequeno */
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+[data-style="retro"] .count { font-weight: 400; font-size: 0.95em; }
+
+/* ---- Post ---- */
+[data-style="retro"] .toc {
+  border: 3px groove var(--border);
+  border-radius: 0;
+  background: var(--accent-soft);
+}
+[data-style="retro"] .prose h2 { border-bottom: 3px ridge var(--border); padding-bottom: 0.15rem; }
+[data-style="retro"] .prose ul { list-style: square; }
+[data-style="retro"] .prose blockquote {
+  border: 3px inset var(--border);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-style: normal;
+  padding: 0.5rem 1rem;
+}
+/* Linha horizontal em arco-íris */
+[data-style="retro"] .prose hr {
+  border: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #ff0000, #ffcc00, #33cc33, #00cccc, #3333ff, #cc33cc, #ff0000);
+}
+[data-style="retro"] .prose th { background: var(--retro-btn); color: var(--retro-btn-text); }
+[data-style="retro"] .prose th,
+[data-style="retro"] .prose td { border: 1px solid var(--border); }
+[data-style="retro"] :not(pre) > code { border-radius: 0; }
+[data-style="retro"] pre {
+  border: 2px solid;
+  border-color: var(--retro-lo) var(--retro-hi) var(--retro-hi) var(--retro-lo);
+  border-radius: 0;
+}
+[data-style="retro"] img { border-radius: 0; }
+[data-style="retro"] .prose .img img { border: 2px solid; border-color: var(--retro-lo) var(--retro-hi) var(--retro-hi) var(--retro-lo); }
+[data-style="retro"] .prose .img-legenda { font-style: italic; color: var(--text); }
+[data-style="retro"] .post-footer { border-top: 3px double var(--border); }
+[data-style="retro"] .post-nav a { padding: 0.5rem 0.75rem; }
+[data-style="retro"] .post-nav span { color: var(--retro-btn-text); }
+
+/* ---- 404 e rodapé ---- */
+[data-style="retro"] .not-found h1 { font-size: 4.5rem; text-shadow: 3px 3px 0 var(--retro-shadow); }
+[data-style="retro"] .site-footer {
+  margin-top: 2rem;
+  border-top: 0;
+  background: var(--surface);
+  color: var(--text);
+  text-align: center;
+}
+[data-style="retro"] .site-footer::before {
+  content: "";
+  display: block;
+  height: 5px;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #ff0000, #ffcc00, #33cc33, #00cccc, #3333ff, #cc33cc, #ff0000);
+}
+[data-style="retro"] .site-footer p::after {
+  content: "Melhor visualizado em qualquer navegador · 800×600";
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+[data-style="retro"] .site-footer a { color: var(--retro-link); }
+[data-style="retro"] .site-footer a:hover { color: var(--accent); }
+[data-style="retro"] .site-title { text-decoration: none; }
+[data-style="retro"] code, [data-style="retro"] pre { font-size: 0.92em; }
+[data-style="retro"] pre { line-height: 1.45; }

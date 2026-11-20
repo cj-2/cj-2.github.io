@@ -1,7 +1,9 @@
-// Controles do menu: estilo (normal/terminal) e cor (sistema/claro/escuro).
+// Controles do menu: estilo (normal/terminal/retrô), largura e cor (sistema/claro/escuro).
 // O estado fica em atributos do <html>:
 //   data-style="terminal"  -> estilo terminal (padrão; o script do <head> o aplica,
-//                             a menos que o visitante tenha escolhido "normal")
+//                             a menos que o visitante tenha escolhido outro)
+//   data-style="retro"     -> estilo retrô (site antigo)
+//   sem data-style         -> estilo normal
 //   data-theme="light"|"dark" -> cor forçada (sem o atributo = segue o sistema)
 // e é salvo no localStorage para valer nas próximas páginas.
 
@@ -43,13 +45,20 @@ document.querySelectorAll(".theme-toggle").forEach((btn) => {
 });
 
 // ---------- Estilo ----------
+// Ciclo do botão: normal -> terminal -> retrô -> normal
+const ESTILOS = ["normal", "terminal", "retro"];
+const NOME_ESTILO = { normal: "normal", terminal: "terminal", retro: "retrô" };
+
 function estiloAtual() {
-  return root.dataset.style === "terminal" ? "terminal" : "normal";
+  return ESTILOS.includes(root.dataset.style) ? root.dataset.style : "normal";
+}
+
+function proximoEstilo() {
+  return ESTILOS[(ESTILOS.indexOf(estiloAtual()) + 1) % ESTILOS.length];
 }
 
 function atualizarBotaoEstilo() {
-  const destino = estiloAtual() === "terminal" ? "normal" : "terminal";
-  const texto = `Mudar para o estilo ${destino}`;
+  const texto = `Mudar para o estilo ${NOME_ESTILO[proximoEstilo()]}`;
   document.querySelectorAll(".style-toggle").forEach((btn) => {
     btn.setAttribute("aria-label", texto);
     btn.title = texto;
@@ -58,10 +67,11 @@ function atualizarBotaoEstilo() {
 
 document.querySelectorAll(".style-toggle").forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (estiloAtual() === "terminal") delete root.dataset.style;
-    else root.dataset.style = "terminal";
-    // Terminal é o padrão, então só a escolha "normal" precisa ser lembrada.
-    salvar("estilo", estiloAtual() === "normal" ? "normal" : null);
+    const proximo = proximoEstilo();
+    if (proximo === "normal") delete root.dataset.style;
+    else root.dataset.style = proximo;
+    // Terminal é o padrão, então só "normal" e "retro" precisam ser lembrados.
+    salvar("estilo", proximo === "terminal" ? null : proximo);
     atualizarBotaoEstilo();
   });
 });

@@ -188,10 +188,12 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
 :root[data-theme="light"] .theme-toggle .icon-sun,
 :root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 
-/* Botão de estilo: o ícone mostra o estilo para o qual o clique LEVA */
-.style-toggle .only-terminal { display: none; }
-:root[data-style="terminal"] .style-toggle .only-normal { display: none; }
-:root[data-style="terminal"] .style-toggle .only-terminal { display: block; }
+/* Botão de estilo: o ícone mostra o estilo para o qual o clique LEVA
+   (normal -> terminal -> retrô -> normal) */
+.style-toggle svg { display: none; }
+:root:not([data-style]) .style-toggle .go-terminal,
+:root[data-style="terminal"] .style-toggle .go-retro,
+:root[data-style="retro"] .style-toggle .go-normal { display: block; }
 
 /* Elementos que só existem no estilo terminal */
 .term-bar,
