@@ -96,15 +96,16 @@ As medidas (`300w`, `200h`) nunca ampliam: se pedir mais que o original, usa o t
 dele. Com `#original` o arquivo é publicado como está (bom para prints com texto), e
 ainda sai uma versão com metade da largura no `srcset` para telas pequenas.
 
-Nos outros tamanhos, o tema redimensiona a imagem no build, converte para `webp` e gera uma versão 2x para
-telas de alta resolução. Você pode colocar a foto original da câmera na pasta: o site
+Nos outros tamanhos, o tema redimensiona a imagem no build, converte para `webp` e gera
+uma versão 2x para telas de alta resolução. Você pode colocar a foto original da câmera na pasta: o site
 publica só as versões leves. Para isso, o front matter do post precisa de:
 
 ```yaml
 build:
   publishResources: false   # não publica o arquivo original
 ```
-Sempre escreva a descrição (`alt`): ela é lida por leitores de tela. Detalhes técnicos em [05-tema-lume.md](05-tema-lume.md#imagens-render-hook).
+
+Sempre escreva a descrição (`alt`): ela é lida por leitores de tela. Detalhes técnicos em
 [05-tema-lume.md](05-tema-lume.md#imagens-render-hook).
 
 Alternativas: arquivos em `static/` (ex.: `/imagens/foto.jpg`) e URLs externas funcionam,
