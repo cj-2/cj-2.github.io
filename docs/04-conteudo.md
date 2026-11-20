@@ -67,6 +67,20 @@ print("bloco de código com destaque de sintaxe")
 
 Use `##` (H2) como maior nível dentro do post — o `#` (H1) já é o título.
 
+## Destaque e texto inserido
+
+Além do Markdown básico, o blog liga a extensão **extras** do Hugo (no `hugo.toml`):
+
+```markdown
+Isso é ==muito importante==.     → destaque, como o realce do Obsidian (<mark>)
+Isso foi ++adicionado++ depois.  → texto inserido, sublinhado (<ins>)
+Isso foi ~~removido~~.           → riscado (já existia)
+```
+
+`==` e `++` só funcionam no Hugo: em outros lugares (GitHub, por exemplo) os sinais
+aparecem literais. As cores do destaque vêm da variável `--mark-bg`, que existe nos quatro
+blocos de cor do tema.
+
 ## Imagens
 
 O jeito recomendado é o **page bundle**: transforme o post numa pasta e coloque as imagens

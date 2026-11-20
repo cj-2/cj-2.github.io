@@ -13,6 +13,7 @@
   --accent: #c2410c;
   --accent-soft: #fbe7dc;
   --code-bg: #f3f1ec;
+  --mark-bg: #fde68a;
 
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Iowan Old Style", "Charter", "Georgia", "Cambria", serif;
@@ -38,6 +39,7 @@
     --accent: #fb923c;
     --accent-soft: #3a2416;
     --code-bg: #1d1c19;
+    --mark-bg: #5c4a12;
     color-scheme: dark;
   }
 }
@@ -50,6 +52,7 @@
   --accent: #fb923c;
   --accent-soft: #3a2416;
   --code-bg: #1d1c19;
+  --mark-bg: #5c4a12;
   color-scheme: dark;
 }
 
@@ -452,3 +455,21 @@ pre {
 .prose .img-legenda { display: block; margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
 .prose .img-original { max-width: 100%; }
 .prose .img-medida { max-width: 100%; width: fit-content; }
+
+/* ---- Marcação no texto (extensão "extras" do Hugo) ----
+   ==destaque==  ->  <mark>    (como o realce do Obsidian)
+   ++inserido++  ->  <ins>     (sublinhado na cor de destaque) */
+.prose mark {
+  background: var(--mark-bg);
+  color: inherit;
+  padding: 0.05em 0.25em;
+  border-radius: 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.prose ins {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}

@@ -17,6 +17,7 @@
   --accent: #1c7c3a;
   --accent-soft: #d5ead9;
   --code-bg: #efece1;
+  --mark-bg: #f1dc8c;
   --term-heading: #8a5300;
   --term-path: #1d5fa8;
   --term-bar: #dcd9cc;
@@ -38,6 +39,7 @@
     --accent: #5fd787;
     --accent-soft: #163322;
     --code-bg: #0d120f;
+    --mark-bg: #4d4416;
     --term-heading: #e5c07b;
     --term-path: #6cb6ff;
     --term-bar: #18201b;
@@ -53,6 +55,7 @@
   --accent: #5fd787;
   --accent-soft: #163322;
   --code-bg: #0d120f;
+  --mark-bg: #4d4416;
   --term-heading: #e5c07b;
   --term-path: #6cb6ff;
   --term-bar: #18201b;

@@ -31,3 +31,8 @@ enableRobotsTXT = true
 
 [markup.goldmark.renderer]
   unsafe = false
+
+[markup.goldmark.extensions.extras.mark]
+  enable = true   # ==destaque== vira <mark>
+[markup.goldmark.extensions.extras.insert]
+  enable = true   # ++inserido++ vira <ins>

@@ -5,6 +5,22 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-20 — Destaque `==texto==` e inserido `++texto++`
+
+**O quê:** `==texto==` vira `<mark>` (realce amarelo, como no Obsidian) e `++texto++` vira
+`<ins>` (sublinhado na cor de destaque do tema).
+
+**Como:** duas chaves no `hugo.toml`, `markup.goldmark.extensions.extras.mark` e
+`...extras.insert`, ambas com `enable = true`. No tema, a variável nova `--mark-bg` entrou
+nos **quatro** blocos de cor (normal claro/escuro, terminal claro/escuro) e as regras de
+`.prose mark` e `.prose ins` ficam no fim do `main.css`.
+
+**Aprendizado:** o contraste do destaque foi medido nas 6 combinações (mínimo 6,3:1, acima
+dos 4,5:1 recomendados). Nos temas escuros o fundo do destaque é um amarelo bem escuro,
+porque amarelo vivo ofuscaria. As extensões do Goldmark vêm desligadas até serem ativadas.
+
+---
+
 ## 2026-11-20 — Posts novos já nascem em pasta
 
 **O quê:** criado `archetypes/posts/index.md` e ajustado o tipo de conteúdo `default` no
