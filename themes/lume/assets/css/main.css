@@ -439,3 +439,16 @@ pre {
 .site-footer p { margin: 0; }
 .site-footer a { color: var(--muted); }
 .site-footer a:hover { color: var(--accent); }
+
+/* ---- Imagens dos posts (render hook: layouts/_markup/render-image.html) ----
+   O hook gera <span class="img img-TAMANHO"><img ...><span class="img-legenda">..</span></span>.
+   O tamanho real do arquivo é decidido pelo Hugo no build; aqui só controlamos a exibição. */
+.prose .img { display: block; margin: 1.5rem auto; text-align: center; }
+.prose .img img { display: block; margin: 0 auto; }
+.prose .img-pequena { max-width: 400px; }
+.prose .img-media   { max-width: 700px; }
+.prose .img-grande  { max-width: 1000px; }
+.prose .img-cheia   { max-width: 100%; }
+.prose .img-legenda { display: block; margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+.prose .img-original { max-width: 100%; }
+.prose .img-medida { max-width: 100%; width: fit-content; }

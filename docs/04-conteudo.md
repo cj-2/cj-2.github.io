@@ -69,16 +69,49 @@ Use `##` (H2) como maior nível dentro do post — o `#` (H1) já é o título.
 
 ## Imagens
 
-Duas opções:
+O jeito recomendado é o **page bundle**: transforme o post numa pasta e coloque as imagens
+ao lado dele.
 
-1. **Em `static/`** — salve em `static/imagens/foto.jpg` e use `/imagens/foto.jpg`.
-2. **Page bundle** (mais organizado) — transforme o post numa pasta:
-   ```
-   content/posts/aprendendo-hugo/
-   ├── index.md      ← o post
-   └── foto.jpg
-   ```
-   e use `![descrição](foto.jpg)`. A imagem fica junto do post que a usa.
+```
+content/posts/aprendendo-hugo/
+├── index.md      ← o post
+└── foto.jpg
+```
+
+No post, use o Markdown normal e escolha o tamanho com um sufixo `#` no caminho. O texto
+entre aspas vira a legenda:
+
+```markdown
+![descrição](foto.jpg)                    grande, 1000px (padrão)
+![descrição](foto.jpg#media)              média, 700px
+![descrição](foto.jpg#pequena "Legenda")  pequena, 400px
+![descrição](foto.jpg#cheia)              largura toda do texto (até 1600px)
+![descrição](foto.jpg#original)           sem reduzir e sem trocar o formato (PNG continua PNG)
+![descrição](foto.jpg#300w)               exatamente 300px de largura (altura proporcional)
+![descrição](foto.jpg#200h)               exatamente 200px de altura (largura proporcional)
+![descrição](foto.jpg#300w,200h)          caixa de 300x200px, recortada no centro
+```
+
+As medidas (`300w`, `200h`) nunca ampliam: se pedir mais que o original, usa o tamanho
+dele. Com `#original` o arquivo é publicado como está (bom para prints com texto), e
+ainda sai uma versão com metade da largura no `srcset` para telas pequenas.
+
+Nos outros tamanhos, o tema redimensiona a imagem no build, converte para `webp` e gera uma versão 2x para
+telas de alta resolução. Você pode colocar a foto original da câmera na pasta: o site
+publica só as versões leves. Para isso, o front matter do post precisa de:
+
+```yaml
+build:
+  publishResources: false   # não publica o arquivo original
+```
+
+Sempre escreva a descrição (`alt`): ela é lida por leitores de tela. Veja
+`content/posts/teste-de-imagens/` como exemplo. Detalhes técnicos em
+[05-tema-lume.md](05-tema-lume.md#imagens-render-hook).
+
+Alternativas: arquivos em `static/` (ex.: `/imagens/foto.jpg`) e URLs externas funcionam,
+mas aparecem **sem** redimensionamento (o sufixo de tamanho ainda controla a largura
+máxima na tela).
 
 ## Tags
 

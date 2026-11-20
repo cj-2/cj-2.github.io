@@ -18,6 +18,8 @@ themes/lume/
 │   ├── taxonomy.html         lista de tags (/tags/)
 │   ├── term.html             posts de uma tag (/tags/hugo/)
 │   ├── 404.html              página não encontrada
+│   ├── _markup/
+│   │   └── render-image.html  como cada imagem do Markdown vira HTML
 │   └── _partials/
 │       ├── head.html         <head>: meta tags, CSS, JS
 │       ├── header.html       cabeçalho com menu e botões de estilo e cor
@@ -209,6 +211,30 @@ sempre.
 `# ` antes dos títulos, `./` antes dos links do menu, o cursor piscando depois do nome do
 site e as permissões `-rw-r--r--` na lista de posts. O cursor para de piscar para quem
 ativou "reduzir movimento" no sistema (`prefers-reduced-motion`).
+
+## Imagens (render hook)
+
+Um *render hook* é um template que **substitui o HTML que o Hugo gera** para um pedaço do
+Markdown. `layouts/_markup/render-image.html` roda para cada `![alt](caminho "legenda")`.
+
+O que ele faz:
+1. Lê o sufixo do caminho (`#media`, `#original`, `#300w,200h`) com `urls.Parse` e escolhe a largura numa tabela
+   (`dict`): pequena 400, média 700, grande 1000 (padrão), cheia 1600.
+2. Procura o arquivo nos recursos da própria página (`.PageInner.Resources.Get`, que só
+   funciona em page bundles) e, se não achar, em `assets/`.
+3. Com `.Resize "700x webp q80"` gera a versão pequena e, se o original for grande o
+   bastante, outra com o dobro da largura para o `srcset` (o navegador escolhe). Nunca
+   amplia além do original.
+4. Escreve `width` e `height` no `<img>` (a página não "pula" quando a imagem carrega) e
+   `loading="lazy"` (só baixa quando chega perto).
+5. O CSS (`.img-pequena`, `.img-media`...) limita a largura de exibição. SVG, GIF e URLs
+   externas não são processados, só exibidos.
+
+Usamos `<span>` e não `<figure>` porque o Markdown já coloca a imagem dentro de um `<p>`,
+e `<figure>` ali é HTML inválido. No terminal a legenda ganha um `# ` na frente.
+
+Referência: <https://gohugo.io/render-hooks/images/> e
+<https://gohugo.io/methods/resource/resize/>
 
 ## Destaque de código (`chroma.css`)
 

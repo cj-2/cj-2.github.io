@@ -1,0 +1,110 @@
+{{- /*
+  Render hook de imagens: roda para cada ![alt](caminho "legenda") escrito no Markdown.
+
+  Tamanho: coloque no fim do caminho, depois de #, UM destes (separe vários com vírgula):
+    ![Gráfico](grafico.png#pequena)        -> 400px de largura
+    ![Gráfico](grafico.png#media)          -> 700px
+    ![Gráfico](grafico.png)                -> 1000px (grande, o padrão)
+    ![Gráfico](grafico.png#cheia)          -> 1600px, ocupa a largura toda
+    ![Gráfico](grafico.png#original)       -> sem redução e sem trocar o formato (PNG continua PNG)
+    ![Gráfico](grafico.png#300w)           -> exatamente 300px de largura (altura proporcional)
+    ![Gráfico](grafico.png#200h)           -> exatamente 200px de altura (largura proporcional)
+    ![Gráfico](grafico.png#300w,200h)      -> caixa de 300x200px; a imagem é recortada no centro
+  O texto entre aspas vira a legenda.
+
+  A imagem é procurada nos arquivos da própria página (page bundle) e depois em assets/.
+  Se não for encontrada (URL externa, static/), é exibida sem processamento.
+  Medidas personalizadas nunca ampliam além do original.
+*/ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $tamanhos := dict "pequena" 400 "media" 700 "grande" 1000 "cheia" 1600 -}}
+
+{{- /* Lê o que vem depois do #: um nome (media...), "original", ou medidas como 300w / 200h */ -}}
+{{- $nome := "grande" -}}
+{{- $w := 0 -}}
+{{- $h := 0 -}}
+{{- range split ($u.Fragment | lower) "," -}}
+  {{- $t := trim . " " -}}
+  {{- $mw := findRESubmatch `^(\d+)w$` $t -}}
+  {{- $mh := findRESubmatch `^(\d+)h$` $t -}}
+  {{- if $mw }}{{ $w = int (index $mw 0 1) }}
+  {{- else if $mh }}{{ $h = int (index $mh 0 1) }}
+  {{- else if or (isset $tamanhos $t) (eq $t "original") }}{{ $nome = $t }}
+  {{- end -}}
+{{- end -}}
+{{- $medido := or (gt $w 0) (gt $h 0) -}}
+{{- $classe := cond $medido "img-medida" (printf "img-%s" $nome) -}}
+
+{{- $img := "" -}}
+{{- if and $u.Path (not $u.Host) -}}
+  {{- with .PageInner.Resources.Get $u.Path -}}
+    {{- $img = . -}}
+  {{- else -}}
+    {{- with resources.Get $u.Path -}}{{- $img = . -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* span em vez de figure: o Markdown já envolve a imagem num <p>, onde figure é inválido */ -}}
+<span class="img {{ $classe }}">
+  {{- if and $img (in (slice "png" "jpeg" "webp") $img.MediaType.SubType) -}}
+    {{- $ow := $img.Width -}}
+    {{- $oh := $img.Height -}}
+    {{- $fmt := "webp q80" -}}
+    {{- $fonte := $img -}}
+    {{- $srcset := "" -}}
+
+    {{- if $medido -}}
+      {{- /* Medidas pedidas, reduzidas na mesma proporção se passarem do tamanho do original */ -}}
+      {{- $f := 1.0 -}}
+      {{- if gt $w 0 }}{{ $f = math.Min $f (div (float $ow) (float $w)) }}{{ end -}}
+      {{- if gt $h 0 }}{{ $f = math.Min $f (div (float $oh) (float $h)) }}{{ end -}}
+      {{- $cw := int (math.Round (mul (float $w) $f)) -}}
+      {{- $ch := int (math.Round (mul (float $h) $f)) -}}
+      {{- $spec := printf "%dx%d" $cw $ch -}}
+      {{- if eq $h 0 }}{{ $spec = printf "%dx" $cw }}{{ end -}}
+      {{- if eq $w 0 }}{{ $spec = printf "x%d" $ch }}{{ end -}}
+      {{- $acao := cond (and (gt $w 0) (gt $h 0)) "Fill" "Resize" -}}
+      {{- /* if/else e não cond: o cond avalia os dois lados e o Fill falha sem largura e altura */ -}}
+      {{- if eq $acao "Fill" }}{{ $fonte = $img.Fill (printf "%s center %s" $spec $fmt) }}
+      {{- else }}{{ $fonte = $img.Resize (printf "%s %s" $spec $fmt) }}{{ end -}}
+      {{- $srcset = printf "%s %dw" $fonte.RelPermalink $fonte.Width -}}
+      {{- /* Versão 2x, se o original tiver pixels para isso */ -}}
+      {{- if and (ge $ow (mul $fonte.Width 2)) (or (eq $h 0) (ge $oh (mul $fonte.Height 2))) -}}
+        {{- $spec2 := printf "%dx%d" (mul $cw 2) (mul $ch 2) -}}
+        {{- if eq $h 0 }}{{ $spec2 = printf "%dx" (mul $cw 2) }}{{ end -}}
+        {{- if eq $w 0 }}{{ $spec2 = printf "x%d" (mul $ch 2) }}{{ end -}}
+        {{- $dobro := "" -}}
+        {{- if eq $acao "Fill" }}{{ $dobro = $img.Fill (printf "%s center %s" $spec2 $fmt) }}
+        {{- else }}{{ $dobro = $img.Resize (printf "%s %s" $spec2 $fmt) }}{{ end -}}
+        {{- $srcset = printf "%s, %s %dw" $srcset $dobro.RelPermalink $dobro.Width -}}
+      {{- end -}}
+
+    {{- else if eq $nome "original" -}}
+      {{- /* Mantém o formato e as dimensões. O srcset oferece também uma versão com metade da
+             largura (no mesmo formato) para telas pequenas. */ -}}
+      {{- $ext := cond (eq $img.MediaType.SubType "jpeg") "jpg" $img.MediaType.SubType -}}
+      {{- $srcset = printf "%s %dw" $img.RelPermalink $ow -}}
+      {{- if ge $ow 800 -}}
+        {{- $metade := $img.Resize (printf "%dx %s" (div $ow 2) $ext) -}}
+        {{- $srcset = printf "%s %dw, %s" $metade.RelPermalink $metade.Width $srcset -}}
+      {{- end -}}
+
+    {{- else -}}
+      {{- /* Tamanhos nomeados. Nunca amplia: se o original é menor, usa o tamanho dele. */ -}}
+      {{- $alvo := index $tamanhos $nome -}}
+      {{- $largura := cond (lt $ow $alvo) $ow $alvo -}}
+      {{- $fonte = $img.Resize (printf "%dx %s" $largura $fmt) -}}
+      {{- $srcset = printf "%s %dw" $fonte.RelPermalink $fonte.Width -}}
+      {{- if ge $ow (mul $largura 2) -}}
+        {{- $dobro := $img.Resize (printf "%dx %s" (mul $largura 2) $fmt) -}}
+        {{- $srcset = printf "%s, %s %dw" $srcset $dobro.RelPermalink $dobro.Width -}}
+      {{- end -}}
+    {{- end -}}
+
+    <img src="{{ $fonte.RelPermalink }}" srcset="{{ $srcset }}" sizes="(max-width: {{ $fonte.Width }}px) 100vw, {{ $fonte.Width }}px"
+         width="{{ $fonte.Width }}" height="{{ $fonte.Height }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
+  {{- else -}}
+    <img src="{{ with $img }}{{ .RelPermalink }}{{ else }}{{ .Destination | replaceRE "#[^#]*$" "" | safeURL }}{{ end }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
+  {{- end -}}
+  {{- with .Title }}<span class="img-legenda">{{ . }}</span>{{ end -}}
+</span>

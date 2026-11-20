@@ -204,3 +204,6 @@
 [data-style="terminal"] .not-found h1 { font-size: 3rem; }
 [data-style="terminal"] .site-footer { border-top-style: dashed; }
 [data-style="terminal"] .site-footer p::before { content: "-- "; }
+
+/* Legenda de imagem como comentário de código */
+[data-style="terminal"] .prose .img-legenda::before { content: "# "; color: var(--accent); }

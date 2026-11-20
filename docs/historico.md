@@ -5,6 +5,34 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-20 — Controle de tamanho das imagens
+
+**O quê:** imagens nos posts agora têm tamanho escolhido por sufixo (`foto.jpg#media`),
+legenda opcional, redimensionamento automático para `webp`, `srcset` 2x e carregamento
+preguiçoso. Criado `layouts/_markup/render-image.html`, classes `.img-*` no `main.css` e
+um post de exemplo (rascunho) em `content/posts/teste-de-imagens/`.
+
+**Por quê:** só havia `img { max-width: 100% }`; uma foto de vários MB seria publicada
+inteira e não dava para controlar a largura. Fazer o Hugo gerar as versões leves no build
+poupa editar as imagens à mão.
+
+**Decisões:** a escolha do tamanho fica no Markdown (`#media`), que continua legível em
+qualquer editor; usamos page bundles (a imagem mora junto do post). Os posts antigos
+(arquivos soltos) não foram mexidos: só precisam virar pasta quando tiverem imagens.
+
+
+**Medidas exatas e `#original` (hook estendido):** `#300w`, `#200h` e `#300w,200h` fixam o
+tamanho na tela (com as duas, a imagem é recortada no centro com `.Fill`). `#original`
+mantém formato e dimensões. Armadilha encontrada: `cond` avalia os **dois** lados, então
+`cond (...) ($img.Fill ...) ($img.Resize ...)` chamava `Fill` mesmo só com a largura e o
+build quebrava; trocamos por `if`/`else`.
+
+**Aprendizado:** render hooks mudam o HTML de elementos do Markdown sem tocar nos posts.
+`build.publishResources: false` evita publicar o original pesado. O Hugo cacheia o
+resultado em `resources/_gen/`, então só reprocessa o que mudou.
+
+---
+
 ## 2026-11-17 — Largura do meio como padrão
 
 **O quê:** o tamanho padrão da área de texto passou a ser o do meio (64rem). A antiga
