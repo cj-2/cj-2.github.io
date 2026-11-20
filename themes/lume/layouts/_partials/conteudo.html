@@ -1,0 +1,6 @@
+{{- /* Conteúdo do post com a marcação de spoiler do Reddit: >!texto!<
+     O Markdown não conhece essa sintaxe e escapa os sinais (> vira &gt; e < vira &lt;),
+     então trocamos o texto escapado pelo <span> do spoiler depois que o Hugo renderiza.
+     Limites: não funciona no começo de uma linha (ali o ">" vira citação) e também
+     trocaria o mesmo padrão dentro de blocos de código. */ -}}
+{{- .Content | replaceRE `&gt;!(.+?)!&lt;` `<span class="spoiler" role="button" tabindex="0" title="Clique para revelar">$1</span>` | safeHTML -}}

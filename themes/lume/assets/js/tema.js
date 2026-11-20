@@ -98,3 +98,22 @@ document.querySelectorAll(".width-toggle").forEach((btn) => {
 atualizarBotaoCor();
 atualizarBotaoEstilo();
 atualizarBotaoLargura();
+
+// ---------- Spoiler ----------
+// Clicar (ou Enter/Espaço, com o foco no spoiler) revela o texto de forma permanente.
+function revelar(el) {
+  el.classList.add("revelado");
+  el.removeAttribute("role");
+  el.removeAttribute("tabindex");
+  el.removeAttribute("title");
+}
+
+document.querySelectorAll(".spoiler").forEach((el) => {
+  el.addEventListener("click", () => revelar(el));
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      revelar(el);
+    }
+  });
+});

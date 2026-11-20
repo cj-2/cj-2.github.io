@@ -81,6 +81,20 @@ Isso foi ~~removido~~.           → riscado (já existia)
 aparecem literais. As cores do destaque vêm da variável `--mark-bg`, que existe nos quatro
 blocos de cor do tema.
 
+## Spoiler (texto censurado)
+
+Igual ao Reddit: escreva `>!texto!<` e o trecho aparece como uma tarja. Clicar nela (ou
+focar com a tecla Tab e apertar Enter) revela o texto, e ele fica visível.
+
+```markdown
+O assassino é >!o mordomo!< e acabou.
+```
+
+Limites: o spoiler **não funciona no começo de uma linha** (ali o `>` vira citação), então
+comece a frase com outra palavra. Ele também pode conter **negrito** e `código`, mas não
+escreva `>!...!<` dentro de blocos de código. Fora do Hugo (GitHub, por exemplo) aparece
+como texto comum.
+
 ## Imagens
 
 O jeito recomendado é o **page bundle**: transforme o post numa pasta e coloque as imagens

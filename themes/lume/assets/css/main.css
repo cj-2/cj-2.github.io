@@ -473,3 +473,27 @@ pre {
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
 }
+
+/* ---- Spoiler (>!texto!< no Markdown): tarja que some ao clicar ou focar ----
+   O partial conteudo.html gera <span class="spoiler">. O JS (tema.js) acrescenta
+   .revelado ao clicar, para o texto continuar visível depois. */
+.prose .spoiler {
+  background: var(--text);
+  color: transparent;
+  border-radius: 3px;
+  padding: 0 0.2em;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s, color 0.15s;
+}
+.prose .spoiler a, .prose .spoiler code { color: transparent; background: transparent; }
+.prose .spoiler:focus,
+.prose .spoiler.revelado {
+  background: var(--surface);
+  color: inherit;
+  user-select: auto;
+  cursor: auto;
+}
+.prose .spoiler:focus a, .prose .spoiler.revelado a { color: var(--accent); }
+.prose .spoiler:focus code, .prose .spoiler.revelado code { background: var(--code-bg); color: inherit; }
+@media (prefers-reduced-motion: reduce) { .prose .spoiler { transition: none; } }

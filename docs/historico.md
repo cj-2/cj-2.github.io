@@ -5,6 +5,24 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-20 — Spoiler `>!texto!<` (censurado, como no Reddit)
+
+**O quê:** `>!texto!<` vira uma tarja que some ao clicar (ou Enter/Espaço com o foco).
+
+**Como:** o Markdown não conhece essa sintaxe e escapa os sinais (`&gt;!texto!&lt;`).
+O partial `_partials/conteudo.html` pega o `.Content` já renderizado e troca esse padrão
+por `<span class="spoiler">` com `replaceRE`; o `page.html` passou a chamá-lo no lugar de
+`.Content`. O CSS (`main.css`) pinta a tarja com `var(--text)`, então funciona nas 6
+combinações de cor; o `tema.js` acrescenta a classe `revelado` ao clicar.
+
+**Aprendizado:** a primeira medição das cores deu o mesmo valor em todas as combinações
+porque o CSS tinha `transition`: `getComputedStyle` logo após a troca devolve o valor
+*inicial* da transição. Para testar, desligue a transição (`transition: none`) ou espere.
+Também: acessibilidade do spoiler (`role="button"`, `tabindex`, `title`) para quem usa
+teclado.
+
+---
+
 ## 2026-11-20 — Destaque `==texto==` e inserido `++texto++`
 
 **O quê:** `==texto==` vira `<mark>` (realce amarelo, como no Obsidian) e `++texto++` vira
