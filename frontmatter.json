@@ -3,7 +3,7 @@
   "frontMatter.taxonomy.contentTypes": [
     {
       "name": "default",
-      "pageBundle": false,
+      "pageBundle": true,
       "previewPath": null,
       "fields": [
         {
@@ -42,6 +42,18 @@
           "title": "Categories",
           "name": "categories",
           "type": "categories"
+        },
+        {
+          "title": "build",
+          "name": "build",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "publishResources",
+              "name": "publishResources",
+              "type": "boolean"
+            }
+          ]
         }
       ]
     }

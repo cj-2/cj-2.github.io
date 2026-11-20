@@ -104,14 +104,31 @@ publica só as versões leves. Para isso, o front matter do post precisa de:
 build:
   publishResources: false   # não publica o arquivo original
 ```
-
-Sempre escreva a descrição (`alt`): ela é lida por leitores de tela. Veja
-`content/posts/teste-de-imagens/` como exemplo. Detalhes técnicos em
+Sempre escreva a descrição (`alt`): ela é lida por leitores de tela. Detalhes técnicos em [05-tema-lume.md](05-tema-lume.md#imagens-render-hook).
 [05-tema-lume.md](05-tema-lume.md#imagens-render-hook).
 
 Alternativas: arquivos em `static/` (ex.: `/imagens/foto.jpg`) e URLs externas funcionam,
 mas aparecem **sem** redimensionamento (o sufixo de tamanho ainda controla a largura
 máxima na tela).
+
+## Criando um post com imagens (pasta)
+
+`archetypes/posts/index.md` é um *archetype em pasta*: como é uma pasta, o Hugo cria o post
+como page bundle. O comando
+
+```bash
+hugo new content posts/meu-post
+```
+
+gera `content/posts/meu-post/index.md` com o front matter padrão (inclui
+`build.publishResources: false`) e um lembrete dos tamanhos de imagem. Basta colocar as
+imagens na mesma pasta. Quem escolhe o archetype é o nome da seção (`posts`); as outras
+seções continuam usando `archetypes/default.md`.
+
+No VS Code, o Front Matter CMS segue o mesmo modelo: o tipo de conteúdo `default` em
+`frontmatter.json` tem `"pageBundle": true` e os mesmos campos do archetype. Ele é o
+único tipo definido, para o painel não oferecer um tipo que crie arquivo solto. (Os posts
+antigos, em arquivo solto, continuam funcionando.)
 
 ## Tags
 

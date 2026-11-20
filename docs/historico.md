@@ -5,12 +5,30 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-20 — Posts novos já nascem em pasta
+
+**O quê:** criado `archetypes/posts/index.md` e ajustado o tipo de conteúdo `default` no
+`frontmatter.json` (Front Matter CMS), com `pageBundle: true`.
+
+**Por quê:** as imagens com tamanho controlado precisam do post em pasta (page bundle), e o
+original pesado não deve ser publicado (`build.publishResources: false`). Com o modelo nos
+dois lugares, `hugo new content` e o editor geram a mesma coisa.
+
+**Aprendizado:** se um archetype é uma **pasta**, o Hugo cria um bundle em vez de um
+arquivo; ele é escolhido pelo nome da seção. O `frontmatter.json` não lê archetypes: as
+duas definições precisam ser mantidas em sincronia. A parte do editor ainda não foi
+testada dentro do VS Code. Na primeira tentativa o painel ainda criou um arquivo solto: tinha
+tanto o tipo `default` (arquivo) quanto o `posts` (pasta), e o `default` foi usado. Por
+isso o `default` passou a ser o único tipo e é ele que tem `pageBundle: true`.
+
+---
+
 ## 2026-11-20 — Controle de tamanho das imagens
 
 **O quê:** imagens nos posts agora têm tamanho escolhido por sufixo (`foto.jpg#media`),
 legenda opcional, redimensionamento automático para `webp`, `srcset` 2x e carregamento
 preguiçoso. Criado `layouts/_markup/render-image.html`, classes `.img-*` no `main.css` e
-um post de exemplo (rascunho) em `content/posts/teste-de-imagens/`.
+um post de exemplo (rascunho, depois removido).
 
 **Por quê:** só havia `img { max-width: 100% }`; uma foto de vários MB seria publicada
 inteira e não dava para controlar a largura. Fazer o Hugo gerar as versões leves no build
