@@ -15,7 +15,7 @@ Alguns podem dizer que eu talvez esteja começando a ficar velho, ou qualquer ou
 Bom, não sei explicar, quase sempre é difícil explicar o que a gente sente ou acredita, mas é o que podemos tentar fazer, é o que há de disponível, 
 é o fluxo corrente de tudo que existe, que vai do início, ao auge e em algum momento ao fim.
 
-Eu gosto de acreditar que todo esse ==esforço "reflexivo"== traga algo para mim no futuro, que gere algum movimento mental ou que 
+Eu gosto de acreditar que todo esse esforço "reflexivo" traga algo para mim no futuro, que gere algum movimento mental ou que 
 pelo menos faça com que eu não fique parado, ou no pior dos casos, em movimento com a sensação de estar parado.
 
 
@@ -28,4 +28,6 @@ Eu quero é que se foda! Vocês que escrevam para vocês mesmos, ou como é comu
 
 *Amorosamente, "eu".*
 
-> OBS: Esse artigo já havia sido escrito em uma outra tentativa preguiçosa da criação de um blog, antes mesmo do início desse projeto "final", tanto que a data "2026-10-26" é anterior ao primeiro commit do repositório.
+## Observações
+
+Esse artigo já havia sido escrito em **uma outra tentativa preguiçosa da criação de um blog**, antes mesmo do início desse projeto "final", tanto que a data "2026-10-26" é anterior ao primeiro commit do repositório.
