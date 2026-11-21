@@ -75,6 +75,15 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
   Respostas em thread usam `em_resposta_a`. A skill `/comentar` (`.claude/skills/comentar/`) grava
   tudo. Nenhum agente comentarista tem permissão de escrever arquivos.
 
+## Perguntas não são pedidos
+
+Se o dono **só fizer uma pergunta** (ex.: "dá para contornar o cache?", "tem algo jogando para o
+terminal?") e não pedir uma mudança, **apenas responda**. Não edite arquivos, não comite e não dê
+o próximo passo por conta própria. Se houver uma mudança possível, ofereça em uma linha ("quer que
+eu aplique?") e espere o pedido. Só implemente quando a mensagem pedir de forma clara ("aplica",
+"faz", "muda", "adiciona"). Ler arquivos e rodar comandos só de leitura para responder bem é
+permitido.
+
 ## Git — regras obrigatórias
 
 - **Nunca se adicione como autor ou coautor.** Não inclua `Co-Authored-By:`,
