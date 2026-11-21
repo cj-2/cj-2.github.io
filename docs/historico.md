@@ -5,6 +5,19 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Hash no nome do JavaScript (contornar o cache)
+
+**O quê:** no `head.html`, o `tema.js` agora passa por `fingerprint` em produção, como o CSS já
+fazia. O arquivo sai como `/js/tema.min.<hash>.js` e o `<script>` ganha `integrity`.
+
+**Por quê:** o GitHub Pages manda `Cache-Control: max-age=600` (10 min) e não dá para mudar isso.
+O HTML sempre apontava para `/js/tema.js`, um nome fixo: um navegador com a cópia antiga em cache
+podia rodar JS velho com HTML novo (por exemplo, sem a regra do tema temático).
+
+**Aprendizado:** a técnica se chama *cache busting*: se o conteúdo muda, o nome muda, então o
+cache antigo simplesmente não é consultado. Só o HTML (de vida curta) continua sujeito a cache.
+Docs: https://gohugo.io/functions/resources/fingerprint/
+
 ## 2026-11-21 — Estilo temático aparece uma vez, mesmo para quem escolheu outro
 
 **O quê:** no `head.html`, a variável `tematico` (hoje `"natal"`) define o estilo da temporada. Na

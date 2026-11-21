@@ -69,4 +69,6 @@
 <link rel="stylesheet" href="{{ $styles.RelPermalink }}"{{ with $styles.Data.Integrity }} integrity="{{ . }}"{{ end }}>
 
 {{ $js := resources.Get "js/tema.js" | js.Build (dict "minify" hugo.IsProduction) }}
-<script src="{{ $js.RelPermalink }}" defer></script>
+{{/* Hash no nome do arquivo (como no CSS): ao mudar o código o nome muda e o navegador não usa uma cópia antiga em cache */}}
+{{ if hugo.IsProduction }}{{ $js = $js | fingerprint }}{{ end }}
+<script src="{{ $js.RelPermalink }}" defer{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }}></script>
