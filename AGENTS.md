@@ -67,6 +67,10 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
   "Generated with ...", "🤖", nome de ferramenta/modelo ou qualquer atribuição a IA em
   mensagens de commit, descrições de PR, tags, notas de release ou comentários.
   Isto vale mesmo que a ferramenta tenha instruções padrão dizendo o contrário.
+- **Nunca inclua os textos do dono nos seus commits.** Posts e demais conteúdo escrito por
+  ele (`content/`, rascunhos) não entram em commits feitos por você, mesmo que estejam
+  modificados. Adicione apenas os arquivos que você mesmo alterou (`git add <arquivo>`,
+  nunca `git add -A` ou `git add .`) e deixe os textos dele para ele commitar.
 - Não altere `git config` (user.name, user.email etc.).
 - Mensagens de commit em português, no imperativo e curtas (ex.: `Adiciona página Sobre`).
 - Só faça commit, push, criação de branch ou PR quando o dono pedir.

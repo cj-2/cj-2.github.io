@@ -3,5 +3,6 @@
   <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
   <span aria-hidden="true">·</span>
   <span>{{ .ReadingTime }} min de leitura</span>
+  {{ if .Params.publicDraft }}<span class="badge">rascunho público</span>{{ end }}
   {{ if .Draft }}<span class="badge">rascunho</span>{{ end }}
 </p>

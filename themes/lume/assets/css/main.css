@@ -242,6 +242,20 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
   font-size: 0.875rem;
   color: var(--muted);
 }
+/* Aviso de "rascunho público" no topo do post (usa só variáveis: vale nos 9 modos) */
+.aviso {
+  margin: 0 0 1.5rem;
+  padding: 0.8rem 1rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+.aviso p { margin: 0.25rem 0 0; }
+.aviso-titulo { color: var(--accent); }
+.aviso-titulo::before { content: "⚠ "; }
+
 .badge {
   background: var(--accent-soft);
   color: var(--accent);

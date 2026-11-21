@@ -5,6 +5,21 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Aviso de "rascunho público"
+
+**O quê:** nova propriedade de front matter `publicDraft: true`. Quando ligada, o post
+mostra um aviso no topo (`aside.aviso` em `page.html`) e um selo "rascunho público" na
+listagem (`post-list.html`) e nos metadados (`post-meta.html`). O archetype já vem com
+`publicDraft: false`.
+
+**Por quê:** `draft: true` esconde o post do site publicado; para deixar um texto inacabado
+visível é preciso `draft: false`, e o leitor precisa saber que ele ainda pode mudar.
+
+**Aprendizado:** o Hugo expõe qualquer chave do front matter em `.Params` (nomes em
+minúsculas), então `{{ if .Params.publicDraft }}` basta, sem configurar nada. O CSS usa
+só variáveis de cor, por isso funciona nos três estilos e nas três cores.
+Docs: https://gohugo.io/content-management/front-matter/
+
 ## 2026-11-20 — Terceiro estilo: retrô (site da internet antiga)
 
 **O quê:** novo estilo visual **retrô**, com cara de página dos anos 90: fundo

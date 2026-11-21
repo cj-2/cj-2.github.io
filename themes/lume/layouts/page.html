@@ -8,6 +8,13 @@
       {{ if eq .Section "posts" }}{{ partial "post-meta.html" . }}{{ end }}
     </header>
 
+    {{ if .Params.publicDraft }}
+      <aside class="aviso aviso-rascunho" role="note">
+        <strong class="aviso-titulo">Rascunho público</strong>
+        <p>O autor decidiu deixar esse artigo público mesmo que ainda não esteja concluído. <b>Modificações podem ocorrer!</b></p>
+      </aside>
+    {{ end }}
+
     {{ if and (.Params.toc | default site.Params.toc) (gt (len .TableOfContents) 32) }}
       <details class="toc" open>
         <summary>Sumário</summary>
