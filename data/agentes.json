@@ -1,0 +1,22 @@
+{
+  "critico-cetico": {
+    "nome": "O Cético",
+    "icone": "🤨",
+    "descricao": "Duvida de tudo e fala mal do texto"
+  },
+  "corretor": {
+    "nome": "O Corretor",
+    "icone": "✏️",
+    "descricao": "Corrige palavras erradas e expressões ruins"
+  },
+  "leitor-gentil": {
+    "nome": "O Leitor Gentil",
+    "icone": "🤝",
+    "descricao": "Tenta entender, traz referências e discorda com educação"
+  },
+  "comentarista-aleatorio": {
+    "nome": "O Aleatório",
+    "icone": "🎂",
+    "descricao": "Comenta qualquer coisa, menos o artigo"
+  }
+}

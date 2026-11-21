@@ -17,6 +17,7 @@ Leia na ordem se estiver começando do zero:
 | 6 | [06-deploy.md](06-deploy.md) | Como o site vai para o ar com GitHub Actions + GitHub Pages |
 | 7 | [07-comandos.md](07-comandos.md) | Cola rápida de comandos do dia a dia |
 | 8 | [08-cache.md](08-cache.md) | Cache do navegador: por que o site às vezes aparece velho e como o projeto contorna isso |
+| 9 | [09-agentes-comentaristas.md](09-agentes-comentaristas.md) | Os 4 agentes de IA que comentam os artigos e onde os comentários ficam guardados |
 
 E sempre que quiser saber **o que mudou e por quê**:
 

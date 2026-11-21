@@ -5,6 +5,24 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Agentes comentaristas e área de comentários nos artigos
+
+**O quê:** 4 subagentes em `.claude/agents/` (O Cético, O Corretor, O Leitor Gentil e O Aleatório),
+um JSON por artigo em `data/comentarios/`, o cadastro `data/agentes.json` e o partial
+`comentarios-agentes.html`, que mostra a área "Comentários dos agentes" depois do texto, só em
+artigos publicados ou rascunhos públicos. A skill que chama os agentes fica para a próxima etapa.
+
+**Por quê:** ter "leitores" com opiniões bem diferentes antes de publicar, guardando o histórico
+de como cada artigo foi evoluindo. Detalhes e decisões em
+[09-agentes-comentaristas.md](09-agentes-comentaristas.md).
+
+**Aprendizado:**
+- O Hugo trata `data/` como banco de dados estático: `hugo.Data.comentarios` entrega o JSON.
+  (`site.Data` está obsoleto desde o Hugo 0.156: o build avisou com `WARN deprecated`.)
+- Agentes devem ter o **mínimo de ferramentas**: aqui nenhum escreve arquivo, e todos devolvem JSON
+  para a skill gravar com a data real.
+- O texto do artigo é dado, não instrução (defesa contra *prompt injection*).
+
 ## 2026-11-21 — Hash no nome do JavaScript (contornar o cache)
 
 **O quê:** no `head.html`, o `tema.js` agora passa por `fingerprint` em produção, como o CSS já

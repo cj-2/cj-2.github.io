@@ -323,3 +323,15 @@
 [data-style="retro"] .site-title { text-decoration: none; }
 [data-style="retro"] code, [data-style="retro"] pre { font-size: 0.92em; }
 [data-style="retro"] pre { line-height: 1.45; }
+
+[data-style="retro"] .comentarios { border-top: 3px double var(--border); }
+[data-style="retro"] .comentario {
+  border: 2px solid;
+  border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi);
+  background: var(--retro-btn);
+  color: var(--retro-btn-text);
+}
+[data-style="retro"] .comentario-nome,
+[data-style="retro"] .comentario time,
+[data-style="retro"] .comentario-motivo { color: var(--retro-btn-text); }
+[data-style="retro"] .comentario-correcoes del { color: var(--retro-btn-text); }

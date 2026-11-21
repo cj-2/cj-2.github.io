@@ -30,6 +30,9 @@ themes/lume/              tema próprio
   assets/css/chroma.css   cores de destaque de código (gerado, ver docs/05-tema-lume.md)
   assets/js/tema.js       botões de estilo (natal/terminal/normal/retrô) e cor (sistema/claro/escuro)
 .github/workflows/hugo.yaml  build + deploy no GitHub Pages
+.claude/agents/           os 4 agentes comentaristas (personalidades; ver docs/09-agentes-comentaristas.md)
+data/agentes.json         cadastro dos agentes (nome de exibição e ícone)
+data/comentarios/         um JSON por artigo com os comentários dos agentes (só cresce)
 docs/                     documentação de aprendizado (NÃO é publicada no site)
 ```
 
@@ -65,6 +68,9 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
   sistema, claro e escuro).
 - Não adicione dependências (npm, frameworks CSS, temas externos) sem pedir.
 - Posts: front matter em YAML com `title`, `date`, `draft`, `tags`, `description`.
+- Comentários dos agentes: ficam em `data/comentarios/<pasta-do-artigo>.json`, com data real e
+  sem apagar os antigos. A área só aparece em artigos publicados ou com `publicDraft: true`.
+  Nenhum agente comentarista tem permissão de escrever arquivos.
 
 ## Git — regras obrigatórias
 
