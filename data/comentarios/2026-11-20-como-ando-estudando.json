@@ -1,4 +1,91 @@
 {
   "artigo": "2026-11-20-como-ando-estudando",
-  "comentarios": []
+  "comentarios": [
+    {
+      "id": "2026-11-21T14-04-32-critico-cetico",
+      "agente": "critico-cetico",
+      "data": "2026-11-21T14:04:32-03:00",
+      "texto": "Que título corajoso: \"tento\" entre aspas, e o texto passa o tempo todo desviando de provar que funciona. Você diz que a IA tornou as coisas \"uma dificuldade muito maior\", mas não dá um único exemplo concreto, e eu fico aqui perguntando: maior em quê, e segundo quem? O melhor argumento está em \"gerar por gerar não faz muita diferença\", e admito isso a contragosto. Só que logo depois você confessa que não lê tudo de cada projeto, e a \"documentação gerada pelo agente para aprender junto\" vira só mais um texto que a própria IA escreveu e que você talvez leia \"com o tempo\". Que evidência existe de que você aprendeu alguma coisa, além de ter uma pasta docs bem organizada?",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "7dc872d54af8"
+    },
+    {
+      "id": "2026-11-21T14-04-33-corretor",
+      "agente": "corretor",
+      "data": "2026-11-21T14:04:33-03:00",
+      "texto": "Li o texto com carinho e a voz está ótima, informal como deve ser. Separei os deslizes mais claros: crase, acentos, uma palavra repetida e algumas concordâncias. Nada grave, é coisa de digitação.",
+      "referencias": [],
+      "correcoes": [
+        {
+          "trecho": "não se entregar as facilidades",
+          "sugestao": "não se entregar às facilidades",
+          "motivo": "crase: entregar-se a + as"
+        },
+        {
+          "trecho": "deixou praticamente \"coisa\" mais simples de se fazer",
+          "sugestao": "deixou praticamente toda \"coisa\" mais simples de fazer",
+          "motivo": "falta de determinante e concordância; a frase fica truncada"
+        },
+        {
+          "trecho": "ficar para traz",
+          "sugestao": "ficar para trás",
+          "motivo": "grafia: trás com s e acento (também em \"me deixe para traz\")"
+        },
+        {
+          "trecho": "para faze-lo",
+          "sugestao": "para fazê-lo",
+          "motivo": "acentuação: oxítona terminada em e"
+        },
+        {
+          "trecho": "explicar como como muita certeza",
+          "sugestao": "explicar com muita certeza",
+          "motivo": "palavra repetida e \"como\" no lugar de \"com\""
+        },
+        {
+          "trecho": "Aqui pode entrar ==algumas pessoas que simplesmente não ligam",
+          "sugestao": "Aqui podem entrar algumas pessoas que simplesmente não ligam",
+          "motivo": "concordância do verbo com o sujeito plural"
+        },
+        {
+          "trecho": "A gasto de tokens nem é tanta assim",
+          "sugestao": "O gasto de tokens nem é tanto assim",
+          "motivo": "concordância: gasto é masculino"
+        },
+        {
+          "trecho": "criando documentações pessoas, a medida que preciso entender sobe uma linguagem",
+          "sugestao": "criando documentações pessoais, à medida que preciso entender sobre uma linguagem",
+          "motivo": "digitação (pessoas/pessoais, sobe/sobre) e crase em \"à medida que\""
+        }
+      ],
+      "hash_do_texto": "7dc872d54af8"
+    },
+    {
+      "id": "2026-11-21T14-04-33-comentarista-aleatorio",
+      "agente": "comentarista-aleatorio",
+      "data": "2026-11-21T14:04:33-03:00",
+      "texto": "Li o texto por alto e fiquei com a palavra \"documentação\", que me lembrou que os pombos da praça têm um calendário secreto e sempre aparecem no mesmo banco às terças. Eu anoto tudo num caderninho verde, e acho que o pão amanhecido é a chave de toda essa história. Quem tiver uma teoria melhor sobre pombos, me avise!",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "7dc872d54af8"
+    },
+    {
+      "id": "2026-11-21T14-04-47-leitor-gentil",
+      "agente": "leitor-gentil",
+      "data": "2026-11-21T14:04:47-03:00",
+      "texto": "Gostei de ver você admitir que a IA esconde a dificuldade em vez de eliminá-la: \"algo funciona\" não quer dizer que você saiba explicar por quê. A ideia de pedir ao agente uma documentação que acompanhe o projeto, e de usar o próprio blog como exemplo, torna o argumento concreto. A passagem sobre abstração também ficou boa, porque mostra que não dá para entender 100% de tudo e que o ponto é saber quais partes importam. Fiquei com uma dúvida: como você decide que uma parte \"importa muito mais\"? E que sinal te diz que já aprendeu, e não só leu a documentação gerada? Talvez ajude reimplementar sem olhar ou explicar com suas palavras, algo parecido com o que alguns textos em português sugerem. Suas documentações pessoais também me lembraram o conceito de jardim digital, em que as notas vão sendo cultivadas aos poucos e em público. Deixei duas leituras abaixo.",
+      "referencias": [
+        {
+          "titulo": "IA na programação: como usar sem deixar a IA programar por você (DIO)",
+          "url": "https://www.dio.me/articles/ia-na-programacao-como-usar-sem-deixar-a-ia-programar-por-voce-ba11103bf82a"
+        },
+        {
+          "titulo": "A Brief History & Ethos of the Digital Garden (Maggie Appleton)",
+          "url": "https://maggieappleton.com/garden-history"
+        }
+      ],
+      "correcoes": [],
+      "hash_do_texto": "7dc872d54af8"
+    }
+  ]
 }

@@ -1,4 +1,91 @@
 {
   "artigo": "2026-10-26-a-primeira-publicacao",
-  "comentarios": []
+  "comentarios": [
+    {
+      "id": "2026-11-21T14-04-05-comentarista-aleatorio",
+      "agente": "comentarista-aleatorio",
+      "data": "2026-11-21T14:04:05-03:00",
+      "texto": "Olha, eu li o texto todo e fiquei com uma dúvida séria: por que os pombos da praça sempre andam em grupos de três? Tenho uma teoria de que eles estão fazendo um campeonato de bolinhas de gude, mas ninguém me deixa participar. Enquanto isso, meu bolo de cenoura desandou de novo, então vou ter que pedir ajuda ao vizinho que entende de forno.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "0ddb449900b0"
+    },
+    {
+      "id": "2026-11-21T14-04-32-critico-cetico",
+      "agente": "critico-cetico",
+      "data": "2026-11-21T14:04:32-03:00",
+      "texto": "Você diz que a internet ficou \"extremamente chato\" e depois gasta três parágrafos sem dizer o que é chato nela. Cadê um exemplo? Quem disse que isso é culpa da internet e não do seu feed? Também desconfio do \"não sei explicar\" seguido de um parágrafo inteiro tentando explicar sobre \"o fluxo corrente de tudo que existe\", que é filosofia de embalagem. E o fecho, mandando os outros escreverem para si mesmos ou pedirem para uma IA, é provocação pronta que atira em ninguém, porque você mesmo disse que escreve só para você. Admito, a contragosto, que a nota final sobre a data anterior ao primeiro commit é honesta, coisa rara em primeiro post.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "0ddb449900b0"
+    },
+    {
+      "id": "2026-11-21T14-04-32-corretor",
+      "agente": "corretor",
+      "data": "2026-11-21T14:04:32-03:00",
+      "texto": "Boa estreia! O texto está bem fluido e a voz pessoal ficou preservada, então apontei só o que realmente pede ajuste: uma palavra grafada errado, um erro de concordância verbal e alguns detalhes de pontuação e fluidez. Nada que tire a graça do desabafo.",
+      "referencias": [],
+      "correcoes": [
+        {
+          "trecho": "é perca de tempo",
+          "sugestao": "é perda de tempo",
+          "motivo": "o substantivo correto é \"perda\""
+        },
+        {
+          "trecho": "peçam para uma agente de IA escreva e pensem por vocês",
+          "sugestao": "peçam para um agente de IA escrever e pensar por vocês",
+          "motivo": "\"peçam para\" pede infinitivo (escrever), não subjuntivo; \"agente\" é comum de dois gêneros, e o artigo \"um\" é o mais usual"
+        },
+        {
+          "trecho": "qualquer outro fato trágico que envolve a vida",
+          "sugestao": "qualquer outro fato trágico que envolva a vida",
+          "motivo": "após \"qualquer\", o verbo da oração relativa fica no subjuntivo"
+        },
+        {
+          "trecho": "que vai do início, ao auge e em algum momento ao fim",
+          "sugestao": "que vai do início ao auge e, em algum momento, ao fim",
+          "motivo": "não se separa o verbo/complemento com vírgula antes de \"ao\"; e a expressão intercalada pede vírgulas"
+        },
+        {
+          "trecho": "Pessoalmente sinto que",
+          "sugestao": "Pessoalmente, sinto que",
+          "motivo": "vírgula após o advérbio deslocado no início da frase"
+        },
+        {
+          "trecho": "em movimento com a sensação de estar parado",
+          "sugestao": "em movimento, mas com a sensação de estar parado",
+          "motivo": "faltou o conectivo para fechar o contraste da frase"
+        },
+        {
+          "trecho": "traga algo para mim no futuro",
+          "sugestao": "traga algo para mim no futuro",
+          "motivo": "o texto mistura \"gosto de acreditar que ... traga\"; o subjuntivo funciona, mas \"venha a trazer\" ou \"vai trazer\" soaria mais natural (opcional)"
+        },
+        {
+          "trecho": "uma outra tentativa preguiçosa da criação de um blog",
+          "sugestao": "uma outra tentativa preguiçosa de criar um blog",
+          "motivo": "evita a construção pesada com dois \"de\" encadeados"
+        }
+      ],
+      "hash_do_texto": "0ddb449900b0"
+    },
+    {
+      "id": "2026-11-21T14-04-46-leitor-gentil",
+      "agente": "leitor-gentil",
+      "data": "2026-11-21T14:04:46-03:00",
+      "texto": "Gostei de ver que você assume desde o começo, sem rodeios, que escreve para si e que o blog é um espaço de movimento mental, nem que seja a sensação de movimento. A frase sobre ficar \"em movimento com a sensação de estar parado\" me pareceu a mais honesta e memorável do texto. Os riscos e as tachaduras (~~) também dão voz ao tom de desabafo, e a nota final sobre a data anterior ao primeiro commit é um detalhe curioso de bastidor. Fiquei com uma dúvida carinhosa: o trecho final, que critica quem pede a uma IA para escrever e pensar por si, é de propósito mais ríspido do que o resto? Talvez valha deixar claro se é ironia ou desabafo, porque o resto do texto convida a ficar. Achei dois textos que conversam com o seu: o do canro91 sobre manter um blog pessoal mesmo com o blogging \"morto\", e o do Flavio Copes sobre por que blogar.",
+      "referencias": [
+        {
+          "titulo": "The Reason Why I'll Keep My Personal Blog (Even When Blogging Is Dead)",
+          "url": "https://canro91.github.io/2025/05/02/Blogging"
+        },
+        {
+          "titulo": "why blog",
+          "url": "https://flaviocopes.com/why-blog/"
+        }
+      ],
+      "correcoes": [],
+      "hash_do_texto": "0ddb449900b0"
+    }
+  ]
 }
