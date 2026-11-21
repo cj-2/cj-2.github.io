@@ -147,3 +147,111 @@ document.querySelectorAll(".spoiler").forEach((el) => {
     }
   });
 });
+
+// ---------- Natal: mensagem ao clicar no Papai Noel ou no gnomo ----------
+// Os dois são <button class="natal-only"> (escondidos fora do estilo natal). O balão
+// (.natal-msg) é uma região aria-live, então leitores de tela anunciam a mensagem.
+const MENSAGENS_NATAL = {
+  papai: {
+    nome: "Papai Noel",
+    textos: [
+      "Ho ho ho! Feliz Natal! Que o seu dia seja cheio de paz e de boas leituras.",
+      "Ho ho ho! Este ano você foi um ótimo leitor. Continue curioso!",
+      "Passando só para deixar um abraço. Boas festas!",
+    ],
+  },
+  danca: {
+    nome: "Gnomo dançarino",
+    textos: [
+      "Estou tentando aprender aquilo que os brasileiros chamam de sarrada!",
+      "Acho que estou começando a pegar o jeito...",
+      "Estou arrasando, pode falar!",
+    ],
+  },
+  gnomo: {
+    nome: "Gnomo",
+    textos: [
+      "Shhh... estou dançando só para você. Boas festas!",
+      "Feliz Natal! Que o ano novo venha com muita saúde e poucos bugs.",
+      "Dizem que quem lê no Natal ganha um presente extra. Eu não vi nada, tá?",
+    ],
+  },
+};
+
+const balaoNatal = document.querySelector(".natal-msg");
+let timerBalao;
+let ultimaMensagem = "";
+
+function mostrarMensagemNatal(quem) {
+  const { nome, textos } = MENSAGENS_NATAL[quem];
+  // Sorteia sem repetir a mensagem anterior.
+  const opcoes = textos.filter((t) => t !== ultimaMensagem);
+  const texto = opcoes[Math.floor(Math.random() * opcoes.length)];
+  ultimaMensagem = texto;
+  balaoNatal.replaceChildren();
+  const titulo = document.createElement("strong");
+  titulo.textContent = nome;
+  balaoNatal.append(titulo, texto);
+  balaoNatal.hidden = false;
+  clearTimeout(timerBalao);
+  timerBalao = setTimeout(() => (balaoNatal.hidden = true), 6000);
+}
+
+if (balaoNatal) {
+  document.querySelectorAll("[data-natal]").forEach((el) => {
+    el.addEventListener("click", () => mostrarMensagemNatal(el.dataset.natal));
+  });
+  balaoNatal.addEventListener("click", () => (balaoNatal.hidden = true));
+}
+
+// ---------- Natal: gnomo escorregando pela borda da janela ----------
+// O gnomo (.term-window::before, ver natal.css) lê a variável --gnomo-y. Aqui calculamos
+// onde ele deve ficar para acompanhar a rolagem: mais ou menos no meio da tela, sem sair
+// da janela. requestAnimationFrame evita recalcular mais de uma vez por quadro.
+const janelaGnomo = document.querySelector(".term-window");
+let gnomoAgendado = false;
+
+function posicionarGnomo() {
+  gnomoAgendado = false;
+  const r = janelaGnomo.getBoundingClientRect();
+  const alvo = window.innerHeight * 0.5 - r.top;
+  const maximo = Math.max(80, r.height - 80);
+  janelaGnomo.style.setProperty("--gnomo-y", `${Math.min(Math.max(alvo, 80), maximo)}px`);
+}
+
+function agendarGnomo() {
+  if (gnomoAgendado) return;
+  gnomoAgendado = true;
+  requestAnimationFrame(posicionarGnomo);
+}
+
+if (janelaGnomo) {
+  window.addEventListener("scroll", agendarGnomo, { passive: true });
+  window.addEventListener("resize", agendarGnomo);
+  posicionarGnomo();
+}
+
+// ---------- Natal: corações ao clicar no gnomo da borda ----------
+// Cada coração é um <span class="natal-coracao"> (natal.css) criado na posição do gnomo.
+// --dx e --atraso aleatórios fazem cada um subir por um caminho diferente. Removemos por
+// timeout (e não por "animationend") para funcionar também com "reduzir movimento".
+const gnomoBorda = document.querySelector(".natal-gnomo-borda");
+
+function soltarCoracoes() {
+  const r = gnomoBorda.getBoundingClientRect();
+  for (let i = 0; i < 4; i++) {
+    const c = document.createElement("span");
+    c.className = "natal-coracao";
+    // Espalhados: ponto de partida, deriva lateral e altura da subida variam em cada coração.
+    c.style.left = `${r.left + r.width * (-0.4 + Math.random() * 1.5)}px`;
+    c.style.top = `${r.top + r.height * (0 + Math.random() * 0.6)}px`;
+    c.style.setProperty("--dx", `${Math.round((Math.random() - 0.75) * 150)}px`);
+    c.style.setProperty("--dy", `-${Math.round(90 + Math.random() * 90)}px`);
+    c.style.setProperty("--atraso", `${(i * 0.18).toFixed(2)}s`);
+    document.body.append(c);
+    setTimeout(() => c.remove(), 2200);
+  }
+}
+
+if (gnomoBorda) gnomoBorda.addEventListener("click", soltarCoracoes);
+// (a fala do gnomo da borda vem do listener genérico de [data-natal], mais acima)

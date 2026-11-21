@@ -15,6 +15,48 @@ neve, árvores de Natal no título e no rodapé e neve caindo ao fundo. Tem vers
 
 **Por quê:** um tema sazonal que reaproveita toda a estrutura do site, só trocando o CSS.
 
+**Papai Noel:** um trenó com três renas (sprite 62×9) cruza a faixa de céu entre o
+cabeçalho e a janela, em `.site-header::after` (colado embaixo do cabeçalho, qualquer que seja a altura dele; `body { overflow-x: clip }` evita rolagem horizontal quando ele sai da tela). Duas animações no mesmo elemento: `natal-voa`
+(`transform`, horizontal, em `steps()`) e `natal-pula` (`margin-top`, o galope). Não dá para
+usar duas animações na mesma propriedade, por isso cada uma mexe numa propriedade diferente.
+Primeiro ele estava `fixed` e atrás da janela, ou seja, invisível: o fix foi prendê-lo ao
+cabeçalho.
+
+**Gnomo dançante:** sprite de 2 quadros lado a lado, preso no canto inferior direito
+(`.site-footer::after`, `position: fixed`) em telas ≥ 1200px; em telas estreitas ele fica em pé
+em cima do rodapé (`position: absolute; bottom: 100%`), para não cobrir o texto.
+`steps(1)` troca o quadro (`background-position`) e outra animação faz o pulinho.
+O cabeçalho ganhou `margin-bottom` maior neste estilo para o trenó não "bater a cabeça".
+
+**Mensagem ao clicar:** o trenó e o gnomo deixaram de ser pseudo-elementos (`::after`, que
+não recebem clique) e viraram `<button class="natal-only">` de verdade, em `header.html` e
+`footer.html`. `.natal-only { display: none }` no `main.css` os esconde nos outros estilos e o
+`natal.css` os mostra. O `tema.js` sorteia uma mensagem (sem repetir a anterior) e a exibe
+num balão `role="status"` (leitores de tela anunciam), que some em 6 s ou ao clicar nele.
+O trenó desceu: `top: 100%` do elemento absoluto não conta a borda de 4px nem a sombra de
+6px do cabeçalho, por isso ele "batia" na borda; agora é `calc(100% + 22px)`.
+
+**Gnomo agarrado na borda (dançando funk):** um segundo gnomo, visto de lado e olhando para a
+tela, com uma mão e os pés na borda esquerda da janela e a bunda para fora (`.term-window::before`).
+Sprite de 4 quadros em que **só o quadril se mexe**, para trás e para a frente (em direção à
+borda), só 1 quadradinho para cada lado (2 era exagero); tronco, pernas e botas ficam parados.
+O rosto não tem nariz: um pixel rosa isolado na frente do rosto parecia outra coisa. Em pixel
+art, cada pixel solto conta, então cuidado com as pontas das silhuetas. Lições das versões anteriores: agachar fazia
+parecer que ele balançava as pernas (desenhe parado tudo o que não deve mexer); e quando uma
+parte do sprite se move, as peças fixas em volta (cintura, coxa) precisam cobrir o espaço que
+ela deixa, senão aparecem "vazinhos" no corpo.
+Ele também **escorrega pela borda acompanhando a rolagem**: o `tema.js` calcula a altura ideal e
+grava na variável CSS `--gnomo-y` (via `requestAnimationFrame`, no máximo uma vez por quadro), e o
+CSS usa `top: var(--gnomo-y)` com `transition` em `steps()` para o deslize "em quadros".
+**Corações ao clicar:** como pseudo-elementos não recebem clique, o gnomo virou um
+`<button class="natal-only natal-gnomo-borda">` (em `baseof.html`, dentro da janela). Ao clicar,
+o `tema.js` cria 7 `<span class="natal-coracao">` na posição dele, cada um com `--dx` e
+`--atraso` aleatórios (via `style.setProperty`) para subirem por caminhos diferentes em passos
+de pixel (4 corações, espalhados com `--dx`, `--dy` e atraso aleatórios); o gnomo também fala,
+pois o botão tem `data-natal="danca"` e reaproveita o balão de mensagem; os spans são removidos por `setTimeout`, que funciona até com "reduzir movimento".
+Detalhe: `left` de um elemento absoluto conta a partir da borda *interna* (padding box), então
+é preciso descontar os 4px da borda. Abaixo de ~1130px de largura ele fica menor e entra no padding, porque as laterais não comportam o grande.
+
 **Aprendizado:**
 - Pixel art sem imagens: sprites são SVGs de `<rect>` 1×1 com `shape-rendering="crispEdges"`,
   embutidos no CSS como `url("data:image/svg+xml,...")` e guardados em variáveis (`--natal-arvore`).

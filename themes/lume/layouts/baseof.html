@@ -9,6 +9,8 @@
   <main id="conteudo" class="container">
     {{/* No estilo normal a "janela" é invisível; no terminal ganha moldura e barra de título */}}
     <div class="term-window">
+      {{/* Gnomo agarrado na borda (só no estilo natal): clicar solta corações (tema.js) */}}
+      <button class="natal-only natal-gnomo-borda" type="button" data-natal="danca" aria-label="Gnomo dançando na borda: clique para ver corações"></button>
       <div class="term-bar" aria-hidden="true">
         <span class="term-dots"><i></i><i></i><i></i></span>
         {{ $caminho := cond (eq .Kind "404") "" (.RelPermalink | strings.TrimSuffix "/") }}

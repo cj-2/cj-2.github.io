@@ -190,6 +190,9 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
 
 /* Botão de estilo: o ícone mostra o estilo para o qual o clique LEVA
    (normal -> terminal -> retrô -> normal) */
+/* Extras do estilo natal (trenó, gnomo, mensagem): só o natal.css os mostra */
+.natal-only { display: none; }
+
 .style-toggle svg { display: none; }
 :root:not([data-style]) .style-toggle .go-terminal,
 :root[data-style="terminal"] .style-toggle .go-retro,
