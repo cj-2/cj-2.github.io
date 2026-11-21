@@ -16,6 +16,16 @@
     try {
       var cor = localStorage.getItem("tema");
       if (cor === "light" || cor === "dark") root.dataset.theme = cor;
+      // Parâmetro da URL ?v=XY vence o que está salvo: é o que faz um link compartilhado abrir
+      // com o mesmo visual de quem o enviou. X = estilo (n normal, t terminal, r retrô),
+      // Y = largura (e estreita, p padrão, t total). A cor (claro/escuro) NÃO vem da URL:
+      // continua sendo a escolha de quem visita.
+      var v = new URLSearchParams(location.search).get("v");
+      if (v && /^[ntr][ept]$/.test(v)) {
+        localStorage.setItem("estilo", { n: "normal", t: "terminal", r: "retro" }[v[0]]);
+        if (v[1] === "p") localStorage.removeItem("largura");
+        else localStorage.setItem("largura", v[1] === "e" ? "narrow" : "full");
+      }
       var largura = localStorage.getItem("largura");
       if (largura === "narrow" || largura === "full") root.dataset.width = largura;
       // O padrão é o terminal. "normal" (sem atributo) e "retro" só se o visitante escolheu.

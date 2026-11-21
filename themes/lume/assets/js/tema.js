@@ -16,6 +16,22 @@ function salvar(chave, valor) {
   } catch (e) {}
 }
 
+// ---------- Link compartilhável ----------
+// Mantém ?v=XY na barra de endereço (curto de propósito), para que copiar o link
+// compartilhe o visual. X = estilo (n/t/r), Y = largura (e/p/t); ver o script do head.html.
+// A cor (claro/escuro) fica de fora de propósito.
+// replaceState troca a URL sem recarregar a página nem poluir o histórico.
+const COD_ESTILO = { normal: "n", terminal: "t", retro: "r" };
+const COD_LARGURA = { narrow: "e", default: "p", full: "t" };
+
+function sincronizarUrl() {
+  const url = new URL(location.href);
+  url.searchParams.delete("estilo");
+  url.searchParams.delete("largura");
+  url.searchParams.set("v", COD_ESTILO[estiloAtual()] + COD_LARGURA[larguraAtual()]);
+  history.replaceState(null, "", url);
+}
+
 // ---------- Cor ----------
 const CORES = ["system", "light", "dark"];
 const NOME_COR = { system: "segue o sistema", light: "claro", dark: "escuro" };
@@ -73,6 +89,7 @@ document.querySelectorAll(".style-toggle").forEach((btn) => {
     // Terminal é o padrão, então só "normal" e "retro" precisam ser lembrados.
     salvar("estilo", proximo === "terminal" ? null : proximo);
     atualizarBotaoEstilo();
+    sincronizarUrl();
   });
 });
 
@@ -102,12 +119,14 @@ document.querySelectorAll(".width-toggle").forEach((btn) => {
     else root.dataset.width = proxima;
     salvar("largura", proxima === "default" ? null : proxima);
     atualizarBotaoLargura();
+    sincronizarUrl();
   });
 });
 
 atualizarBotaoCor();
 atualizarBotaoEstilo();
 atualizarBotaoLargura();
+sincronizarUrl();
 
 // ---------- Spoiler ----------
 // Clicar (ou Enter/Espaço, com o foco no spoiler) revela o texto de forma permanente.

@@ -5,6 +5,22 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Estilo e largura na URL (links compartilháveis)
+
+**O quê:** a URL agora carrega `?v=XY` (curto, para não inflar a URL): X = estilo (`n` normal, `t` terminal, `r` retrô),
+Y = largura (`e` estreita, `p` padrão, `t` total). Ex.: `?v=rp` = retrô, largura padrão.
+O script do `<head>` (`head.html`) lê esses parâmetros, aplica e salva no `localStorage`;
+o `tema.js` mantém a URL em dia a cada clique nos botões (`sincronizarUrl()`).
+A cor (claro/escuro) **não** vai na URL: é preferência de quem visita.
+
+**Por quê:** quem recebe um link deve ver o site como quem o enviou viu (estilo e área de
+leitura), mas respeitando o gosto dele para claro/escuro.
+
+**Aprendizado:** `history.replaceState` troca a URL sem recarregar nem criar entrada no
+histórico; `URLSearchParams` lê e escreve parâmetros sem montar string na mão. Como os
+valores padrão também vão na URL, o link vale mesmo para quem tem outra preferência salva.
+Docs: https://developer.mozilla.org/pt-BR/docs/Web/API/History/replaceState
+
 ## 2026-11-21 — Aviso de "rascunho público"
 
 **O quê:** nova propriedade de front matter `publicDraft: true`. Quando ligada, o post
