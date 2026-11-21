@@ -184,6 +184,9 @@ let ultimaMensagem = "";
 
 function mostrarMensagemNatal(quem) {
   const { nome, textos } = MENSAGENS_NATAL[quem];
+  // Abaixo de 1200px o gnomo do canto fica em pé sobre o rodapé, no pé da tela: o balão vai
+  // para o topo para não tapá-lo.
+  balaoNatal.classList.toggle("natal-msg-topo", quem === "gnomo" && window.matchMedia("(max-width: 1199px)").matches);
   // Sorteia sem repetir a mensagem anterior.
   const opcoes = textos.filter((t) => t !== ultimaMensagem);
   const texto = opcoes[Math.floor(Math.random() * opcoes.length)];
@@ -280,7 +283,9 @@ function soltarEfeito(origem, quem) {
 // throttle: responde na hora ao primeiro clique, em vez de esperar o fim da sequência).
 // O intervalo vale para todos os bonequinhos juntos, pois dividem o mesmo balão.
 const INTERVALO_CLIQUE_MS = 2000;
-let ultimoCliqueBoneco = 0;
+// -Infinity (e não 0): performance.now() conta desde que a página abriu, então com 0 os cliques
+// nos primeiros 2 s de página seriam ignorados, e a primeira mensagem não aparecia.
+let ultimoCliqueBoneco = -Infinity;
 
 function aoClicarBoneco(el) {
   // Os efeitos (corações, estrelas, presentes) saem a cada clique: só a mensagem tem trava.

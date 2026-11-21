@@ -58,6 +58,36 @@ o `none` e perdeu o clique, pois `pointer-events` é uma propriedade herdada; fo
 no próprio trenó.
 O gnomo da borda ficou maior (5× em telas largas, 3× até 1130px, 2× abaixo de 560px).
 
+**Gnomo da borda minúsculo e com "buraco" no celular:** (1) ele encolhia porque as laterais do
+celular são estreitas; agora a janela ganha uma margem esquerda extra e o gnomo fica 3× (≤560px),
+4× (até 1130px) ou 5×. (2) O "buraco" era um defeito de escala: sprites em SVG (`<rect>` por
+pixel) com `crispEdges` deixam frestas quando o navegador escala em proporção quebrada (celulares
+com densidade 2,625, por exemplo). Para este gnomo o sprite virou **PNG** em base64: com
+`image-rendering: pixelated`, o navegador amplia pixel a pixel, sem frestas. Os outros sprites
+(trenó, corações etc.) ainda são SVG; se aparecer o mesmo problema neles, o remédio é o mesmo.
+Só que o PNG não resolveu o "buraco na cabeça": ele estava no desenho. O pixel escuro do olho
+encostava na aba do gorro e, ampliado, parecia um furo. Agora o rosto é um bloco de pele 4×2
+com o olho no meio, cercado de pele, e a barba por baixo. Lição: em pixel art, um pixel escuro
+na borda de uma forma lê como "buraco"; olhos precisam de pele em volta.
+O buraco de verdade, porém, era outro: atrás da cabeça (à esquerda), o gorro ficava "no ar" porque
+a cabeça começava mais à direita que a aba. Agora o cabelo e a barba se estendem para trás até
+ficar sob o gorro. Lição: quando o usuário diz "buraco", confirme em qual lado; e em sprites,
+confira se cada peça (gorro, cabeça, tronco) tem apoio logo abaixo dela.
+Sobre o nariz, três tentativas: 1 pixel rosa solto (parecia outra coisa), um bloco rosa 1×2
+(parecia a Peppa Pig) e, por fim, o nariz **da cor da pele**, como um degrau na parte de baixo
+do rosto (a linha de baixo do rosto é 1 pixel mais longa). Lição: em perfil, o nariz é parte da
+silhueta do rosto; um bloco grande de outra cor o transforma em outro objeto. Por pedido, só a
+**ponta** do nariz (1 pixel) tem o rosado do outro gnomo, o resto continua cor de pele.
+
+**Ajustes no celular:** o gnomo da borda ficou 4× (48px), entra 8px pela borda (`left: -40px`) e a
+margem extra da janela é de 27px (gnomo maior pede lateral maior: é uma troca, não dá para ter os dois).
+Bug: a 1ª mensagem não aparecia se o clique viesse nos 2 primeiros segundos da página, porque
+`ultimoCliqueBoneco` começava em 0 e `performance.now()` conta desde a abertura da página; o inicial
+agora é `-Infinity`. Além disso, o gnomo do canto fica em pé no
+rodapé e o balão de mensagem (no pé da tela) o tapava; abaixo de 1200px o `tema.js` põe a classe
+`natal-msg-topo` para levar o balão ao topo quando é ele quem fala (`classList.toggle` com uma
+condição, e `matchMedia` para saber a largura da tela dentro do JS).
+
 **Efeitos ao clicar:** como pseudo-elementos não recebem clique, o gnomo da borda virou um
 `<button class="natal-only natal-gnomo-borda">` (em `baseof.html`). Ao clicar, o `tema.js`
 (`soltarEfeito`, guiado por uma tabela `EFEITOS_NATAL`) cria `<span>`s na posição de quem foi
