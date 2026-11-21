@@ -48,12 +48,22 @@ ela deixa, senão aparecem "vazinhos" no corpo.
 Ele também **escorrega pela borda acompanhando a rolagem**: o `tema.js` calcula a altura ideal e
 grava na variável CSS `--gnomo-y` (via `requestAnimationFrame`, no máximo uma vez por quadro), e o
 CSS usa `top: var(--gnomo-y)` com `transition` em `steps()` para o deslize "em quadros".
-**Corações ao clicar:** como pseudo-elementos não recebem clique, o gnomo virou um
-`<button class="natal-only natal-gnomo-borda">` (em `baseof.html`, dentro da janela). Ao clicar,
-o `tema.js` cria 7 `<span class="natal-coracao">` na posição dele, cada um com `--dx` e
-`--atraso` aleatórios (via `style.setProperty`) para subirem por caminhos diferentes em passos
-de pixel (4 corações, espalhados com `--dx`, `--dy` e atraso aleatórios); o gnomo também fala,
-pois o botão tem `data-natal="danca"` e reaproveita o balão de mensagem; os spans são removidos por `setTimeout`, que funciona até com "reduzir movimento".
+**Efeitos ao clicar:** como pseudo-elementos não recebem clique, o gnomo da borda virou um
+`<button class="natal-only natal-gnomo-borda">` (em `baseof.html`). Ao clicar, o `tema.js`
+(`soltarEfeito`, guiado por uma tabela `EFEITOS_NATAL`) cria `<span>`s na posição de quem foi
+clicado, cada um com `--dx`, `--dy` e `--atraso` aleatórios (via `style.setProperty`) e em
+passos de pixel: o gnomo da borda solta 4 corações que sobem, o gnomo do canto solta 5 estrelas
+que sobem e o Papai Noel solta 4 presentes (3 cores) que caem do trenó (a faixa de x vai de 3% a 30%
+da largura do sprite, antes das renas, um presente por "fatia" e a cada 0,5 s) até perto do pé da tela. O gnomo da
+borda também fala (`data-natal="danca"` reaproveita o balão). Os spans são removidos por
+`setTimeout`, que funciona até com "reduzir movimento". Uma tabela de configuração evita
+repetir o mesmo código três vezes.
+**Debounce na mensagem:** vários cliques seguidos trocavam a mensagem antes de dar para ler. Agora
+`aoClicarBoneco()` só troca a mensagem no primeiro clique e a ignora nos seguintes por 2 s
+(`INTERVALO_CLIQUE_MS`), valendo para todos os bonequinhos juntos, já que dividem o balão. Os
+efeitos (corações, estrelas, presentes) continuam saindo a cada clique. Tecnicamente é a variante
+"leading edge" do debounce (também chamada de throttle): responde na hora ao primeiro clique, em
+vez de esperar a pessoa parar de clicar, o que faria a mensagem demorar a aparecer.
 Detalhe: `left` de um elemento absoluto conta a partir da borda *interna* (padding box), então
 é preciso descontar os 4px da borda. Abaixo de ~1130px de largura ele fica menor e entra no padding, porque as laterais não comportam o grande.
 

@@ -197,12 +197,8 @@ function mostrarMensagemNatal(quem) {
   timerBalao = setTimeout(() => (balaoNatal.hidden = true), 6000);
 }
 
-if (balaoNatal) {
-  document.querySelectorAll("[data-natal]").forEach((el) => {
-    el.addEventListener("click", () => mostrarMensagemNatal(el.dataset.natal));
-  });
-  balaoNatal.addEventListener("click", () => (balaoNatal.hidden = true));
-}
+// O clique nos bonequinhos (mensagem + efeito) é tratado mais abaixo, em aoClicarBoneco().
+if (balaoNatal) balaoNatal.addEventListener("click", () => (balaoNatal.hidden = true));
 
 // ---------- Natal: gnomo escorregando pela borda da janela ----------
 // O gnomo (.term-window::before, ver natal.css) lê a variável --gnomo-y. Aqui calculamos
@@ -231,27 +227,70 @@ if (janelaGnomo) {
   posicionarGnomo();
 }
 
-// ---------- Natal: corações ao clicar no gnomo da borda ----------
-// Cada coração é um <span class="natal-coracao"> (natal.css) criado na posição do gnomo.
-// --dx e --atraso aleatórios fazem cada um subir por um caminho diferente. Removemos por
-// timeout (e não por "animationend") para funcionar também com "reduzir movimento".
-const gnomoBorda = document.querySelector(".natal-gnomo-borda");
+// ---------- Natal: corações, estrelas e presentes ao clicar ----------
+// Cada efeito é um <span> (natal.css) criado na posição de quem foi clicado. --dx, --dy e
+// --atraso aleatórios fazem cada um seguir um caminho diferente. Removemos por timeout (e não
+// por "animationend") para funcionar também com "reduzir movimento".
+//   gnomo da borda (data-natal="danca") -> corações que sobem
+//   gnomo do canto (data-natal="gnomo") -> estrelas que sobem
+//   Papai Noel     (data-natal="papai") -> presentes que caem
+const aleatorio = (min, max) => min + Math.random() * (max - min);
 
-function soltarCoracoes() {
-  const r = gnomoBorda.getBoundingClientRect();
-  for (let i = 0; i < 4; i++) {
-    const c = document.createElement("span");
-    c.className = "natal-coracao";
-    // Espalhados: ponto de partida, deriva lateral e altura da subida variam em cada coração.
-    c.style.left = `${r.left + r.width * (-0.4 + Math.random() * 1.5)}px`;
-    c.style.top = `${r.top + r.height * (0 + Math.random() * 0.6)}px`;
-    c.style.setProperty("--dx", `${Math.round((Math.random() - 0.75) * 150)}px`);
-    c.style.setProperty("--dy", `-${Math.round(90 + Math.random() * 90)}px`);
-    c.style.setProperty("--atraso", `${(i * 0.18).toFixed(2)}s`);
-    document.body.append(c);
-    setTimeout(() => c.remove(), 2200);
+const EFEITOS_NATAL = {
+  danca: { classe: () => "natal-coracao", qtd: 4, dx: () => aleatorio(-112, 38), dy: () => -aleatorio(90, 180), x: [-0.4, 1.1], y: [0, 0.6], passo: 0.18 },
+  gnomo: { classe: () => "natal-estrela", qtd: 5, dx: () => aleatorio(-100, 60), dy: () => -aleatorio(90, 190), x: [-0.4, 1.1], y: [0, 0.5], passo: 0.16 },
+  papai: {
+    classe: (i) => `natal-caixa natal-caixa-${i % 3}`,
+    qtd: 4,
+    dx: () => aleatorio(-30, 20),
+    dy: (r) => Math.max(160, window.innerHeight - r.bottom - 30) * aleatorio(0.7, 1),
+    // O sprite tem 62 quadradinhos: os 20 primeiros (~32%) são o trenó e o resto são as renas
+    // (que vão na frente). Os presentes nascem só na parte do trenó.
+    x: [0.03, 0.3],
+    y: [0.6, 1],
+    passo: 0.5, // um presente a cada meio segundo: bem espaçados no tempo
+    espalhar: true, // e no espaço: um em cada "faixa" do trenó
+  },
+};
+
+function soltarEfeito(origem, quem) {
+  const cfg = EFEITOS_NATAL[quem];
+  if (!cfg) return;
+  const r = origem.getBoundingClientRect();
+  for (let i = 0; i < cfg.qtd; i++) {
+    const el = document.createElement("span");
+    el.className = cfg.classe(i);
+    // espalhar: divide a faixa x em qtd fatias e sorteia dentro da fatia i (nunca ficam colados)
+    const [x0, x1] = cfg.x;
+    const x = cfg.espalhar ? x0 + ((i + aleatorio(0.1, 0.9)) / cfg.qtd) * (x1 - x0) : aleatorio(x0, x1);
+    el.style.left = `${r.left + r.width * x}px`;
+    el.style.top = `${r.top + r.height * aleatorio(...cfg.y)}px`;
+    el.style.setProperty("--dx", `${Math.round(cfg.dx())}px`);
+    el.style.setProperty("--dy", `${Math.round(cfg.dy(r))}px`);
+    el.style.setProperty("--atraso", `${(i * cfg.passo).toFixed(2)}s`);
+    document.body.append(el);
+    setTimeout(() => el.remove(), 2500 + i * cfg.passo * 1000); // duração da animação + atraso
   }
 }
 
-if (gnomoBorda) gnomoBorda.addEventListener("click", soltarCoracoes);
-// (a fala do gnomo da borda vem do listener genérico de [data-natal], mais acima)
+// ---------- Natal: cliques nos bonequinhos, com "debounce" na mensagem ----------
+// Sem isso, quem clica várias vezes seguidas troca a mensagem a cada clique antes de conseguir
+// lê-la. Aqui vale o primeiro clique e os seguintes, dentro do
+// intervalo, não trocam a mensagem (é o "debounce" que age na borda de subida, também chamado de
+// throttle: responde na hora ao primeiro clique, em vez de esperar o fim da sequência).
+// O intervalo vale para todos os bonequinhos juntos, pois dividem o mesmo balão.
+const INTERVALO_CLIQUE_MS = 2000;
+let ultimoCliqueBoneco = 0;
+
+function aoClicarBoneco(el) {
+  // Os efeitos (corações, estrelas, presentes) saem a cada clique: só a mensagem tem trava.
+  soltarEfeito(el, el.dataset.natal);
+  const agora = performance.now();
+  if (agora - ultimoCliqueBoneco < INTERVALO_CLIQUE_MS) return;
+  ultimoCliqueBoneco = agora;
+  if (balaoNatal) mostrarMensagemNatal(el.dataset.natal);
+}
+
+document.querySelectorAll("[data-natal]").forEach((el) => {
+  el.addEventListener("click", () => aoClicarBoneco(el));
+});
