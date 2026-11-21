@@ -5,6 +5,25 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Quarto estilo: natal (pixel art)
+
+**O quê:** novo `data-style="natal"` em `assets/css/natal.css`, no ciclo do botão de estilo
+(normal → terminal → retrô → natal) e na URL como `?v=Xp` com `X = x`. Visual de jogo de
+8 bits: bordas grossas, sombras duras, botões que afundam, cabeçalho vermelho com franja de
+neve, árvores de Natal no título e no rodapé e neve caindo ao fundo. Tem versão clara
+(céu de inverno) e escura (noite).
+
+**Por quê:** um tema sazonal que reaproveita toda a estrutura do site, só trocando o CSS.
+
+**Aprendizado:**
+- Pixel art sem imagens: sprites são SVGs de `<rect>` 1×1 com `shape-rendering="crispEdges"`,
+  embutidos no CSS como `url("data:image/svg+xml,...")` e guardados em variáveis (`--natal-arvore`).
+- A neve é `body::before` fixo com `z-index: -1`; por isso o fundo foi para o `<html>`
+  (senão o fundo do `body` ficaria por cima). `steps()` na animação dá o movimento "em
+  quadros" e `prefers-reduced-motion` desliga a animação.
+- Sombras sem blur (`box-shadow: 4px 4px 0 cor`) criam o relevo de pixel.
+Docs: https://developer.mozilla.org/pt-BR/docs/Web/CSS/animation-timing-function
+
 ## 2026-11-21 — Estilo e largura na URL (links compartilháveis)
 
 **O quê:** a URL agora carrega `?v=XY` (curto, para não inflar a URL): X = estilo (`n` normal, `t` terminal, `r` retrô),

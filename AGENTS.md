@@ -26,6 +26,7 @@ themes/lume/              tema próprio
   assets/css/main.css     estilo normal (variáveis de cor no topo, claro e escuro)
   assets/css/terminal.css estilo terminal (concatenado DEPOIS do main.css)
   assets/css/retro.css    estilo retrô, site antigo (concatenado depois do terminal.css)
+  assets/css/natal.css    estilo natal, pixel art (concatenado depois do retro.css)
   assets/css/chroma.css   cores de destaque de código (gerado, ver docs/05-tema-lume.md)
   assets/js/tema.js       botões de estilo (normal/terminal/retrô) e cor (sistema/claro/escuro)
 .github/workflows/hugo.yaml  build + deploy no GitHub Pages
@@ -47,16 +48,16 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
 ## Convenções
 
 - Templates: mantenha a lógica nos partials; `baseof.html` só define o esqueleto.
-- CSS: use as variáveis de `:root` em vez de cores fixas. O tema tem 3 estilos × 3 cores:
-  - estilo: `data-style="terminal"` ou `data-style="retro"` no `<html>` (sem o atributo = normal;
+- CSS: use as variáveis de `:root` em vez de cores fixas. O tema tem 4 estilos × 3 cores:
+  - estilo: `data-style="terminal"`, `"retro"` ou `"natal"` no `<html>` (sem o atributo = normal;
     o terminal é o padrão porque o script do `<head>` o aplica a quem não escolheu nada);
   - cor: `data-theme="light|dark"` (sem o atributo = segue o sistema).
 
-  Toda variável de cor nova precisa existir nos **seis** blocos: normal claro e escuro
-  (`main.css`), terminal claro e escuro (`terminal.css`), retrô claro e escuro
-  (`retro.css`). Os blocos escuros têm sempre
+  Toda variável de cor nova precisa existir nos **oito** blocos: normal claro e escuro
+  (`main.css`), terminal, retrô e natal claro e escuro (`terminal.css`, `retro.css`,
+  `natal.css`). Os blocos escuros têm sempre
   duas versões: `@media (prefers-color-scheme: dark)` e `[data-theme="dark"]`.
-- Qualquer mudança visual deve ser testada nas 9 combinações (os três estilos com
+- Qualquer mudança visual deve ser testada nas 12 combinações (os quatro estilos com
   sistema, claro e escuro).
 - Não adicione dependências (npm, frameworks CSS, temas externos) sem pedir.
 - Posts: front matter em YAML com `title`, `date`, `draft`, `tags`, `description`.

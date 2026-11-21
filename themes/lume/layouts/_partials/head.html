@@ -8,7 +8,7 @@
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{ end }}
 
-{{/* Aplica estilo (normal/terminal/retrô) e cor (claro/escuro; sem valor = sistema) salvos
+{{/* Aplica estilo (normal/terminal/retrô/natal) e cor (claro/escuro; sem valor = sistema) salvos
      ANTES de pintar a página, para não "piscar" no estilo errado */}}
 <script>
   (function () {
@@ -17,20 +17,20 @@
       var cor = localStorage.getItem("tema");
       if (cor === "light" || cor === "dark") root.dataset.theme = cor;
       // Parâmetro da URL ?v=XY vence o que está salvo: é o que faz um link compartilhado abrir
-      // com o mesmo visual de quem o enviou. X = estilo (n normal, t terminal, r retrô),
+      // com o mesmo visual de quem o enviou. X = estilo (n normal, t terminal, r retrô, x natal),
       // Y = largura (e estreita, p padrão, t total). A cor (claro/escuro) NÃO vem da URL:
       // continua sendo a escolha de quem visita.
       var v = new URLSearchParams(location.search).get("v");
-      if (v && /^[ntr][ept]$/.test(v)) {
-        localStorage.setItem("estilo", { n: "normal", t: "terminal", r: "retro" }[v[0]]);
+      if (v && /^[ntrx][ept]$/.test(v)) {
+        localStorage.setItem("estilo", { n: "normal", t: "terminal", r: "retro", x: "natal" }[v[0]]);
         if (v[1] === "p") localStorage.removeItem("largura");
         else localStorage.setItem("largura", v[1] === "e" ? "narrow" : "full");
       }
       var largura = localStorage.getItem("largura");
       if (largura === "narrow" || largura === "full") root.dataset.width = largura;
-      // O padrão é o terminal. "normal" (sem atributo) e "retro" só se o visitante escolheu.
+      // O padrão é o terminal. "normal" (sem atributo), "retro" e "natal" só se o visitante escolheu.
       var estilo = localStorage.getItem("estilo");
-      if (estilo === "retro") root.dataset.style = "retro";
+      if (estilo === "retro" || estilo === "natal") root.dataset.style = estilo;
       else if (estilo !== "normal") root.dataset.style = "terminal";
     } catch (e) {
       root.dataset.style = "terminal";
@@ -41,9 +41,10 @@
 {{ $css := resources.Get "css/main.css" }}
 {{ $terminal := resources.Get "css/terminal.css" }}
 {{ $retro := resources.Get "css/retro.css" }}
+{{ $natal := resources.Get "css/natal.css" }}
 {{ $chroma := resources.Get "css/chroma.css" }}
-{{/* A ordem importa: terminal.css e retro.css precisam vir depois do main.css */}}
-{{ $styles := slice $css $terminal $retro $chroma | resources.Concat "css/estilo.css" }}
+{{/* A ordem importa: terminal.css, retro.css e natal.css precisam vir depois do main.css */}}
+{{ $styles := slice $css $terminal $retro $natal $chroma | resources.Concat "css/estilo.css" }}
 {{ if hugo.IsProduction }}
   {{ $styles = $styles | minify | fingerprint }}
 {{ end }}

@@ -1,0 +1,358 @@
+/* ==========================================================================
+   Estilo "natal": tema especial de Natal em pixel art.
+   Ativado por data-style="natal" no <html>. É concatenado DEPOIS do retro.css
+   (ver _partials/head.html).
+   Como o "pixel" é feito sem imagens externas:
+   - sprites (árvore, presente, neve) são SVGs de quadradinhos <rect> embutidos
+     aqui mesmo (data URI) com shape-rendering="crispEdges": nada fica borrado;
+   - bordas grossas e quadradas, sombras "duras" (sem blur) e botões que
+     "afundam" ao clicar imitam a estética de jogos de 8 bits;
+   - a neve é uma camada fixa atrás do conteúdo, animada em passos (steps()).
+   ========================================================================== */
+
+/* ---- Cores do natal (claro): céu de inverno, papel creme, vermelho e verde ---- */
+:root[data-style="natal"] {
+  --bg: #b8dcee;
+  --surface: #fffaf0;
+  --text: #2a1d16;
+  --muted: #5e5148;
+  --border: #2a1d16;
+  --accent: #c0281c;
+  --accent-soft: #fde6dc;
+  --code-bg: #f0e9d8;
+  --mark-bg: #ffe27a;
+
+  --natal-bar: #c0281c;
+  --natal-bar-text: #ffffff;
+  --natal-green: #2e9d4f;
+  --natal-green-dark: #1b6b34;
+  --natal-gold: #f7d04a;
+  --natal-outline: #2a1d16;
+  --natal-shadow: #8cb4cc;
+  --natal-link: #a31f15;
+  --natal-on-gold: #2a1d16;
+
+  --natal-arvore: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 13' shape-rendering='crispEdges'><rect x='5' y='0' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='1' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='2' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='2' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='2' width='1' height='1' fill='%231b6b34'/><rect x='3' y='3' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='5' y='3' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='3' width='1' height='1' fill='%232e9d4f'/><rect x='7' y='3' width='1' height='1' fill='%231b6b34'/><rect x='4' y='4' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='4' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='4' width='1' height='1' fill='%231b6b34'/><rect x='3' y='5' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='5' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='5' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='7' y='5' width='1' height='1' fill='%231b6b34'/><rect x='2' y='6' width='1' height='1' fill='%232e9d4f'/><rect x='3' y='6' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='6' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='6' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='6' width='1' height='1' fill='%232e9d4f'/><rect x='7' y='6' width='1' height='1' fill='%232e9d4f'/><rect x='8' y='6' width='1' height='1' fill='%231b6b34'/><rect x='3' y='7' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='7' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='7' width='1' height='1' fill='%23d63a2c'/><rect x='6' y='7' width='1' height='1' fill='%232e9d4f'/><rect x='7' y='7' width='1' height='1' fill='%231b6b34'/><rect x='2' y='8' width='1' height='1' fill='%232e9d4f'/><rect x='3' y='8' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='8' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='8' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='8' width='1' height='1' fill='%232e9d4f'/><rect x='7' y='8' width='1' height='1' fill='%232e9d4f'/><rect x='8' y='8' width='1' height='1' fill='%231b6b34'/><rect x='1' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='2' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='3' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='7' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='8' y='9' width='1' height='1' fill='%232e9d4f'/><rect x='9' y='9' width='1' height='1' fill='%231b6b34'/><rect x='0' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='1' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='2' y='10' width='1' height='1' fill='%23d63a2c'/><rect x='3' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='4' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='5' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='6' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='7' y='10' width='1' height='1' fill='%23f7d04a'/><rect x='8' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='9' y='10' width='1' height='1' fill='%232e9d4f'/><rect x='10' y='10' width='1' height='1' fill='%231b6b34'/><rect x='4' y='11' width='1' height='1' fill='%237a4a22'/><rect x='5' y='11' width='1' height='1' fill='%237a4a22'/><rect x='6' y='11' width='1' height='1' fill='%237a4a22'/><rect x='4' y='12' width='1' height='1' fill='%237a4a22'/><rect x='5' y='12' width='1' height='1' fill='%237a4a22'/><rect x='6' y='12' width='1' height='1' fill='%237a4a22'/></svg>");
+  --natal-presente: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect x='1' y='0' width='1' height='1' fill='%23f7d04a'/><rect x='2' y='0' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='0' width='1' height='1' fill='%23f7d04a'/><rect x='6' y='0' width='1' height='1' fill='%23f7d04a'/><rect x='2' y='1' width='1' height='1' fill='%23f7d04a'/><rect x='3' y='1' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='1' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='1' width='1' height='1' fill='%23f7d04a'/><rect x='0' y='2' width='1' height='1' fill='%23d63a2c'/><rect x='1' y='2' width='1' height='1' fill='%23d63a2c'/><rect x='2' y='2' width='1' height='1' fill='%23d63a2c'/><rect x='3' y='2' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='2' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='2' width='1' height='1' fill='%23d63a2c'/><rect x='6' y='2' width='1' height='1' fill='%23d63a2c'/><rect x='7' y='2' width='1' height='1' fill='%23d63a2c'/><rect x='0' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='1' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='2' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='3' y='3' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='3' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='6' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='7' y='3' width='1' height='1' fill='%23d63a2c'/><rect x='0' y='4' width='1' height='1' fill='%23d63a2c'/><rect x='1' y='4' width='1' height='1' fill='%23d63a2c'/><rect x='2' y='4' width='1' height='1' fill='%23d63a2c'/><rect x='3' y='4' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='4' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='4' width='1' height='1' fill='%23d63a2c'/><rect x='6' y='4' width='1' height='1' fill='%23d63a2c'/><rect x='7' y='4' width='1' height='1' fill='%23d63a2c'/><rect x='0' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='1' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='2' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='3' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='6' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='7' y='5' width='1' height='1' fill='%23f7d04a'/><rect x='0' y='6' width='1' height='1' fill='%23d63a2c'/><rect x='1' y='6' width='1' height='1' fill='%23d63a2c'/><rect x='2' y='6' width='1' height='1' fill='%23d63a2c'/><rect x='3' y='6' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='6' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='6' width='1' height='1' fill='%23d63a2c'/><rect x='6' y='6' width='1' height='1' fill='%23d63a2c'/><rect x='7' y='6' width='1' height='1' fill='%23d63a2c'/><rect x='0' y='7' width='1' height='1' fill='%239a1f16'/><rect x='1' y='7' width='1' height='1' fill='%239a1f16'/><rect x='2' y='7' width='1' height='1' fill='%239a1f16'/><rect x='3' y='7' width='1' height='1' fill='%23f7d04a'/><rect x='4' y='7' width='1' height='1' fill='%23f7d04a'/><rect x='5' y='7' width='1' height='1' fill='%239a1f16'/><rect x='6' y='7' width='1' height='1' fill='%239a1f16'/><rect x='7' y='7' width='1' height='1' fill='%239a1f16'/></svg>");
+  --natal-neve: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' shape-rendering='crispEdges'><rect x='6' y='4' width='1' height='1' fill='%23ffffff'/><rect x='7' y='4' width='1' height='1' fill='%23ffffff'/><rect x='5' y='4' width='1' height='1' fill='%23ffffff'/><rect x='6' y='5' width='1' height='1' fill='%23ffffff'/><rect x='6' y='3' width='1' height='1' fill='%23ffffff'/><rect x='30' y='10' width='1' height='1' fill='%23ffffff'/><rect x='31' y='10' width='1' height='1' fill='%23ffffff'/><rect x='29' y='10' width='1' height='1' fill='%23ffffff'/><rect x='30' y='11' width='1' height='1' fill='%23ffffff'/><rect x='30' y='9' width='1' height='1' fill='%23ffffff'/><rect x='14' y='24' width='1' height='1' fill='%23ffffff'/><rect x='15' y='24' width='1' height='1' fill='%23ffffff'/><rect x='13' y='24' width='1' height='1' fill='%23ffffff'/><rect x='14' y='25' width='1' height='1' fill='%23ffffff'/><rect x='14' y='23' width='1' height='1' fill='%23ffffff'/><rect x='40' y='32' width='1' height='1' fill='%23ffffff'/><rect x='41' y='32' width='1' height='1' fill='%23ffffff'/><rect x='39' y='32' width='1' height='1' fill='%23ffffff'/><rect x='40' y='33' width='1' height='1' fill='%23ffffff'/><rect x='40' y='31' width='1' height='1' fill='%23ffffff'/><rect x='24' y='42' width='1' height='1' fill='%23ffffff'/><rect x='25' y='42' width='1' height='1' fill='%23ffffff'/><rect x='23' y='42' width='1' height='1' fill='%23ffffff'/><rect x='24' y='43' width='1' height='1' fill='%23ffffff'/><rect x='24' y='41' width='1' height='1' fill='%23ffffff'/><rect x='2' y='36' width='1' height='1' fill='%23ffffff'/><rect x='20' y='8' width='1' height='1' fill='%23ffffff'/><rect x='36' y='22' width='1' height='1' fill='%23ffffff'/><rect x='10' y='14' width='1' height='1' fill='%23ffffff'/><rect x='44' y='6' width='1' height='1' fill='%23ffffff'/><rect x='28' y='34' width='1' height='1' fill='%23ffffff'/><rect x='16' y='44' width='1' height='1' fill='%23ffffff'/></svg>");
+
+  --font-sans: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-serif: var(--font-sans);
+  --font-mono: var(--font-sans);
+  --radius: 0;
+  color-scheme: light;
+}
+
+/* ---- Cores do natal (escuro): noite de Natal, neve caindo ---- */
+@media (prefers-color-scheme: dark) {
+  :root[data-style="natal"]:not([data-theme="light"]) {
+    --bg: #0b1230;
+    --surface: #141c40;
+    --text: #f4efe4;
+    --muted: #aab4d6;
+    --border: #f4efe4;
+    --accent: #ff6a5c;
+    --accent-soft: #2b1c36;
+    --code-bg: #0a1028;
+    --mark-bg: #6b5a10;
+
+    --natal-bar: #8f1d18;
+    --natal-bar-text: #ffffff;
+    --natal-green: #2e9d4f;
+    --natal-green-dark: #144d27;
+    --natal-gold: #f7d04a;
+    --natal-outline: #04081c;
+    --natal-shadow: #04081c;
+    --natal-link: #ff8a7e;
+    --natal-on-gold: #2a1d16;
+    color-scheme: dark;
+  }
+}
+:root[data-style="natal"][data-theme="dark"] {
+  --bg: #0b1230;
+  --surface: #141c40;
+  --text: #f4efe4;
+  --muted: #aab4d6;
+  --border: #f4efe4;
+  --accent: #ff6a5c;
+  --accent-soft: #2b1c36;
+  --code-bg: #0a1028;
+  --mark-bg: #6b5a10;
+
+  --natal-bar: #8f1d18;
+  --natal-bar-text: #ffffff;
+  --natal-green: #2e9d4f;
+  --natal-green-dark: #144d27;
+  --natal-gold: #f7d04a;
+  --natal-outline: #04081c;
+  --natal-shadow: #04081c;
+  --natal-link: #ff8a7e;
+  --natal-on-gold: #2a1d16;
+  color-scheme: dark;
+}
+
+/* ---- Base: fundo no <html> para a neve (z-index -1) aparecer por cima dele ---- */
+html[data-style="natal"] { background: var(--bg); }
+[data-style="natal"] body {
+  background: transparent;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+[data-style="natal"] ::selection { background: var(--natal-gold); color: var(--natal-on-gold); }
+[data-style="natal"] :focus-visible { outline: 3px solid var(--natal-gold); outline-offset: 2px; border-radius: 0; }
+
+/* Neve: duas camadas com velocidades diferentes (efeito de profundidade) */
+[data-style="natal"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--natal-neve), var(--natal-neve);
+  background-size: 192px 192px, 288px 288px;
+  background-position: 0 0, 60px 0;
+  image-rendering: pixelated;
+  animation: natal-neva 24s steps(120) infinite;
+}
+@keyframes natal-neva {
+  to { background-position: 40px 192px, 100px 288px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-style="natal"] body::before { animation: none; }
+}
+
+[data-style="natal"] h1,
+[data-style="natal"] h2,
+[data-style="natal"] h3,
+[data-style="natal"] h4 { color: var(--text); letter-spacing: 0; font-weight: 800; }
+
+[data-style="natal"] a {
+  color: var(--natal-link);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+[data-style="natal"] a:hover { color: var(--natal-on-gold); background: var(--natal-gold); text-decoration: none; }
+
+/* ---- Cabeçalho: faixa vermelha com "neve" no topo e árvores ao lado do título ---- */
+[data-style="natal"] .site-header {
+  position: relative;
+  background: var(--natal-bar);
+  border-bottom: 4px solid var(--natal-outline);
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 0 var(--natal-shadow);
+}
+/* Franja de neve: blocos brancos de 8px alternando com buracos, em duas fileiras */
+[data-style="natal"] .site-header::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 12px;
+  background:
+    repeating-linear-gradient(90deg, #ffffff 0 8px, transparent 8px 16px) 0 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(90deg, #ffffff 0 8px, transparent 8px 16px) 8px 8px / 100% 4px no-repeat;
+}
+[data-style="natal"] .header-inner { padding-top: 1.6rem; padding-bottom: 1rem; }
+[data-style="natal"] .site-title,
+[data-style="natal"] .site-title:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--natal-bar-text);
+  font-size: 1.35rem;
+  text-shadow: 3px 3px 0 var(--natal-outline);
+  text-decoration: none;
+}
+[data-style="natal"] .site-title:hover { background: transparent; color: var(--natal-gold); }
+[data-style="natal"] .site-title::before,
+[data-style="natal"] .site-title::after {
+  content: "";
+  width: 22px;
+  height: 26px;
+  background: var(--natal-arvore) center / contain no-repeat;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+[data-style="natal"] .menu a,
+[data-style="natal"] .menu a:visited {
+  color: var(--natal-bar-text);
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.4rem;
+}
+[data-style="natal"] .menu a:hover { color: var(--natal-on-gold); background: var(--natal-gold); }
+[data-style="natal"] .menu a[aria-current="page"] {
+  color: var(--natal-on-gold);
+  background: var(--natal-gold);
+  box-shadow: 3px 3px 0 var(--natal-outline);
+}
+
+/* Botão pixel: bloco com sombra dura embaixo que "afunda" quando clicado */
+[data-style="natal"] .theme-toggle,
+[data-style="natal"] .style-toggle,
+[data-style="natal"] .width-toggle,
+[data-style="natal"] .tag-cloud a,
+[data-style="natal"] .tags a,
+[data-style="natal"] .post-nav a {
+  background: var(--natal-green);
+  color: #ffffff;
+  border: 3px solid var(--natal-outline);
+  border-radius: 0;
+  box-shadow: 0 4px 0 var(--natal-outline);
+  text-decoration: none;
+}
+[data-style="natal"] .theme-toggle:hover,
+[data-style="natal"] .style-toggle:hover,
+[data-style="natal"] .width-toggle:hover,
+[data-style="natal"] .tag-cloud a:hover,
+[data-style="natal"] .tags a:hover,
+[data-style="natal"] .post-nav a:hover { background: var(--natal-gold); color: var(--natal-on-gold); border-color: var(--natal-outline); }
+[data-style="natal"] .theme-toggle:active,
+[data-style="natal"] .style-toggle:active,
+[data-style="natal"] .width-toggle:active { transform: translateY(4px); box-shadow: none; }
+[data-style="natal"] .menu { gap: 0.5rem; }
+
+/* ---- Janela: moldura grossa, sombra dura e barra de título verde ---- */
+[data-style="natal"] .term-window {
+  background: var(--surface);
+  border: 4px solid var(--natal-outline);
+  box-shadow: 8px 8px 0 var(--natal-outline);
+}
+[data-style="natal"] .term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--natal-green);
+  color: #ffffff;
+  border-bottom: 4px solid var(--natal-outline);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+[data-style="natal"] .term-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-style="natal"] .term-dots { order: 2; display: flex; gap: 4px; }
+[data-style="natal"] .term-dots i { width: 10px; height: 10px; background: var(--natal-gold); border: 2px solid var(--natal-outline); }
+[data-style="natal"] .term-dots i:nth-child(2) { background: #ffffff; }
+[data-style="natal"] .term-dots i:nth-child(3) { background: var(--natal-bar); }
+[data-style="natal"] .term-body { padding: 1.5rem; }
+@media (max-width: 560px) {
+  [data-style="natal"] main.container { padding: 0 0.6rem; }
+  [data-style="natal"] .term-body { padding: 1rem 0.9rem 1.25rem; }
+  [data-style="natal"] .term-window { box-shadow: 5px 5px 0 var(--natal-outline); }
+}
+
+/* ---- Home e listas ---- */
+[data-style="natal"] .intro h1,
+[data-style="natal"] .post-header h1,
+[data-style="natal"] .page-header h1 {
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  text-shadow: 3px 3px 0 var(--natal-shadow);
+}
+[data-style="natal"] .section-title { color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+[data-style="natal"] .post-card { border-top: 4px dashed var(--border); padding: 1rem 0; }
+[data-style="natal"] .post-card h3 a { color: var(--text); }
+[data-style="natal"] .post-card h3 a:hover { color: var(--natal-on-gold); }
+[data-style="natal"] .badge {
+  background: var(--natal-gold);
+  color: var(--natal-on-gold);
+  border: 2px solid var(--natal-outline);
+  border-radius: 0;
+  text-transform: uppercase;
+  padding: 0 0.4rem;
+}
+[data-style="natal"] .year { color: var(--accent); }
+[data-style="natal"] .year::before { content: "▶ "; }
+[data-style="natal"] .post-link { border-bottom: 2px dashed var(--border); }
+[data-style="natal"] .post-link-title { color: var(--text); }
+[data-style="natal"] .post-link:hover { background: var(--natal-gold); }
+[data-style="natal"] .post-link:hover .post-link-title,
+[data-style="natal"] .post-link:hover time { color: var(--natal-on-gold); }
+[data-style="natal"] .tag-cloud a,
+[data-style="natal"] .tags a { padding: 0.1rem 0.6rem; font-size: 0.8rem; font-weight: 800; }
+[data-style="natal"] .count { font-weight: 400; }
+
+/* ---- Post ---- */
+[data-style="natal"] .aviso {
+  border: 4px solid var(--natal-outline);
+  border-left-width: 12px;
+  border-left-color: var(--accent);
+  box-shadow: 4px 4px 0 var(--natal-outline);
+}
+[data-style="natal"] .toc {
+  border: 4px solid var(--natal-outline);
+  border-radius: 0;
+  background: var(--accent-soft);
+  box-shadow: 4px 4px 0 var(--natal-outline);
+}
+[data-style="natal"] .prose h2 { border-bottom: 4px solid var(--natal-green); padding-bottom: 0.15rem; }
+[data-style="natal"] .prose ul > li::marker { content: "■ "; color: var(--accent); }
+[data-style="natal"] .prose ol > li::marker { color: var(--accent); font-weight: 800; }
+[data-style="natal"] .prose blockquote {
+  border: 0;
+  border-left: 8px solid var(--natal-green);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-style: normal;
+  padding: 0.5rem 1rem;
+}
+/* Linha horizontal: blocos vermelhos e verdes alternados (bengala doce) */
+[data-style="natal"] .prose hr {
+  border: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 8px, #ffffff 8px 16px, var(--natal-green) 16px 24px, #ffffff 24px 32px);
+}
+[data-style="natal"] .prose th { background: var(--natal-green); color: #ffffff; }
+[data-style="natal"] .prose th,
+[data-style="natal"] .prose td { border: 2px solid var(--border); }
+[data-style="natal"] :not(pre) > code { border-radius: 0; border: 2px solid var(--border); }
+[data-style="natal"] pre {
+  border: 4px solid var(--natal-outline);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--natal-outline);
+}
+[data-style="natal"] img { border-radius: 0; }
+[data-style="natal"] .prose .img img { border: 4px solid var(--natal-outline); box-shadow: 4px 4px 0 var(--natal-outline); }
+[data-style="natal"] .prose .img-legenda { color: var(--muted); }
+[data-style="natal"] .post-footer { border-top: 4px dashed var(--border); }
+[data-style="natal"] .post-nav a { padding: 0.5rem 0.75rem; }
+[data-style="natal"] .post-nav span { color: inherit; opacity: 0.85; }
+[data-style="natal"] .post-nav a:hover span { opacity: 1; }
+
+/* ---- 404 e rodapé: floresta de árvores em cima e faixa verde ---- */
+[data-style="natal"] .not-found h1 { font-size: 4.5rem; text-shadow: 4px 4px 0 var(--natal-shadow); }
+[data-style="natal"] .site-footer {
+  position: relative;
+  margin-top: 3.5rem;
+  padding: 1.25rem 0;
+  background: var(--natal-green-dark);
+  border-top: 4px solid var(--natal-outline);
+  color: #ffffff;
+}
+[data-style="natal"] .site-footer::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 100%;
+  height: 26px;
+  margin-bottom: 4px;
+  background: var(--natal-arvore) 0 100% / 22px 26px repeat-x;
+}
+[data-style="natal"] .site-footer p::after {
+  content: "Boas festas!";
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding-left: 22px;
+  background: var(--natal-presente) 0 50% / 16px 16px no-repeat;
+  font-weight: 800;
+  color: var(--natal-gold);
+}
+[data-style="natal"] .site-footer a { color: #ffffff; }
+[data-style="natal"] .site-footer a:hover { color: var(--natal-on-gold); background: var(--natal-gold); }
+[data-style="natal"] code, [data-style="natal"] pre { font-size: 0.92em; }

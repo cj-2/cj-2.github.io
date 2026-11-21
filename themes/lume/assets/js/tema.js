@@ -3,6 +3,7 @@
 //   data-style="terminal"  -> estilo terminal (padrão; o script do <head> o aplica,
 //                             a menos que o visitante tenha escolhido outro)
 //   data-style="retro"     -> estilo retrô (site antigo)
+//   data-style="natal"     -> estilo natal (pixel art)
 //   sem data-style         -> estilo normal
 //   data-theme="light"|"dark" -> cor forçada (sem o atributo = segue o sistema)
 // e é salvo no localStorage para valer nas próximas páginas.
@@ -18,10 +19,10 @@ function salvar(chave, valor) {
 
 // ---------- Link compartilhável ----------
 // Mantém ?v=XY na barra de endereço (curto de propósito), para que copiar o link
-// compartilhe o visual. X = estilo (n/t/r), Y = largura (e/p/t); ver o script do head.html.
+// compartilhe o visual. X = estilo (n/t/r/x), Y = largura (e/p/t); ver o script do head.html.
 // A cor (claro/escuro) fica de fora de propósito.
 // replaceState troca a URL sem recarregar a página nem poluir o histórico.
-const COD_ESTILO = { normal: "n", terminal: "t", retro: "r" };
+const COD_ESTILO = { normal: "n", terminal: "t", retro: "r", natal: "x" };
 const COD_LARGURA = { narrow: "e", default: "p", full: "t" };
 
 function sincronizarUrl() {
@@ -61,9 +62,9 @@ document.querySelectorAll(".theme-toggle").forEach((btn) => {
 });
 
 // ---------- Estilo ----------
-// Ciclo do botão: normal -> terminal -> retrô -> normal
-const ESTILOS = ["normal", "terminal", "retro"];
-const NOME_ESTILO = { normal: "normal", terminal: "terminal", retro: "retrô" };
+// Ciclo do botão: normal -> terminal -> retrô -> natal -> normal
+const ESTILOS = ["normal", "terminal", "retro", "natal"];
+const NOME_ESTILO = { normal: "normal", terminal: "terminal", retro: "retrô", natal: "natal" };
 
 function estiloAtual() {
   return ESTILOS.includes(root.dataset.style) ? root.dataset.style : "normal";
