@@ -1,48 +1,45 @@
-{{/* Área de comentários dos AGENTES (personagens de IA do projeto), não de leitores reais.
-     Os comentários vêm de data/comentarios/<pasta-do-artigo>.json (ver docs/09-agentes-comentaristas.md)
-     e o cadastro dos personagens vem de data/agentes.json. Recebe a página como contexto.
-     Só aparece em artigos publicados ou rascunhos públicos (params.publicDraft). */}}
+{{/* Área "Comentários Agênticos": comentários dos AGENTES (personagens de IA do projeto), não de
+     leitores reais. Desenhada como um widget de comentários embutido (tipo Disqus/Giscus).
+     Os comentários vêm de data/comentarios/<pasta-do-artigo>.json e o cadastro dos agentes vem de
+     data/agentes.json (ver docs/09-agentes-comentaristas.md). Recebe a página como contexto.
+     Só aparece em artigos publicados ou rascunhos públicos (params.publicDraft).
+     Estrutura: comentário principal = sem "em_resposta_a"; resposta = com "em_resposta_a" (id do
+     principal): vira a thread daquele comentário. */}}
 {{ if and (eq .Section "posts") (or (not .Draft) .Params.publicDraft) }}
   {{ $chave := .File.ContentBaseName }}
   {{ $arquivo := index (hugo.Data.comentarios | default dict) $chave | default dict }}
-  {{ $comentarios := $arquivo.comentarios | default slice }}
+  {{ $todos := $arquivo.comentarios | default slice }}
   {{ $agentes := hugo.Data.agentes | default dict }}
+  {{ $total := len $todos }}
   <section class="comentarios" id="comentarios" aria-labelledby="comentarios-titulo">
-    <h2 id="comentarios-titulo">Comentários dos agentes</h2>
+    <h2 id="comentarios-titulo">Comentários Agênticos</h2>
     <p class="comentarios-aviso">
       Esta área é só dos <strong>agentes comentaristas</strong>: personagens de IA com personalidades
       bem diferentes que leem os artigos antes de serem publicados. Não são leitores de verdade.
     </p>
-    {{ if $comentarios }}
-      <ol class="comentarios-lista">
-        {{ range $comentarios }}
-          {{ $a := index $agentes .agente | default (dict "nome" .agente "icone" "💬") }}
-          <li class="comentario" data-agente="{{ .agente }}">
-            <div class="comentario-cabecalho">
-              <span class="comentario-icone" aria-hidden="true">{{ $a.icone }}</span>
-              <strong class="comentario-nome">{{ $a.nome }}</strong>
-              <time datetime="{{ .data }}">{{ .data | time.AsTime | time.Format "02/01/2006 às 15:04" }}</time>
-            </div>
-            <p class="comentario-texto">{{ .texto }}</p>
-            {{ with .correcoes }}
-              <ul class="comentario-correcoes">
-                {{ range . }}
-                  <li><del>{{ .trecho }}</del> → <ins>{{ .sugestao }}</ins>{{ with .motivo }} <span class="comentario-motivo">({{ . }})</span>{{ end }}</li>
-                {{ end }}
-              </ul>
+    <div class="cw" role="region" aria-label="Comentários Agênticos">
+      <div class="cw-barra">
+        <span class="cw-barra-titulo">{{ $total }} {{ if eq $total 1 }}comentário{{ else }}comentários{{ end }}</span>
+        <span class="cw-barra-selo">somente agentes</span>
+      </div>
+      <div class="cw-corpo">
+        {{ if $todos }}
+          <ol class="cw-lista">
+            {{ range $todos }}
+              {{ if not .em_resposta_a }}
+                {{ $id := .id }}
+                {{ partial "comentario-agente.html" (dict "c" . "agentes" $agentes "resposta" false "respostas" (where $todos "em_resposta_a" $id)) }}
+              {{ end }}
             {{ end }}
-            {{ with .referencias }}
-              <ul class="comentario-referencias">
-                {{ range . }}
-                  <li><a href="{{ .url }}" rel="noopener nofollow" target="_blank">{{ .titulo }}</a></li>
-                {{ end }}
-              </ul>
-            {{ end }}
-          </li>
+          </ol>
+        {{ else }}
+          <p class="comentarios-vazio">Ainda não há comentários dos agentes neste artigo.</p>
         {{ end }}
-      </ol>
-    {{ else }}
-      <p class="comentarios-vazio">Ainda não há comentários dos agentes neste artigo.</p>
-    {{ end }}
+      </div>
+      <div class="cw-rodape">
+        <textarea rows="2" disabled placeholder="Comentários de leitores chegam em breve…" aria-label="Escrever comentário (desativado por enquanto)"></textarea>
+        <button type="button" disabled>Comentar</button>
+      </div>
+    </div>
   </section>
 {{ end }}

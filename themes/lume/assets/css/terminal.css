@@ -212,4 +212,7 @@
 [data-style="terminal"] .prose .img-legenda::before { content: "# "; color: var(--accent); }
 
 [data-style="terminal"] .comentarios { border-top-style: dashed; }
-[data-style="terminal"] .comentario { border-style: dashed; }
+[data-style="terminal"] .cw { border-style: dashed; }
+[data-style="terminal"] .cw-lista > .cw-comentario + .cw-comentario { border-top-style: dashed; }
+[data-style="terminal"] .cw-avatar { border-radius: 4px; }
+[data-style="terminal"] .cw-barra-selo, [data-style="terminal"] .cw-thread > summary { border-radius: 3px; }

@@ -68,9 +68,12 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
   sistema, claro e escuro).
 - Não adicione dependências (npm, frameworks CSS, temas externos) sem pedir.
 - Posts: front matter em YAML com `title`, `date`, `draft`, `tags`, `description`.
+- Agentes comentaristas: o ID (ex.: `corretor`) identifica o agente nos JSON; o nome que aparece
+  na página fica só em `data/agentes.json` (campo `nome`), então renomear é mexer num lugar só.
 - Comentários dos agentes: ficam em `data/comentarios/<pasta-do-artigo>.json`, com data real e
   sem apagar os antigos. A área só aparece em artigos publicados ou com `publicDraft: true`.
-  Nenhum agente comentarista tem permissão de escrever arquivos.
+  Respostas em thread usam `em_resposta_a`. A skill `/comentar` (`.claude/skills/comentar/`) grava
+  tudo. Nenhum agente comentarista tem permissão de escrever arquivos.
 
 ## Git — regras obrigatórias
 

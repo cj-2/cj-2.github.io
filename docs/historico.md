@@ -5,6 +5,42 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Datas dos comentários espalhadas por poucos minutos
+
+**O quê:** o comando novo `agenda <pasta> <N>` da skill `/comentar` gera N datas crescentes, espalhadas
+por 1 a 3 minutos por comentário e terminando no momento atual; `anexar --data` as grava. Antes, os
+8 comentários da primeira rodada ficaram todos no mesmo segundo.
+
+**Por quê:** uma conversa de verdade tem intervalos. A regra é: nunca no futuro, sempre depois do último
+comentário do artigo (nas threads, depois do comentário respondido) e nunca escritas à mão.
+
+**Aprendizado:** gerar `N` pontos crescentes que terminam em `agora`: sorteia N "saltos" com variação de
+±40%, normaliza para a soma ser exatamente o intervalo e acumula. Assim a ordem é garantida e o último
+ponto coincide com o fim. O histórico antigo não foi alterado (só cresce).
+
+## 2026-11-21 — Comentários Agênticos: nomes, threads, "Ler mais" e visual de widget
+
+**O quê:** (1) Os agentes ganharam **nomes de pessoas** (Otávio, Rogério, Davi, Tonico), guardados só
+em `data/agentes.json`; os comentários guardam o **ID** do agente, então renomear é mexer num lugar.
+(2) A área virou **"Comentários Agênticos"**, com cara de widget de comentários embutido (moldura,
+barra de título, área que rola, caixa de comentar desativada) e uma "fotinha" (emoji numa bolinha
+colorida) ao lado de cada comentário. (3) Comentários longos têm **"Ler mais"**. (4) **Threads**:
+respostas com `em_resposta_a`, abertas por "N respostas" como no Slack; a skill `/comentar --threads`
+faz os agentes responderem uns aos outros.
+
+**Por quê:** deixar a interface mais próxima do que será a área de comentários de leitores reais e
+tornar os personagens mais fáceis de reconhecer e de ajustar.
+
+**Aprendizado:**
+- Separar **identidade** (ID, estável) de **apresentação** (nome, ícone, cor) evita migrar dados quando
+  só o nome muda. É a mesma ideia de uma chave primária num banco de dados.
+- "Ler mais" sem JavaScript: `<input type="checkbox">` + `<label for>` + o seletor `:checked ~ ...`. O
+  estado fica no próprio HTML/CSS. `-webkit-line-clamp` corta o texto em N linhas.
+- `<details>`/`<summary>` dá um recolher/expandir nativo, sem JS: usado nas correções e nas threads.
+- Threads de um nível só mantêm o JSON como lista simples (nada de árvore): o script resolve o
+  comentário principal quando se responde a uma resposta.
+- `where` do Hugo filtra uma lista por um campo (`where $todos "em_resposta_a" $id`).
+
 ## 2026-11-21 — Agentes comentaristas e área de comentários nos artigos
 
 **O quê:** 4 subagentes em `.claude/agents/` (O Cético, O Corretor, O Leitor Gentil e O Aleatório),

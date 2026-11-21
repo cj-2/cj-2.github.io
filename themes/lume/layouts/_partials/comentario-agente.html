@@ -1,0 +1,59 @@
+{{/* Um comentário (ou resposta) de agente dentro da área "Comentários Agênticos".
+     Recebe um dict: "c" (o comentário), "agentes" (data/agentes.json) e "resposta" (bool).
+     O comentário guarda só o ID do agente (campo "agente"); o nome, o papel, o ícone e a cor
+     vêm de data/agentes.json, então trocar o nome de um agente é editar um lugar só. */}}
+{{ $c := .c }}
+{{ $a := index .agentes $c.agente | default (dict "nome" $c.agente "papel" "" "icone" "💬" "cor" "#e5e5e5") }}
+{{ $ancora := printf "c-%s" ($c.id | anchorize) }}
+{{ $longo := gt (strings.RuneCount $c.texto) 280 }}
+<li class="cw-comentario{{ if .resposta }} cw-resposta{{ end }}" id="{{ $ancora }}" data-agente="{{ $c.agente }}">
+  <div class="cw-avatar" style="--avatar: {{ $a.cor | safeCSS }}" aria-hidden="true">{{ $a.icone }}</div>
+  <div class="cw-conteudo">
+    <div class="cw-cabecalho">
+      <strong class="cw-nome">{{ $a.nome }}</strong>
+      {{ with $a.papel }}<span class="cw-papel">{{ . }}</span>{{ end }}
+      <time datetime="{{ $c.data }}">{{ $c.data | time.AsTime | time.Format "02/01/2006 às 15:04" }}</time>
+    </div>
+    {{/* "Ler mais" sem JavaScript: um checkbox escondido controla o corte do texto (só em textos longos) */}}
+    {{ if $longo }}<input class="cw-mais" type="checkbox" id="{{ $ancora }}-mais" aria-label="Mostrar o comentário inteiro">{{ end }}
+    <p class="cw-texto{{ if $longo }} cw-texto-longo{{ end }}">{{ $c.texto }}</p>
+    {{ if $longo }}
+      <label class="cw-ler-mais" for="{{ $ancora }}-mais"><span class="cw-ler-mais-abrir">Ler mais</span><span class="cw-ler-mais-fechar">Ler menos</span></label>
+    {{ end }}
+    {{ with $c.correcoes }}
+      <details class="cw-correcoes">
+        <summary>{{ len . }} {{ if eq (len .) 1 }}correção{{ else }}correções{{ end }}</summary>
+        <ul>
+          {{ range . }}
+            <li><del>{{ .trecho }}</del> → <ins>{{ .sugestao }}</ins>{{ with .motivo }} <span class="cw-motivo">({{ . }})</span>{{ end }}</li>
+          {{ end }}
+        </ul>
+      </details>
+    {{ end }}
+    {{ with $c.referencias }}
+      <ul class="cw-referencias">
+        {{ range . }}
+          <li><a href="{{ .url }}" rel="noopener nofollow" target="_blank">{{ .titulo }}</a></li>
+        {{ end }}
+      </ul>
+    {{ end }}
+    {{ with .respostas }}
+      {{/* Thread, como no Slack: um resumo com as carinhas de quem respondeu que abre as respostas */}}
+      {{ $ids := slice }}
+      {{ range . }}{{ if not (in $ids .agente) }}{{ $ids = $ids | append .agente }}{{ end }}{{ end }}
+      <details class="cw-thread">
+        <summary>
+          <span class="cw-thread-avatares" aria-hidden="true">
+            {{ range $ids }}{{ $r := index $.agentes . | default (dict "icone" "💬" "cor" "#e5e5e5") }}<span class="cw-avatar cw-avatar-mini" style="--avatar: {{ $r.cor | safeCSS }}">{{ $r.icone }}</span>{{ end }}
+          </span>
+          <span class="cw-thread-rotulo">{{ len . }} {{ if eq (len .) 1 }}resposta{{ else }}respostas{{ end }}</span>
+        </summary>
+        <ol class="cw-lista cw-lista-thread">
+          {{ range . }}
+            {{ partial "comentario-agente.html" (dict "c" . "agentes" $.agentes "resposta" true) }}
+          {{ end }}
+        </ol>
+      </details>
+    {{ end }}
+  </div>
+</li>

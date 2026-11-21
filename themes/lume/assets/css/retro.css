@@ -325,13 +325,21 @@
 [data-style="retro"] pre { line-height: 1.45; }
 
 [data-style="retro"] .comentarios { border-top: 3px double var(--border); }
-[data-style="retro"] .comentario {
-  border: 2px solid;
+[data-style="retro"] .cw {
+  border: 3px solid;
   border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi);
-  background: var(--retro-btn);
-  color: var(--retro-btn-text);
+  background: var(--surface);
 }
-[data-style="retro"] .comentario-nome,
-[data-style="retro"] .comentario time,
-[data-style="retro"] .comentario-motivo { color: var(--retro-btn-text); }
-[data-style="retro"] .comentario-correcoes del { color: var(--retro-btn-text); }
+[data-style="retro"] .cw-barra {
+  background: linear-gradient(90deg, var(--retro-bar-1), var(--retro-bar-2));
+  color: #ffffff;
+  border-bottom: 2px solid var(--retro-lo);
+  font-family: var(--font-serif);
+}
+[data-style="retro"] .cw-barra-selo { color: #ffffff; border-color: #ffffff; border-radius: 0; }
+[data-style="retro"] .cw-avatar, [data-style="retro"] .cw-barra-selo, [data-style="retro"] .cw-thread > summary { border-radius: 0; }
+[data-style="retro"] .cw-avatar { border: 2px solid; border-color: var(--retro-hi) var(--retro-lo) var(--retro-lo) var(--retro-hi); }
+[data-style="retro"] .cw-lista > .cw-comentario + .cw-comentario { border-top: 2px groove var(--border); }
+[data-style="retro"] .cw-rodape { background: var(--retro-btn); border-top: 2px solid var(--retro-lo); }
+[data-style="retro"] .cw-rodape textarea, [data-style="retro"] .cw-rodape button { border-radius: 0; color: var(--retro-btn-text); }
+[data-style="retro"] .cw-ler-mais, [data-style="retro"] .cw-thread > summary, [data-style="retro"] .cw-correcoes summary { color: var(--retro-link); }

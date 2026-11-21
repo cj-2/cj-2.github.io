@@ -518,24 +518,144 @@ pre {
 .prose .spoiler:focus code, .prose .spoiler.revelado code { background: var(--code-bg); color: inherit; }
 @media (prefers-reduced-motion: reduce) { .prose .spoiler { transition: none; } }
 
-/* ---- Comentários dos agentes (partial comentarios-agentes.html) ----
-   Só usa variáveis de cor, então herda os 4 estilos × 3 cores; os estilos fazem pequenos ajustes. */
+/* ---- Comentários Agênticos (partials comentarios-agentes.html e comentario-agente.html) ----
+   Desenhado como um widget de comentários embutido (tipo Disqus/Giscus): moldura, barra de título,
+   área rolável e rodapé com a caixa de comentar (desativada por enquanto). Só usa variáveis de cor,
+   então herda os 4 estilos × 3 cores; cada estilo faz pequenos ajustes. */
 .comentarios { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
 .comentarios h2 { font-size: 1.25rem; margin: 0 0 0.5rem; }
 .comentarios-aviso, .comentarios-vazio { color: var(--muted); font-size: 0.9rem; margin: 0 0 1rem; }
-.comentarios-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
-.comentario {
-  padding: 0.8rem 1rem;
+.comentarios-vazio { margin: 0; padding: 1rem; text-align: center; }
+
+.cw {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+}
+.cw-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
   background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.cw-barra-titulo { font-weight: 700; }
+.cw-barra-selo {
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.cw-corpo { max-height: 36rem; overflow-y: auto; padding: 0.5rem 1rem; }
+.cw-lista { list-style: none; margin: 0; padding: 0; }
+.cw-comentario { display: flex; gap: 0.75rem; padding: 0.85rem 0; }
+.cw-lista > .cw-comentario + .cw-comentario { border-top: 1px solid var(--border); }
+.cw-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--avatar, var(--surface));
+  border: 1px solid var(--border);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.cw-avatar-mini { width: 1.35rem; height: 1.35rem; font-size: 0.8rem; margin-left: -0.3rem; border-color: var(--bg); }
+.cw-avatar-mini:first-child { margin-left: 0; }
+.cw-conteudo { flex: 1; min-width: 0; }
+.cw-cabecalho { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.1rem 0.5rem; margin-bottom: 0.2rem; }
+.cw-nome { color: var(--text); }
+.cw-papel { color: var(--muted); font-size: 0.78rem; }
+.cw time { color: var(--muted); font-size: 0.78rem; margin-left: auto; }
+.cw-texto { margin: 0; overflow-wrap: anywhere; }
+
+/* "Ler mais" sem JavaScript: o checkbox escondido muda o corte do texto */
+.cw-mais { position: absolute; opacity: 0; pointer-events: none; }
+.cw-texto-longo {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+.cw-mais:checked ~ .cw-texto-longo { display: block; overflow: visible; }
+.cw-ler-mais { display: inline-block; margin-top: 0.25rem; color: var(--accent); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+.cw-ler-mais:hover { text-decoration: underline; }
+.cw-ler-mais-fechar { display: none; }
+.cw-mais:checked ~ .cw-ler-mais .cw-ler-mais-abrir { display: none; }
+.cw-mais:checked ~ .cw-ler-mais .cw-ler-mais-fechar { display: inline; }
+.cw-mais:focus-visible ~ .cw-ler-mais { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.cw-correcoes { margin-top: 0.5rem; font-size: 0.92rem; }
+.cw-correcoes summary { cursor: pointer; color: var(--accent); font-weight: 700; }
+.cw-correcoes ul, .cw-referencias { margin: 0.4rem 0 0; padding-left: 1.2rem; font-size: 0.92rem; }
+.cw-correcoes del { color: var(--muted); }
+.cw-correcoes ins { text-decoration: none; font-weight: 700; color: var(--accent); }
+.cw-motivo { color: var(--muted); }
+
+/* Thread (respostas a um comentário), como no Slack */
+.cw-thread { margin-top: 0.5rem; }
+.cw-thread > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0.5rem 0.15rem 0.3rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.cw-thread > summary::-webkit-details-marker { display: none; }
+.cw-thread > summary:hover { background: var(--surface); border-color: var(--border); }
+.cw-thread-avatares { display: inline-flex; }
+.cw-lista-thread { margin-top: 0.4rem; padding-left: 0.75rem; border-left: 3px solid var(--border); }
+.cw-resposta { padding: 0.6rem 0; }
+.cw-resposta .cw-avatar { width: 2rem; height: 2rem; font-size: 1.05rem; }
+
+.cw-rodape {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.cw-rodape textarea {
+  flex: 1;
+  resize: none;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--muted);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-.comentario-cabecalho { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.35rem; }
-.comentario-icone { font-size: 1.1rem; }
-.comentario-nome { color: var(--text); }
-.comentario time { color: var(--muted); font-size: 0.8rem; margin-left: auto; }
-.comentario-texto { margin: 0; overflow-wrap: anywhere; }
-.comentario-correcoes, .comentario-referencias { margin: 0.6rem 0 0; padding-left: 1.2rem; font-size: 0.92rem; }
-.comentario-correcoes del { color: var(--muted); }
-.comentario-correcoes ins { text-decoration: none; font-weight: 700; color: var(--accent); }
-.comentario-motivo { color: var(--muted); }
+.cw-rodape button {
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.cw-rodape textarea:disabled, .cw-rodape button:disabled { cursor: not-allowed; opacity: 0.7; }
+@media (max-width: 560px) {
+  .cw-corpo { padding: 0.25rem 0.75rem; }
+  .cw-comentario { gap: 0.55rem; }
+  .cw-avatar { width: 2.1rem; height: 2.1rem; font-size: 1.1rem; }
+}
