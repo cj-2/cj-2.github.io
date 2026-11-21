@@ -211,7 +211,7 @@ function posicionarGnomo() {
   gnomoAgendado = false;
   const r = janelaGnomo.getBoundingClientRect();
   const alvo = window.innerHeight * 0.5 - r.top;
-  const maximo = Math.max(80, r.height - 80);
+  const maximo = Math.max(80, r.height - 110);
   janelaGnomo.style.setProperty("--gnomo-y", `${Math.min(Math.max(alvo, 80), maximo)}px`);
 }
 

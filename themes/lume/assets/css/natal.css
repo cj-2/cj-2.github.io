@@ -131,11 +131,24 @@ html[data-style="natal"] { background: var(--bg); }
    Duas animações no mesmo elemento: "voa" anda na horizontal em quadros (steps) e
    "pula" dá o balanço vertical de galope. Sprite: 62×9 quadradinhos, ampliado 3×.
    Fica presa ao cabeçalho (absolute, rola junto), logo abaixo dele, em qualquer tela. */
-[data-style="natal"] .natal-trineo {
-  content: "";
+/* "Céu": faixa de largura total logo abaixo do cabeçalho, com overflow: hidden. O trenó sai da
+   tela voando; sem este recorte ele alargava a página (rolagem lateral) e, no celular, o navegador
+   ampliava a área visível, empurrando o balão de mensagem (fixed, em left: 50%) para a direita. */
+[data-style="natal"] .natal-ceu {
+  display: block;
   position: absolute;
-  top: calc(100% + 22px); /* logo abaixo do cabeçalho (100% não inclui a borda de 4px nem a sombra de 6px) */
+  top: calc(100% + 19px); /* 100% não inclui a borda de 4px nem a sombra de 6px do cabeçalho */
   left: 0;
+  right: 0;
+  height: 33px;
+  overflow: hidden;
+  pointer-events: none; /* só o trenó recebe clique */
+}
+[data-style="natal"] .natal-trineo {
+  position: absolute;
+  top: 3px; /* folga para o balanço de galope (margin-top: -3px) não ser cortado */
+  left: 0;
+  pointer-events: auto; /* pointer-events é herdado: sem isto o trenó ficaria sem clique, como o .natal-ceu */
   width: 186px;
   height: 27px;
   z-index: 1;
@@ -440,8 +453,8 @@ html[data-style="natal"] { background: var(--bg); }
    - "funk" troca o quadro (background-position, steps(1));
    - "top" é controlado pelo tema.js (--gnomo-y), que o faz escorregar pela borda
      acompanhando a rolagem da página; o transition com steps() mantém o movimento "em quadros".
-   Ampliado 4×. A largura do sprite = left: a última coluna (mãos e pés) cobre a borda de 4px.
-   Em telas abaixo de ~1130px fica 2× e entra um pouco no padding da janela (não cobre o texto). */
+   Ampliado 5×. A largura do sprite = left: a última coluna (mãos e pés) cobre a borda de 4px.
+   Em telas abaixo de ~1130px fica 3× (e 2× abaixo de 560px) e entra um pouco no padding da janela (não cobre o texto). */
 [data-style="natal"] .natal-gnomo-borda {
   display: block;
   padding: 0;
@@ -449,9 +462,9 @@ html[data-style="natal"] { background: var(--bg); }
   cursor: pointer;
   position: absolute;
   top: var(--gnomo-y, 5rem);
-  left: -48px;
-  width: 48px;
-  height: 64px;
+  left: -60px;
+  width: 60px;
+  height: 80px;
   z-index: 2;
   background: var(--natal-gnomo-costas) 0 0 / 400% 100% no-repeat;
   image-rendering: pixelated;
@@ -465,6 +478,9 @@ html[data-style="natal"] { background: var(--bg); }
 }
 /* abaixo de ~1130px as laterais são estreitas demais para o gnomo grande */
 @media (max-width: 1130px) {
+  [data-style="natal"] .natal-gnomo-borda { left: -22px; width: 36px; height: 48px; }
+}
+@media (max-width: 560px) {
   [data-style="natal"] .natal-gnomo-borda { left: -10px; width: 24px; height: 32px; }
 }
 @media (prefers-reduced-motion: reduce) {

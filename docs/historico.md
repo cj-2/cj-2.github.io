@@ -48,6 +48,16 @@ ela deixa, senão aparecem "vazinhos" no corpo.
 Ele também **escorrega pela borda acompanhando a rolagem**: o `tema.js` calcula a altura ideal e
 grava na variável CSS `--gnomo-y` (via `requestAnimationFrame`, no máximo uma vez por quadro), e o
 CSS usa `top: var(--gnomo-y)` com `transition` em `steps()` para o deslize "em quadros".
+**Papai Noel alargava a página:** ao sair pela direita, o trenó (que ficava solto no cabeçalho)
+aumentava a largura rolável da página; no celular o navegador ampliava a área visível e o balão
+de mensagem (`position: fixed; left: 50%`) ia junto para a direita. O `overflow-x: clip` no
+`body` não bastou. A correção é prender o trenó num "céu" (`.natal-ceu`, largura total,
+`overflow: hidden`): o recorte é do próprio contêiner, que nunca passa da largura da tela.
+Pegadinha: ao pôr `pointer-events: none` no céu (para só o trenó receber clique), o trenó herdou
+o `none` e perdeu o clique, pois `pointer-events` é uma propriedade herdada; foi preciso `pointer-events: auto`
+no próprio trenó.
+O gnomo da borda ficou maior (5× em telas largas, 3× até 1130px, 2× abaixo de 560px).
+
 **Efeitos ao clicar:** como pseudo-elementos não recebem clique, o gnomo da borda virou um
 `<button class="natal-only natal-gnomo-borda">` (em `baseof.html`). Ao clicar, o `tema.js`
 (`soltarEfeito`, guiado por uma tabela `EFEITOS_NATAL`) cria `<span>`s na posição de quem foi
