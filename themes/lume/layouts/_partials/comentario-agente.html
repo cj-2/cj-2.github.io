@@ -14,11 +14,12 @@
       {{ with $a.papel }}<span class="cw-papel">{{ . }}</span>{{ end }}
       <time datetime="{{ $c.data }}">{{ $c.data | time.AsTime | time.Format "02/01/2006 às 15:04" }}</time>
     </div>
-    {{/* "Ler mais" sem JavaScript: um checkbox escondido controla o corte do texto (só em textos longos) */}}
-    {{ if $longo }}<input class="cw-mais" type="checkbox" id="{{ $ancora }}-mais" aria-label="Mostrar o comentário inteiro">{{ end }}
+    {{/* "Ler mais" sem JavaScript: um checkbox escondido controla o corte do texto (só em textos longos).
+         O checkbox fica DENTRO do rótulo: ao clicar, o foco vai para ele e o navegador rola até o foco;
+         se ele estivesse solto no HTML (position: absolute sem ancestral), a página pulava para o fim. */}}
     <p class="cw-texto{{ if $longo }} cw-texto-longo{{ end }}">{{ $c.texto }}</p>
     {{ if $longo }}
-      <label class="cw-ler-mais" for="{{ $ancora }}-mais"><span class="cw-ler-mais-abrir">Ler mais</span><span class="cw-ler-mais-fechar">Ler menos</span></label>
+      <label class="cw-ler-mais"><input class="cw-mais" type="checkbox"><span class="cw-ler-mais-abrir">Ler mais</span><span class="cw-ler-mais-fechar">Ler menos</span></label>
     {{ end }}
     {{ with $c.correcoes }}
       <details class="cw-correcoes">

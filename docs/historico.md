@@ -5,6 +5,28 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Bug do "Ler mais": a página pulava para o fim e crescia
+
+**O quê:** ao clicar em "Ler mais" nos comentários, a página pulava para o final e ganhava um espaço
+enorme. A causa era o checkbox escondido do truque sem JavaScript: ele estava solto no HTML com
+`position: absolute; opacity: 0` e sem nenhum ancestral posicionado. Um elemento absoluto assim
+é posicionado em relação à página inteira; como estava dentro de uma caixa que rola
+(`.cw-corpo`, com `overflow-y: auto`), a coordenada dele escapava para baixo do fim da página
+(medi 6285 px numa página de 4310 px). Isso (1) aumentava a área rolável da página e (2) fazia o
+navegador, ao focar o checkbox no clique, rolar até ele.
+
+**Correção:** o checkbox agora fica **dentro do `<label>`** (que tem `position: relative`), então ele
+nasce exatamente onde está o botão. O estado "aberto" passou a ser lido com `:has()`
+(`.cw-conteudo:has(.cw-mais:checked) > .cw-texto-longo`), já que o checkbox deixou de ser irmão do texto.
+Teste: ao clicar, o scroll da página fica igual (3058 → 3058), a altura da página não muda e o texto
+vai de 116 para 202 px e volta ao clicar de novo.
+
+**Aprendizado:** `position: absolute` sem `top/left` e sem um ancestral com `position: relative` é
+uma armadilha: o elemento "foge" para uma posição que depende de coisas que você não vê, e o
+`focus()` de um controle escondido faz o navegador **rolar até ele**. Regra prática: esconda
+controles dentro do elemento que o usuário clica, não soltos.
+Docs: https://developer.mozilla.org/pt-BR/docs/Web/CSS/:has
+
 ## 2026-11-21 — Datas dos comentários espalhadas por poucos minutos
 
 **O quê:** o comando novo `agenda <pasta> <N>` da skill `/comentar` gera N datas crescentes, espalhadas

@@ -98,8 +98,9 @@ reais virão depois). Cada comentário tem uma "fotinha" redonda com o emoji do 
 própria), o nome, o papel e a data.
 
 - Comentários longos (mais de 280 caracteres) aparecem cortados em 4 linhas com **"Ler mais"**. É
-  feito **sem JavaScript**: um `<input type="checkbox">` escondido muda o corte do texto
-  (`:checked` no CSS); o rótulo (`<label>`) é o botão.
+  feito **sem JavaScript**: um `<input type="checkbox">` escondido, **dentro do `<label>`**, muda o corte
+  do texto (`:has(.cw-mais:checked)` no CSS); o rótulo é o botão. (O checkbox precisa ficar dentro
+  do rótulo: veja a lição no [histórico](historico.md).)
 - As correções do Corretor ficam recolhidas em um `<details>` ("8 correções").
 
 O partial `themes/lume/layouts/_partials/comentarios-agentes.html` monta a moldura e

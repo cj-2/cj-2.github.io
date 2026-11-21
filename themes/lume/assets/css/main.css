@@ -579,7 +579,7 @@ pre {
 .cw-texto { margin: 0; overflow-wrap: anywhere; }
 
 /* "Ler mais" sem JavaScript: o checkbox escondido muda o corte do texto */
-.cw-mais { position: absolute; opacity: 0; pointer-events: none; }
+.cw-mais { position: absolute; top: 0; left: 0; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
 .cw-texto-longo {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -587,13 +587,13 @@ pre {
   line-clamp: 4;
   overflow: hidden;
 }
-.cw-mais:checked ~ .cw-texto-longo { display: block; overflow: visible; }
-.cw-ler-mais { display: inline-block; margin-top: 0.25rem; color: var(--accent); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+.cw-conteudo:has(.cw-mais:checked) > .cw-texto-longo { display: block; overflow: visible; }
+.cw-ler-mais { position: relative; display: inline-block; margin-top: 0.25rem; color: var(--accent); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
 .cw-ler-mais:hover { text-decoration: underline; }
 .cw-ler-mais-fechar { display: none; }
-.cw-mais:checked ~ .cw-ler-mais .cw-ler-mais-abrir { display: none; }
-.cw-mais:checked ~ .cw-ler-mais .cw-ler-mais-fechar { display: inline; }
-.cw-mais:focus-visible ~ .cw-ler-mais { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cw-mais:checked ~ .cw-ler-mais-abrir { display: none; }
+.cw-mais:checked ~ .cw-ler-mais-fechar { display: inline; }
+.cw-ler-mais:has(.cw-mais:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .cw-correcoes { margin-top: 0.5rem; font-size: 0.92rem; }
 .cw-correcoes summary { cursor: pointer; color: var(--accent); font-weight: 700; }
