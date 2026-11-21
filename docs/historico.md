@@ -5,6 +5,41 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Estilo temático aparece uma vez, mesmo para quem escolheu outro
+
+**O quê:** no `head.html`, a variável `tematico` (hoje `"natal"`) define o estilo da temporada. Na
+primeira visita depois que ele entra, o script grava `estilo = tematico` mesmo que a pessoa
+tivesse salvo outro, e guarda `estiloTematicoVisto = tematico` no `localStorage`. Nas visitas
+seguintes essa marca já existe e vale a escolha da pessoa (ou o `?v=` de um link).
+**Bug da primeira versão:** o `?v=` vencia a regra, mas o `tema.js` reescreve o `?v=` na barra de
+endereço a cada visita com o estilo atual. Favoritos, histórico e links já carregavam o estilo
+antigo, que "ganhava" da regra e ainda marcava como visto: o natal nunca aparecia para quem já
+tinha visitado. Agora, na primeira visita, a regra vence até o `?v=` do estilo (a largura do
+`?v=` continua valendo). Lição: se o próprio site escreve na URL, a URL não é prova de escolha.
+
+**Por quê:** o tema de Natal é um evento: quem já tinha preferência salva (ex.: retrô) também
+precisa vê-lo, sem perder a liberdade de trocar logo em seguida.
+
+**Aprendizado:** guardar *qual* tema temático já foi apresentado (e não apenas "sim/não") faz a
+regra renascer sozinha: quando a variável mudar para outro nome (ex.: `"pascoa"`), a marca
+antiga não coincide e o novo tema aparece de novo uma vez. `localStorage` guarda só texto, então
+a comparação é de strings.
+
+## 2026-11-21 — Natal vira o estilo padrão (e a nova ordem do botão)
+
+**O quê:** quem ainda não escolheu nada agora vê o estilo **natal**. O botão de estilo cicla
+natal → terminal → normal (moderno) → retrô (site antigo) → natal. Mudanças: o script do
+`<head>` (`head.html`) aplica `natal` por padrão; o `tema.js` tem a nova ordem em `ESTILOS` e
+passou a lembrar o *terminal* (antes era o padrão e não precisava ser salvo) em vez do natal;
+no `main.css` o ícone do botão (que mostra o próximo estilo) foi remapeado para a nova ordem.
+
+**Por quê:** o tema de Natal é a vitrine do momento.
+
+**Aprendizado:** "padrão" é só "o que vale quando não há nada salvo". Trocar o padrão muda o que
+o `localStorage` precisa guardar: o antigo padrão (terminal) agora precisa ser salvo e o novo
+(natal) não. Quem usava o terminal sem nunca ter clicado no botão passa a ver o natal.
+Isso é esperado; o link com `?v=` (ver entrada de URL) continua mandando em qualquer padrão.
+
 ## 2026-11-21 — Quarto estilo: natal (pixel art)
 
 **O quê:** novo `data-style="natal"` em `assets/css/natal.css`, no ciclo do botão de estilo

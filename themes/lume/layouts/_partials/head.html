@@ -20,20 +20,38 @@
       // com o mesmo visual de quem o enviou. X = estilo (n normal, t terminal, r retrô, x natal),
       // Y = largura (e estreita, p padrão, t total). A cor (claro/escuro) NÃO vem da URL:
       // continua sendo a escolha de quem visita.
+      var tematico = "natal"; // estilo temático da vez; ao lançar outro (ex.: páscoa), troque aqui
+      // Regra do estilo temático: na PRIMEIRA vez que o visitante abre o site depois que o tema
+      // temático entrou, ele é mostrado mesmo para quem já tinha escolhido outro estilo. Isso vale
+      // até sobre o ?v= da URL: o tema.js reescreve o ?v= a cada visita com o estilo de quem
+      // navegava, então endereços salvos/favoritos/histórico trazem o estilo antigo e, se o ?v=
+      // vencesse, a regra nunca valeria para quem já tinha visitado.
+      var forcarTematico = localStorage.getItem("estiloTematicoVisto") !== tematico;
+      // Parâmetro da URL ?v=XY: X = estilo (n normal, t terminal, r retrô, x natal),
+      // Y = largura (e estreita, p padrão, t total). A cor (claro/escuro) NÃO vem da URL.
+      // Depois da primeira visita, o ?v= vence o que está salvo: é o que faz um link compartilhado
+      // abrir com o mesmo visual de quem o enviou.
       var v = new URLSearchParams(location.search).get("v");
       if (v && /^[ntrx][ept]$/.test(v)) {
-        localStorage.setItem("estilo", { n: "normal", t: "terminal", r: "retro", x: "natal" }[v[0]]);
+        if (!forcarTematico) {
+          localStorage.setItem("estilo", { n: "normal", t: "terminal", r: "retro", x: "natal" }[v[0]]);
+        }
         if (v[1] === "p") localStorage.removeItem("largura");
         else localStorage.setItem("largura", v[1] === "e" ? "narrow" : "full");
       }
+      if (forcarTematico) localStorage.setItem("estilo", tematico);
+      // Lembra que a "mudança automática" já aconteceu: dali em diante vale a escolha da pessoa
+      // (ou o ?v= de um link), mesmo que seja outro estilo.
+      localStorage.setItem("estiloTematicoVisto", tematico);
       var largura = localStorage.getItem("largura");
       if (largura === "narrow" || largura === "full") root.dataset.width = largura;
-      // O padrão é o terminal. "normal" (sem atributo), "retro" e "natal" só se o visitante escolheu.
+      // O padrão é o natal. Quem escolheu outro estilo o tem salvo: "normal" (sem atributo),
+      // "terminal" ou "retro".
       var estilo = localStorage.getItem("estilo");
-      if (estilo === "retro" || estilo === "natal") root.dataset.style = estilo;
-      else if (estilo !== "normal") root.dataset.style = "terminal";
+      if (estilo === "terminal" || estilo === "retro") root.dataset.style = estilo;
+      else if (estilo !== "normal") root.dataset.style = "natal";
     } catch (e) {
-      root.dataset.style = "terminal";
+      root.dataset.style = "natal";
     }
   })();
 </script>

@@ -28,7 +28,7 @@ themes/lume/              tema próprio
   assets/css/retro.css    estilo retrô, site antigo (concatenado depois do terminal.css)
   assets/css/natal.css    estilo natal, pixel art (concatenado depois do retro.css)
   assets/css/chroma.css   cores de destaque de código (gerado, ver docs/05-tema-lume.md)
-  assets/js/tema.js       botões de estilo (normal/terminal/retrô) e cor (sistema/claro/escuro)
+  assets/js/tema.js       botões de estilo (natal/terminal/normal/retrô) e cor (sistema/claro/escuro)
 .github/workflows/hugo.yaml  build + deploy no GitHub Pages
 docs/                     documentação de aprendizado (NÃO é publicada no site)
 ```
@@ -50,7 +50,11 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
 - Templates: mantenha a lógica nos partials; `baseof.html` só define o esqueleto.
 - CSS: use as variáveis de `:root` em vez de cores fixas. O tema tem 4 estilos × 3 cores:
   - estilo: `data-style="terminal"`, `"retro"` ou `"natal"` no `<html>` (sem o atributo = normal;
-    o terminal é o padrão porque o script do `<head>` o aplica a quem não escolheu nada);
+    o natal é o padrão porque o script do `<head>` o aplica a quem não escolheu nada; a
+    ordem do botão é natal → terminal → normal → retrô);
+  - estilo temático (hoje o natal): na primeira visita depois que ele entra, o `<head>` o aplica
+    mesmo a quem tinha escolhido outro estilo e grava `estiloTematicoVisto` no `localStorage`
+    para não repetir. Para lançar outro tema sazonal, troque a variável `tematico` em `head.html`.
   - cor: `data-theme="light|dark"` (sem o atributo = segue o sistema).
 
   Toda variável de cor nova precisa existir nos **oito** blocos: normal claro e escuro

@@ -194,10 +194,10 @@ img { max-width: 100%; height: auto; border-radius: var(--radius); }
 .natal-only { display: none; }
 
 .style-toggle svg { display: none; }
-:root:not([data-style]) .style-toggle .go-terminal,
-:root[data-style="terminal"] .style-toggle .go-retro,
-:root[data-style="retro"] .style-toggle .go-natal,
-:root[data-style="natal"] .style-toggle .go-normal { display: block; }
+:root[data-style="natal"] .style-toggle .go-terminal,
+:root[data-style="terminal"] .style-toggle .go-normal,
+:root:not([data-style]) .style-toggle .go-retro,
+:root[data-style="retro"] .style-toggle .go-natal { display: block; }
 
 /* Elementos que só existem no estilo terminal */
 .term-bar,

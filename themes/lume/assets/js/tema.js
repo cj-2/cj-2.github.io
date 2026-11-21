@@ -1,10 +1,10 @@
-// Controles do menu: estilo (normal/terminal/retrô), largura e cor (sistema/claro/escuro).
+// Controles do menu: estilo (natal/terminal/normal/retrô), largura e cor (sistema/claro/escuro).
 // O estado fica em atributos do <html>:
-//   data-style="terminal"  -> estilo terminal (padrão; o script do <head> o aplica,
+//   data-style="natal"     -> estilo natal, pixel art (padrão; o script do <head> o aplica,
 //                             a menos que o visitante tenha escolhido outro)
+//   data-style="terminal"  -> estilo terminal
+//   sem data-style         -> estilo normal (o "moderno")
 //   data-style="retro"     -> estilo retrô (site antigo)
-//   data-style="natal"     -> estilo natal (pixel art)
-//   sem data-style         -> estilo normal
 //   data-theme="light"|"dark" -> cor forçada (sem o atributo = segue o sistema)
 // e é salvo no localStorage para valer nas próximas páginas.
 
@@ -62,8 +62,8 @@ document.querySelectorAll(".theme-toggle").forEach((btn) => {
 });
 
 // ---------- Estilo ----------
-// Ciclo do botão: normal -> terminal -> retrô -> natal -> normal
-const ESTILOS = ["normal", "terminal", "retro", "natal"];
+// Ciclo do botão: natal -> terminal -> normal (moderno) -> retrô (site antigo) -> natal
+const ESTILOS = ["natal", "terminal", "normal", "retro"];
 const NOME_ESTILO = { normal: "normal", terminal: "terminal", retro: "retrô", natal: "natal" };
 
 function estiloAtual() {
@@ -87,8 +87,8 @@ document.querySelectorAll(".style-toggle").forEach((btn) => {
     const proximo = proximoEstilo();
     if (proximo === "normal") delete root.dataset.style;
     else root.dataset.style = proximo;
-    // Terminal é o padrão, então só "normal" e "retro" precisam ser lembrados.
-    salvar("estilo", proximo === "terminal" ? null : proximo);
+    // Natal é o padrão, então só os outros precisam ser lembrados.
+    salvar("estilo", proximo === "natal" ? null : proximo);
     atualizarBotaoEstilo();
     sincronizarUrl();
   });
