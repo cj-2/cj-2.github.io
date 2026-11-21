@@ -74,6 +74,8 @@ der certo — **se o build falhar, o site antigo continua no ar**.
 
 - Aba **Actions** → clique na execução vermelha → abra o passo que falhou e leia o log.
 - Erro comum: rodar `hugo --gc --minify` localmente antes do push pega 99% dos problemas.
+- Publicou e o site não mudou? Pode ser cache do navegador (o GitHub Pages guarda por 10 min):
+  veja [08-cache.md](08-cache.md).
 - Site com CSS quebrado/links errados geralmente é `baseURL` — confira se o Pages está
   com Source = "GitHub Actions".
 

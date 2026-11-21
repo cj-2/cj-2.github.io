@@ -16,6 +16,7 @@ Leia na ordem se estiver começando do zero:
 | 5 | [05-tema-lume.md](05-tema-lume.md) | Como o tema foi construído: templates, partials, CSS, modo escuro |
 | 6 | [06-deploy.md](06-deploy.md) | Como o site vai para o ar com GitHub Actions + GitHub Pages |
 | 7 | [07-comandos.md](07-comandos.md) | Cola rápida de comandos do dia a dia |
+| 8 | [08-cache.md](08-cache.md) | Cache do navegador: por que o site às vezes aparece velho e como o projeto contorna isso |
 
 E sempre que quiser saber **o que mudou e por quê**:
 

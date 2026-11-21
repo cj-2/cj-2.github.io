@@ -14,6 +14,9 @@ fazia. O arquivo sai como `/js/tema.min.<hash>.js` e o `<script>` ganha `integri
 O HTML sempre apontava para `/js/tema.js`, um nome fixo: um navegador com a cópia antiga em cache
 podia rodar JS velho com HTML novo (por exemplo, sem a regra do tema temático).
 
+**Documentação:** o assunto ganhou um capítulo próprio, [08-cache.md](08-cache.md) (cache HTTP,
+`Cache-Control`/`ETag`, cache busting, como testar e a diferença para o `localStorage`).
+
 **Aprendizado:** a técnica se chama *cache busting*: se o conteúdo muda, o nome muda, então o
 cache antigo simplesmente não é consultado. Só o HTML (de vida curta) continua sujeito a cache.
 Docs: https://gohugo.io/functions/resources/fingerprint/
