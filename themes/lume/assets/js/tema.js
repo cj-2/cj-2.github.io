@@ -8,6 +8,19 @@
 //   data-theme="light"|"dark" -> cor forçada (sem o atributo = segue o sistema)
 // e é salvo no localStorage para valer nas próximas páginas.
 
+// A lógica "pura" (sem DOM) fica em logica.js e é testada em tests/unit/logica.test.mjs.
+// O Hugo (js.Build) junta os dois arquivos em um só.
+import {
+  ESTILOS,
+  LARGURAS,
+  proximoDaLista,
+  codigoVisual,
+  permiteMensagem,
+  limitarGnomoY,
+  escolherSemRepetir,
+  posicaoNaFaixa,
+} from "./logica.js";
+
 const root = document.documentElement;
 
 function salvar(chave, valor) {
@@ -22,14 +35,11 @@ function salvar(chave, valor) {
 // compartilhe o visual. X = estilo (n/t/r/x), Y = largura (e/p/t); ver o script do head.html.
 // A cor (claro/escuro) fica de fora de propósito.
 // replaceState troca a URL sem recarregar a página nem poluir o histórico.
-const COD_ESTILO = { normal: "n", terminal: "t", retro: "r", natal: "x" };
-const COD_LARGURA = { narrow: "e", default: "p", full: "t" };
-
 function sincronizarUrl() {
   const url = new URL(location.href);
   url.searchParams.delete("estilo");
   url.searchParams.delete("largura");
-  url.searchParams.set("v", COD_ESTILO[estiloAtual()] + COD_LARGURA[larguraAtual()]);
+  url.searchParams.set("v", codigoVisual(estiloAtual(), larguraAtual()));
   history.replaceState(null, "", url);
 }
 
@@ -43,7 +53,7 @@ function corAtual() {
 
 function atualizarBotaoCor() {
   const atual = corAtual();
-  const proxima = CORES[(CORES.indexOf(atual) + 1) % CORES.length];
+  const proxima = proximoDaLista(CORES, atual);
   const texto = `Cor: ${NOME_COR[atual]} (clique para ${NOME_COR[proxima]})`;
   document.querySelectorAll(".theme-toggle").forEach((btn) => {
     btn.setAttribute("aria-label", texto);
@@ -53,7 +63,7 @@ function atualizarBotaoCor() {
 
 document.querySelectorAll(".theme-toggle").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const proxima = CORES[(CORES.indexOf(corAtual()) + 1) % CORES.length];
+    const proxima = proximoDaLista(CORES, corAtual());
     if (proxima === "system") delete root.dataset.theme;
     else root.dataset.theme = proxima;
     salvar("tema", proxima === "system" ? null : proxima);
@@ -63,7 +73,7 @@ document.querySelectorAll(".theme-toggle").forEach((btn) => {
 
 // ---------- Estilo ----------
 // Ciclo do botão: natal -> terminal -> normal (moderno) -> retrô (site antigo) -> natal
-const ESTILOS = ["natal", "terminal", "normal", "retro"];
+// (a ordem fica em ESTILOS, em logica.js)
 const NOME_ESTILO = { normal: "normal", terminal: "terminal", retro: "retrô", natal: "natal" };
 
 function estiloAtual() {
@@ -71,7 +81,7 @@ function estiloAtual() {
 }
 
 function proximoEstilo() {
-  return ESTILOS[(ESTILOS.indexOf(estiloAtual()) + 1) % ESTILOS.length];
+  return proximoDaLista(ESTILOS, estiloAtual());
 }
 
 function atualizarBotaoEstilo() {
@@ -96,7 +106,7 @@ document.querySelectorAll(".style-toggle").forEach((btn) => {
 
 // ---------- Largura ----------
 // narrow (estreita) -> padrão (sem atributo, a do meio) -> full (total) -> narrow
-const LARGURAS = ["narrow", "default", "full"];
+// (a ordem fica em LARGURAS, em logica.js)
 const NOME_LARGURA = { narrow: "estreita", default: "padrão", full: "total" };
 
 function larguraAtual() {
@@ -105,7 +115,7 @@ function larguraAtual() {
 
 function atualizarBotaoLargura() {
   const atual = larguraAtual();
-  const proxima = LARGURAS[(LARGURAS.indexOf(atual) + 1) % LARGURAS.length];
+  const proxima = proximoDaLista(LARGURAS, atual);
   const texto = `Largura: ${NOME_LARGURA[atual]} (clique para ${NOME_LARGURA[proxima]})`;
   document.querySelectorAll(".width-toggle").forEach((btn) => {
     btn.setAttribute("aria-label", texto);
@@ -115,7 +125,7 @@ function atualizarBotaoLargura() {
 
 document.querySelectorAll(".width-toggle").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const proxima = LARGURAS[(LARGURAS.indexOf(larguraAtual()) + 1) % LARGURAS.length];
+    const proxima = proximoDaLista(LARGURAS, larguraAtual());
     if (proxima === "default") delete root.dataset.width;
     else root.dataset.width = proxima;
     salvar("largura", proxima === "default" ? null : proxima);
@@ -188,8 +198,7 @@ function mostrarMensagemNatal(quem) {
   // para o topo para não tapá-lo.
   balaoNatal.classList.toggle("natal-msg-topo", quem === "gnomo" && window.matchMedia("(max-width: 1199px)").matches);
   // Sorteia sem repetir a mensagem anterior.
-  const opcoes = textos.filter((t) => t !== ultimaMensagem);
-  const texto = opcoes[Math.floor(Math.random() * opcoes.length)];
+  const texto = escolherSemRepetir(textos, ultimaMensagem, Math.random());
   ultimaMensagem = texto;
   balaoNatal.replaceChildren();
   const titulo = document.createElement("strong");
@@ -213,9 +222,8 @@ let gnomoAgendado = false;
 function posicionarGnomo() {
   gnomoAgendado = false;
   const r = janelaGnomo.getBoundingClientRect();
-  const alvo = window.innerHeight * 0.5 - r.top;
-  const maximo = Math.max(80, r.height - 110);
-  janelaGnomo.style.setProperty("--gnomo-y", `${Math.min(Math.max(alvo, 80), maximo)}px`);
+  const y = limitarGnomoY({ topoJanela: r.top, alturaJanela: r.height, alturaTela: window.innerHeight });
+  janelaGnomo.style.setProperty("--gnomo-y", `${y}px`);
 }
 
 function agendarGnomo() {
@@ -265,7 +273,7 @@ function soltarEfeito(origem, quem) {
     el.className = cfg.classe(i);
     // espalhar: divide a faixa x em qtd fatias e sorteia dentro da fatia i (nunca ficam colados)
     const [x0, x1] = cfg.x;
-    const x = cfg.espalhar ? x0 + ((i + aleatorio(0.1, 0.9)) / cfg.qtd) * (x1 - x0) : aleatorio(x0, x1);
+    const x = cfg.espalhar ? posicaoNaFaixa(i, cfg.qtd, x0, x1, Math.random()) : aleatorio(x0, x1);
     el.style.left = `${r.left + r.width * x}px`;
     el.style.top = `${r.top + r.height * aleatorio(...cfg.y)}px`;
     el.style.setProperty("--dx", `${Math.round(cfg.dx())}px`);
@@ -291,7 +299,7 @@ function aoClicarBoneco(el) {
   // Os efeitos (corações, estrelas, presentes) saem a cada clique: só a mensagem tem trava.
   soltarEfeito(el, el.dataset.natal);
   const agora = performance.now();
-  if (agora - ultimoCliqueBoneco < INTERVALO_CLIQUE_MS) return;
+  if (!permiteMensagem(agora, ultimoCliqueBoneco, INTERVALO_CLIQUE_MS)) return;
   ultimoCliqueBoneco = agora;
   if (balaoNatal) mostrarMensagemNatal(el.dataset.natal);
 }

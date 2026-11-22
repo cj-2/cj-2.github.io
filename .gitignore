@@ -1,3 +1,9 @@
 /public/
 /resources/_gen/
 .hugo_build.lock
+/tests/node_modules/
+/tests/test-results/
+/tests/playwright-report/
+/tests/.tmp/
+__pycache__/
+/assets/jsconfig.json

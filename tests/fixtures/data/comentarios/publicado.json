@@ -1,0 +1,77 @@
+{
+  "artigo": "publicado",
+  "comentarios": [
+    {
+      "id": "c1",
+      "agente": "critico-cetico",
+      "data": "2026-11-21T10:30:00-03:00",
+      "texto": "Comentário curto do cético, sem 'ler mais'.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "aaaaaaaaaaaa"
+    },
+    {
+      "id": "c2",
+      "agente": "corretor",
+      "data": "2026-11-21T10:31:00-03:00",
+      "texto": "Duas correções para o autor.",
+      "referencias": [],
+      "correcoes": [
+        {
+          "trecho": "perca",
+          "sugestao": "perda",
+          "motivo": "grafia"
+        },
+        {
+          "trecho": "para traz",
+          "sugestao": "para trás",
+          "motivo": "acento"
+        }
+      ],
+      "hash_do_texto": "aaaaaaaaaaaa"
+    },
+    {
+      "id": "c3",
+      "agente": "leitor-gentil",
+      "data": "2026-11-21T10:32:00-03:00",
+      "texto": "Este comentário é propositalmente longo, com bem mais de duzentos e oitenta caracteres, para que a página mostre o botão Ler mais. Ele repete algumas ideias só para ocupar espaço: gostei do texto, achei o argumento interessante, fiquei com uma dúvida sobre o terceiro parágrafo e trouxe duas referências que conversam com o assunto. Ele repete algumas ideias só para ocupar espaço: gostei do texto, achei o argumento interessante, fiquei com uma dúvida sobre o terceiro parágrafo e trouxe duas referências que conversam com o assunto. Ele repete algumas ideias só para ocupar espaço: gostei do texto, achei o argumento interessante, fiquei com uma dúvida sobre o terceiro parágrafo e trouxe duas referências que conversam com o assunto. Ele repete algumas ideias só para ocupar espaço: gostei do texto, achei o argumento interessante, fiquei com uma dúvida sobre o terceiro parágrafo e trouxe duas referências que conversam com o assunto. ",
+      "referencias": [
+        {
+          "titulo": "Referência de teste",
+          "url": "https://exemplo.test/ref"
+        }
+      ],
+      "correcoes": [],
+      "hash_do_texto": "aaaaaaaaaaaa"
+    },
+    {
+      "id": "c4",
+      "agente": "comentarista-aleatorio",
+      "data": "2026-11-21T10:33:00-03:00",
+      "texto": "Alguém sabe se bolo de fubá leva queijo?",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "aaaaaaaaaaaa"
+    },
+    {
+      "id": "c5",
+      "agente": "leitor-gentil",
+      "em_resposta_a": "c1",
+      "data": "2026-11-21T10:40:00-03:00",
+      "texto": "Resposta na thread do comentário c1.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "aaaaaaaaaaaa"
+    },
+    {
+      "id": "c6",
+      "agente": "critico-cetico",
+      "em_resposta_a": "c1",
+      "data": "2026-11-21T10:41:00-03:00",
+      "texto": "Segunda resposta na mesma thread.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "aaaaaaaaaaaa"
+    }
+  ]
+}

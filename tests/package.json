@@ -1,0 +1,16 @@
+{
+  "name": "blog-testes",
+  "private": true,
+  "type": "module",
+  "description": "Testes do blog (só desenvolvimento): nada desta pasta vai para o site publicado. Ver docs/10-testes.md.",
+  "scripts": {
+    "test": "npm run unit && npm run python && npm run render && npm run e2e",
+    "unit": "node --test \"unit/**/*.test.mjs\"",
+    "python": "python -m unittest discover -s python -v",
+    "render": "node --test \"render/**/*.test.mjs\"",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0"
+  }
+}

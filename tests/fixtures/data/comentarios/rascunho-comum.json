@@ -1,0 +1,14 @@
+{
+  "artigo": "rascunho-comum",
+  "comentarios": [
+    {
+      "id": "x1",
+      "agente": "corretor",
+      "data": "2026-11-21T12:00:00-03:00",
+      "texto": "Este comentário NÃO pode aparecer: o artigo é um rascunho comum.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "cccccccccccc"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "artigo": "rascunho-publico",
+  "comentarios": [
+    {
+      "id": "r1",
+      "agente": "corretor",
+      "data": "2026-11-21T11:00:00-03:00",
+      "texto": "Comentário em rascunho público.",
+      "referencias": [],
+      "correcoes": [],
+      "hash_do_texto": "bbbbbbbbbbbb"
+    }
+  ]
+}

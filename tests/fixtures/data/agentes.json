@@ -1,0 +1,6 @@
+{
+  "critico-cetico": { "nome": "Cético de Teste", "papel": "O Cético", "icone": "🤨", "cor": "#fcd9c4", "subagente": "critico-cetico" },
+  "corretor": { "nome": "Corretor de Teste", "papel": "O Corretor", "icone": "✏️", "cor": "#d6e4ff", "subagente": "corretor" },
+  "leitor-gentil": { "nome": "Gentil de Teste", "papel": "O Leitor Gentil", "icone": "🤝", "cor": "#d4f0d9", "subagente": "leitor-gentil" },
+  "comentarista-aleatorio": { "nome": "Aleatório de Teste", "papel": "O Aleatório", "icone": "🎂", "cor": "#fff0b8", "subagente": "comentarista-aleatorio" }
+}
