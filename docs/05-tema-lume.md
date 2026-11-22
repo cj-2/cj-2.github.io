@@ -33,7 +33,8 @@ themes/lume/
     ├── css/terminal.css      estilo terminal
     ├── css/retro.css         estilo retrô (site antigo)
     ├── css/chroma.css        cores do destaque de código
-    └── js/tema.js            botões de estilo e de cor
+    ├── js/tema.js            botões de estilo e de cor, e a ligação com a tela
+    └── js/logica.js          funções puras (sem DOM) usadas pelo tema.js e testadas em tests/unit
 ```
 
 ## Go templates em 5 minutos

@@ -29,7 +29,9 @@ themes/lume/              tema próprio
   assets/css/natal.css    estilo natal, pixel art (concatenado depois do retro.css)
   assets/css/chroma.css   cores de destaque de código (gerado, ver docs/05-tema-lume.md)
   assets/js/tema.js       botões de estilo (natal/terminal/normal/retrô) e cor (sistema/claro/escuro)
+  assets/js/logica.js     funções puras (sem DOM) usadas pelo tema.js; testadas em tests/unit
 .github/workflows/hugo.yaml  build + deploy no GitHub Pages
+tests/                    testes (não vão para o site; ver docs/10-testes.md): unit, python, render, e2e
 .claude/agents/           os 4 agentes comentaristas (personalidades; ver docs/09-agentes-comentaristas.md)
 data/agentes.json         cadastro dos agentes (nome de exibição e ícone)
 data/comentarios/         um JSON por artigo com os comentários dos agentes (só cresce)
@@ -43,6 +45,9 @@ hugo server -D            # servidor local com rascunhos (http://localhost:1313)
 hugo --gc --minify        # build de produção em public/ (não versionado)
 hugo new content posts/nome-do-post.md   # novo post (nasce como draft)
 ```
+
+Testes (dentro de `tests/`, ver `docs/10-testes.md`): `npm test` roda tudo (lógica, Python,
+renderização e navegador); `npm run unit|python|render|e2e` roda uma camada.
 
 Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
 `hugo --gc --minify` e confirme que não há `WARN` nem `ERROR`. Apague `public/` depois
@@ -74,6 +79,20 @@ Antes de concluir qualquer mudança em templates, CSS ou configuração, rode
   sem apagar os antigos. A área só aparece em artigos publicados ou com `publicDraft: true`.
   Respostas em thread usam `em_resposta_a`. A skill `/comentar` (`.claude/skills/comentar/`) grava
   tudo. Nenhum agente comentarista tem permissão de escrever arquivos.
+
+## Desenvolvimento com testes (TDD)
+
+Para features com **lógica em JavaScript, comportamento na tela ou renderização de componentes**,
+comece pelo teste (ver `docs/10-testes.md`):
+
+1. Escreva o teste do comportamento e **veja ele falhar** (um teste que nunca falhou não prova nada).
+2. Escreva o mínimo de código para passar; depois refatore com os testes verdes.
+3. Escolha a camada certa: regra/conta → `tests/unit` ou `tests/python`; HTML gerado →
+   `tests/render`; clique, rolagem, layout, `localStorage` → `tests/e2e`.
+4. Lógica sem DOM vai em `themes/lume/assets/js/logica.js` (testável); `tema.js` só liga à tela.
+5. Ao corrigir um bug, escreva antes o teste que o reproduz; confira que ele falha com o bug
+   de volta. Dados de teste são **fictícios** (`tests/fixtures`): nunca use os textos do dono.
+6. Rode `npm test` (em `tests/`) antes de concluir mudanças em JS, CSS ou templates.
 
 ## Perguntas não são pedidos
 

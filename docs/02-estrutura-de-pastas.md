@@ -21,6 +21,7 @@ blog/
 │       ├── layouts/        ← templates HTML
 │       └── assets/         ← CSS e JS do tema
 ├── docs/                   ← esta documentação (não vai para o site)
+├── tests/                  ← testes automáticos (não vão para o site; ver 10-testes.md)
 ├── .github/workflows/
 │   └── hugo.yaml           ← automação de build e deploy
 ├── .claude/launch.json     ← configuração do servidor de preview no Claude Code

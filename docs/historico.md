@@ -5,6 +5,35 @@ Entradas mais recentes no topo.
 
 ---
 
+## 2026-11-21 — Testes automáticos e TDD (4 camadas)
+
+**O quê:** a pasta `tests/` (fora do site) com 92 testes em 4 camadas: **lógica pura** (`node:test`,
+26), **Python** (`unittest`, 22), **renderização** do Hugo (18) e **navegador** com Playwright (26).
+Para tornar o JS testável, as decisões do `tema.js` foram para `logica.js` (funções puras) e o
+`tema.js` importa delas; o Hugo (`js.Build`) junta os dois, então o deploy não mudou. O script
+inline do `<head>` é testado extraindo o código real do `head.html` e rodando num ambiente falso
+(`vm`). Os testes de renderização e de navegador usam um **site temporário** (tema real +
+artigos e comentários fictícios de `tests/fixtures`). Tudo explicado em
+[10-testes.md](10-testes.md).
+
+**Por quê:** os bugs desta fase (checkbox do "Ler mais", `pointer-events` herdado, rolagem lateral,
+relógio do debounce, `?v=` antigo vencendo o tema temático) só apareciam no navegador e foram
+achados na tentativa e erro. Agora cada um tem um teste.
+
+**Aprendizado:**
+- TDD é vermelho → verde → refatorar. Os testes de `logica.js` foram escritos antes do módulo
+  existir (falharam com `Cannot find module`).
+- **Teste que nunca falha não protege.** Reintroduzimos de propósito os 3 bugs: dois foram pegos
+  de cara; o do "Ler mais" **passou despercebido** porque os dados de teste tinham poucos
+  comentários (o bug só aparece com comentários abaixo da parte visível da caixa que rola). Criamos
+  o artigo `muitos-comentarios` e o teste passou a falhar quando o bug volta.
+- Testes de navegador precisam de cuidado: `innerText` (visível) em vez de `toHaveText`
+  (que lê o texto escondido) e congelar animações antes de clicar.
+- Separar **decisão** (função pura) de **ligação com a tela** (DOM) é o que torna JS testável.
+- `node --test` com glob (`"unit/**/*.test.mjs"`) em vez de passar a pasta.
+- Ao usar `import` no `tema.js`, o Hugo passou a gerar `assets/jsconfig.json` (ajuda do editor para
+  achar os módulos). Ele tem um caminho da sua máquina, então entrou no `.gitignore`.
+
 ## 2026-11-21 — Bug do "Ler mais": a página pulava para o fim e crescia
 
 **O quê:** ao clicar em "Ler mais" nos comentários, a página pulava para o final e ganhava um espaço

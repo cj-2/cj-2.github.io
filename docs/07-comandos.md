@@ -18,6 +18,18 @@
 O servidor local usa a porta **1313**; se ela estiver ocupada, o Hugo escolhe outra e
 mostra no terminal (`Web Server is available at http://localhost:XXXX/`).
 
+## Testes (dentro de `tests/`; veja [10-testes.md](10-testes.md))
+
+| Comando | O que faz |
+|---------|-----------|
+| `npm install` | Instala o Playwright (só na primeira vez) |
+| `npm test` | Roda as 4 camadas: lógica, Python, renderização e navegador |
+| `npm run unit` | Lógica pura e script do `<head>` (rápido) |
+| `npm run python` | Script da skill `/comentar` |
+| `npm run render` | HTML gerado pelo Hugo |
+| `npm run e2e` | Navegador de verdade (abre o Edge) |
+| `npx playwright test comentarios -g "Ler mais"` | Só um arquivo / parte do nome |
+
 ## Git (fluxo do dia a dia)
 
 ```bash
